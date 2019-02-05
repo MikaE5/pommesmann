@@ -1,0 +1,142 @@
+package de.androidnewcomer.pommesmann.GameParts;
+
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
+import java.util.ArrayList;
+
+import de.androidnewcomer.pommesmann.Vec;
+
+public class Player {
+
+    private Vec pos;
+    private float r;
+    private Vec vel;
+    private float maxVel;
+    private Vec acc;
+    private float health;
+    private float healthLoss;
+
+
+    public Player() {
+        this.pos = new Vec(0, 0);
+        this.r = 0;
+        this.vel = new Vec(0, 0);
+        this.acc = new Vec(0, 0);
+        this.health = 255f;
+        this.healthLoss = 0f;
+    }
+
+    public void setPos(float x, float y) {
+        this.pos.x = x;
+        this.pos.y = y;
+    }
+
+    public void setR(float r) {
+        this.r = r;
+        this.maxVel = 0.08f * this.r; // set maxVel wrt screenSize
+    }
+
+    public void setAcc(float x, float y) {
+        this.acc.x = x;
+        this.acc.y = y;
+    }
+
+    public Vec getVel() {
+        return vel.copy();
+    }
+
+    public Vec getPos() {
+        return pos.copy();
+    }
+
+    public float getR() {
+        return r;
+    }
+
+    public float getMaxVel() {
+        return maxVel;
+    }
+
+    public void setHealthLoss(float healthLoss) {
+        this.healthLoss = healthLoss;
+    }
+
+    public void changeHealth(float amount) {
+        health += amount;
+        if (health > 255) health = 255f;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void update(float width, float height) {
+        vel.add(acc);
+        vel.limit(maxVel);
+        pos.add(vel);
+        health -= healthLoss;
+        constrain(width, height);
+    }
+
+
+
+    private void constrain(float width, float height) {
+        if (pos.x + r > width) {
+            pos.x = width - r;
+            vel.x *= -0.3;  // bouncy-ball effect
+        }
+        if (pos.y + r > height) {
+            pos.y = height - r;
+            vel.y *= -0.3;
+        }
+        if (pos.x - r < 0) {
+            pos.x = r;
+            vel.x *= -0.3;
+        }
+        if (pos.y - r < 0) {
+            pos.y = r;
+            vel.y *= -0.3;
+        }
+    }
+
+
+    public double getAngle(Vec a, Vec b) {
+        double dot = (double) a.x * b.x + a.y * b.y;
+        double det = (double) a.x * b.y - a.y * b.x;
+        return Math.atan2(det, dot);
+    }
+
+    public void show(Canvas canvas) {
+
+        canvas.save();
+        Paint paint = new Paint();
+
+        if (vel.x != 0 && vel.y != 0) {
+            Vec tempVec = new Vec(1, 0);
+            float angle = (float) Math.toDegrees(getAngle(tempVec, vel)) + 90f;
+            canvas.rotate(angle, pos.x, pos.y);
+        }
+
+        int red = 255 - (int) health;
+        int green = (int) health;
+        if (red > 255) red = 255;
+        if (red < 0) red = 0;
+        if (green < 0) green = 0;
+        if (green > 255) green = 255;
+        paint.setColor(Color.rgb(red, green, 0));
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        canvas.drawCircle(pos.x, pos.y, r, paint);
+
+        float temp = 0.65f * r;
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(0.1f * temp);
+        paint.setColor(Color.BLACK);
+        canvas.drawCircle(pos.x, pos.y - temp, 0.3f * temp, paint);
+
+        canvas.restore();
+    }
+
+
+}

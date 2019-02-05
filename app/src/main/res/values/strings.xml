@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">POMMESMANN</string>
+    <string name="titleTextView">POMMESMANN</string>
+    <string name="startButton">START</string>
+    <string name="exitButton">EXIT</string>
+    <string name="fireButton">fire</string>
+    <string name="yourScoreTextView">Your Score:</string>
+    <string name="mainMenuButton">main menu</string>
+    <string name="restartButton">restart</string>
+    <string name="newHighscoreTextView">New Highscore!</string>
+    <string name="nameEditText">Your Name</string>
+    <string name="submitNameButton">submit</string>
+    <string name="highscoreTextView">Highscore</string>
+    <string name="soundCheckBox">Sound</string>
+</resources>

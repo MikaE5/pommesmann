@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#d81b60</color>
+
+    <color name="toolbarBackground">#757070</color>
+    <color name="canvasBackground">#e0dbdb</color>
+    <color name="boxColor">#40d60c56</color>
+    <color name="joystickColor">#0c99d6</color>
+    <color name="canvasTextColor">#0c99d6</color>
+
+</resources>
