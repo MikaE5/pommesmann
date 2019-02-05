@@ -41,6 +41,7 @@ public class GameEngine {
         void laserSound();
         void hitSound();
         void boxSound();
+        void powerupSound();
     }
 
 
@@ -261,6 +262,7 @@ public class GameEngine {
         if (circleInSquare(ppos.x, ppos.y, pr, pupos.x, pupos.y, pulen)) {
             player.changeHealth(powerupBonus);
             removablePowerups.add(powerup);
+            soundCallback.powerupSound();
         }
     }
 

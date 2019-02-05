@@ -29,6 +29,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
     private MediaPlayer mpLaser;
     private MediaPlayer mpBox;
     private MediaPlayer mpHit;
+    private MediaPlayer mpPowerup;
 
 
     private class AsyncCaller extends AsyncTask<Void, Void, Void> {
@@ -72,6 +73,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
             mpLaser = MediaPlayer.create(this, R.raw.lasersound);
             mpBox = MediaPlayer.create(this, R.raw.boxsound);
             mpHit = MediaPlayer.create(this, R.raw.hitsound);
+            mpPowerup = MediaPlayer.create(this, R.raw.powerupsound);
         }
     }
 
@@ -148,6 +150,14 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
         }
     }
 
+    @Override
+    public void powerupSound() {
+        if (mpPowerup != null) {
+            mpPowerup.seekTo(0);
+            mpPowerup.start();
+        }
+    }
+
     private void releaseMediaPlayers() {
         if (mpLaser != null) {
             mpLaser.release();
@@ -160,6 +170,10 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
         if (mpHit != null) {
             mpHit.release();
             mpHit = null;
+        }
+        if (mpPowerup != null) {
+            mpPowerup.release();
+            mpPowerup = null;
         }
     }
 }
