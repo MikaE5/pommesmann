@@ -197,14 +197,7 @@ public class GameEngine {
 
     public void fire() {
         if (lasers.size() < maxLasers) {
-            // normalize vel
-            Vec tempVel = player.getVel();
-            float velLength = (float) Math.sqrt(tempVel.x * tempVel.x + tempVel.y * tempVel.y);
-            tempVel.mult(1 / velLength);
-            tempVel.mult(1.75f * player.getMaxVel());
-
-            Vec tempPos = player.getPos();
-            Laser newLaser = new Laser(tempPos, tempVel, player.getR() * 0.25f);
+            Laser newLaser = new Laser(player);
 
             lasers.add(0, newLaser);
             soundCallback.laserSound();

@@ -14,12 +14,30 @@ public class Laser {
     private int wallCount;
     private int maxWallCount;
 
-    public Laser(Vec pos, Vec vel, float r) {
-        this.pos = pos;
-        this.vel = vel;
-        this.r = r;
-        wallCount = 0;
-        maxWallCount = 2;
+    public Laser(Player player) {
+        this.wallCount = 0;
+        this.maxWallCount = 2;
+
+
+        Vec tempPos = player.getPos();
+        Vec tempVel = player.getVel();
+        float tempR = player.getR();
+
+        this.r = 0.25f * tempR;
+
+        // normalize tempVel
+        float velLength = (float) Math.sqrt(tempVel.x * tempVel.x + tempVel.y * tempVel.y);
+        tempVel.mult(1 / velLength);
+        Vec tempNormVel = tempVel.copy();
+
+        // setting vel of laser
+        tempVel.mult(1.75f * player.getMaxVel());
+        this.vel = tempVel;
+
+        // setting pos of laser
+        tempNormVel.mult(tempR - this.r);
+        tempPos.add(tempNormVel);
+        this.pos = tempPos;
     }
 
     public Vec getPos() {
