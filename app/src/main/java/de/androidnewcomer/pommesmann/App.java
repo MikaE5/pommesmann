@@ -17,12 +17,14 @@ import android.widget.Toast;
 public class App extends Application {
     private static Context mContext;
     private static boolean sound;
+    private static boolean leftHanded;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this;
         sound = false;
+        leftHanded = false;
     }
 
 
@@ -36,6 +38,12 @@ public class App extends Application {
 
     public static boolean getSound() {
         return sound;
+    }
+
+    public static boolean getLeftHanded() { return leftHanded; }
+
+    public static void setLeftHanded(boolean left) {
+        leftHanded = left;
     }
 
     public static void showToast() {

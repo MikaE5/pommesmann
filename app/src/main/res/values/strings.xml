@@ -12,4 +12,5 @@
     <string name="submitNameButton">submit</string>
     <string name="highscoreTextView">Highscore</string>
     <string name="soundCheckBox">Sound</string>
+    <string name="leftHandedCheckBox">left handed</string>
 </resources>

@@ -60,7 +60,11 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
             getWindow().setEnterTransition(new Explode());
         }
 
-        setContentView(R.layout.game_activity);
+        if (App.getLeftHanded()) {
+            setContentView(R.layout.game_activity_left);
+        } else {
+            setContentView(R.layout.game_activity_right);
+        }
 
         gameView = findViewById(R.id.gameView);
         gameView.setOnClickListener(this);

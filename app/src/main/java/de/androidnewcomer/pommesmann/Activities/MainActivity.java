@@ -23,6 +23,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button startButton;
     private CheckBox soundCheckBox;
+    private CheckBox leftHandedCheckBox;
 
 
     @Override
@@ -40,6 +41,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         soundCheckBox = findViewById(R.id.soundCheckBox);
         soundCheckBox.setChecked(App.getSound()); // set volume in app accordingly
         soundCheckBox.setOnClickListener(this);
+        leftHandedCheckBox = findViewById(R.id.leftHandedCheckBox);
+        leftHandedCheckBox.setChecked(App.getLeftHanded()); // set leftHanded in app accordingly
+        leftHandedCheckBox.setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +53,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         App.startFadeinAnim(v);
         App.startSlowFadeinAnim(startButton, 1000);
         App.startSlowFadeinAnim(soundCheckBox, 2000);
+        App.startSlowFadeinAnim(leftHandedCheckBox, 2000);
         showHighscore();
     }
 
@@ -70,6 +75,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         if (v.getId() == R.id.soundCheckBox) {
             App.setSound(soundCheckBox.isChecked());
+        }
+        if (v.getId() == R.id.leftHandedCheckBox) {
+            App.setLeftHanded(leftHandedCheckBox.isChecked());
         }
 
     }
