@@ -2,6 +2,7 @@ package de.androidnewcomer.pommesmann;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.view.View;
@@ -18,6 +19,12 @@ public class App extends Application {
     private static Context mContext;
     private static boolean sound;
     private static boolean leftHanded;
+
+    // final strings for SharedPreferences
+    public final static String SPgame = "game";
+    public final static String SPhighscore = "highscore";
+    public final static String SPhighscorename = "highscore_name";
+    public final static String SPcoins = "overallpoints";
 
     @Override
     public void onCreate() {
@@ -68,5 +75,4 @@ public class App extends Application {
         fadeinAnim.setDuration(millis);
         v.startAnimation(fadeinAnim);
     }
-
 }

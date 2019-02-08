@@ -31,6 +31,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
 
         int highscore = getHighscore();
         points = getIntent().getIntExtra("points", 0);
+        setCoins(points);
 
         if (points > highscore) newHighscore(points);
 
@@ -48,6 +49,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         super.onResume();
         View v = findViewById(R.id.mainLayout);
         App.startFadeinAnim(v);
+        showCoinsTextView();
     }
 
     @Override
@@ -83,22 +85,22 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
     }
 
     private int getHighscore() {
-        SharedPreferences pref = getSharedPreferences("game", 0);
-        return pref.getInt("highscore", 0);
+        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
+        return pref.getInt(App.SPhighscore, 0);
     }
 
     private void setHighscore(int newHighscore) {
-        SharedPreferences pref = getSharedPreferences("game", 0);
+        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("highscore", newHighscore);
+        editor.putInt(App.SPhighscore, newHighscore);
         editor.apply();
     }
 
 
     private void setHighscoreName(String name) {
-        SharedPreferences pref = getSharedPreferences("game", 0);
+        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString("highscore_name", name);
+        editor.putString(App.SPhighscorename, name);
         editor.apply();
     }
 
@@ -108,7 +110,6 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
             mp.start();
         }
         LinearLayout highscoreLayout = findViewById(R.id.highscoreLayout);
-        App.startSlowFadeinAnim(highscoreLayout, 2000);
         highscoreLayout.setVisibility(View.VISIBLE);
 
         submitNameButton = findViewById(R.id.submitNameButton);
@@ -116,5 +117,29 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
 
         setHighscore(points);
         setHighscoreName(""); // set name to nothing in case user doesn't submit his name
+    }
+
+    private void setCoins(int points) {
+        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
+        int temp = pref.getInt(App.SPcoins, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(App.SPcoins, temp + points);
+        editor.apply();
+    }
+
+    private int getCoins() {
+        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
+        return pref.getInt(App.SPcoins, 0);
+    }
+
+    private void showCoinsTextView() {
+        int temp = getCoins();
+
+        if (temp > 0) {
+            TextView coinsTextView = findViewById(R.id.coinsTextView);
+            coinsTextView.setText(Integer.toString(temp) + "coins");
+            coinsTextView.setVisibility(View.VISIBLE);
+            App.startSlowFadeinAnim(coinsTextView, 3000);
+        }
     }
 }
