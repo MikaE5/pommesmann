@@ -21,10 +21,10 @@ public class App extends Application {
     private static boolean leftHanded;
 
     // final strings for SharedPreferences
-    public final static String SPgame = "game";
-    public final static String SPhighscore = "highscore";
-    public final static String SPhighscorename = "highscore_name";
-    public final static String SPcoins = "overallpoints";
+    public final static String SP_GAME = "game";
+    public final static String SP_HIGHSCORE = "highscore";
+    public final static String SP_HIGHSCORE_NAME = "highscore_name";
+    public final static String SP_COINS = "overallpoints";
 
     @Override
     public void onCreate() {

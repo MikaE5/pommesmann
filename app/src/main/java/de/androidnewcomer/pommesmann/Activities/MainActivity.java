@@ -80,13 +80,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private int getHighscore() {
-        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
-        return pref.getInt(App.SPhighscore, 0);
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
+        return pref.getInt(App.SP_HIGHSCORE, 0);
     }
 
     private String getHighscoreName() {
-        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
-        return pref.getString(App.SPhighscorename, "");
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
+        return pref.getString(App.SP_HIGHSCORE_NAME, "");
     }
 
     private void showHighscore() {
@@ -107,8 +107,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private int getCoins() {
-        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
-        return pref.getInt(App.SPcoins, 0);
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
+        return pref.getInt(App.SP_COINS, 0);
     }
 
     private void showCoinsTextView() {

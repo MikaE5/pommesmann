@@ -85,22 +85,22 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
     }
 
     private int getHighscore() {
-        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
-        return pref.getInt(App.SPhighscore, 0);
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
+        return pref.getInt(App.SP_HIGHSCORE, 0);
     }
 
     private void setHighscore(int newHighscore) {
-        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(App.SPhighscore, newHighscore);
+        editor.putInt(App.SP_HIGHSCORE, newHighscore);
         editor.apply();
     }
 
 
     private void setHighscoreName(String name) {
-        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString(App.SPhighscorename, name);
+        editor.putString(App.SP_HIGHSCORE_NAME, name);
         editor.apply();
     }
 
@@ -120,16 +120,16 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
     }
 
     private void setCoins(int points) {
-        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
-        int temp = pref.getInt(App.SPcoins, 0);
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
+        int temp = pref.getInt(App.SP_COINS, 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(App.SPcoins, temp + points);
+        editor.putInt(App.SP_COINS, temp + points);
         editor.apply();
     }
 
     private int getCoins() {
-        SharedPreferences pref = getSharedPreferences(App.SPgame, 0);
-        return pref.getInt(App.SPcoins, 0);
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
+        return pref.getInt(App.SP_COINS, 0);
     }
 
     private void showCoinsTextView() {
