@@ -3,13 +3,13 @@
     package="de.androidnewcomer.pommesmann">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-        android:name=".App">
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         <activity
             android:name=".Activities.MainActivity"
             android:noHistory="false"
@@ -22,12 +22,16 @@
         </activity>
         <activity
             android:name=".Activities.GameActivity"
-            android:screenOrientation="portrait"
-            android:noHistory="true"></activity>
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.GameoverActivity"
-            android:screenOrientation="portrait"
-            android:noHistory="true"></activity>
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.ShopActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

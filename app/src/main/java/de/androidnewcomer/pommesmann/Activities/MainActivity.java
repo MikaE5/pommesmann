@@ -20,6 +20,7 @@ import de.androidnewcomer.pommesmann.R;
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button startButton;
+    private Button shopButton;
     private CheckBox soundCheckBox;
     private CheckBox leftHandedCheckBox;
 
@@ -35,6 +36,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         startButton = findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
+        shopButton = findViewById(R.id.shopButton);
+        shopButton.setOnClickListener(this);
         soundCheckBox = findViewById(R.id.soundCheckBox);
         soundCheckBox.setChecked(App.getSound()); // set volume in app accordingly
         soundCheckBox.setOnClickListener(this);
@@ -69,6 +72,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(intent);
                 App.showToast();
             }
+        }
+        if (v.getId() == R.id.shopButton) {
+            Intent intent = new Intent(this, ShopActivity.class);
+            startActivity(intent);
         }
         if (v.getId() == R.id.soundCheckBox) {
             App.setSound(soundCheckBox.isChecked());
