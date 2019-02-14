@@ -2,8 +2,13 @@ package de.androidnewcomer.pommesmann.ShopDatabase;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.androidnewcomer.pommesmann.ShopDatabase.ShopContract.*;
 
 public class ShopDatabaseHelper extends SQLiteOpenHelper {
@@ -43,21 +48,66 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addItem(String name, int level) {
+    public void addOrUpdateItem(String name, int level) {
         SQLiteDatabase db = getWritableDatabase();
 
         db.beginTransaction();
         try {
-            ContentValues values = new ContentValues();
-            values.put(ItemEntry.COLUMN_NAME, name);
-            values.put(ItemEntry.COLUMN_LEVEL, level);
+            // update row if "name" already exists
+            int updatedRows = updateItem(name, level);
 
-            db.insertOrThrow(ItemEntry.TABLE_NAME, null, values);
+            if (updatedRows <= 0) {
+                ContentValues values = new ContentValues();
+                values.put(ItemEntry.COLUMN_NAME, name);
+                values.put(ItemEntry.COLUMN_LEVEL, level);
+
+                db.insertOrThrow(ItemEntry.TABLE_NAME, null, values);
+            }
             db.setTransactionSuccessful();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             db.endTransaction();
         }
+    }
+
+    public int updateItem(String name, int level) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(ItemEntry.COLUMN_NAME, name);
+        values.put(ItemEntry.COLUMN_LEVEL, level);
+
+        String whereClause = ItemEntry.COLUMN_NAME + " = ?";
+        String[] whereArgs = new String[]{String.valueOf(name)};
+
+        return db.update(ItemEntry.TABLE_NAME, values, whereClause, whereArgs);
+    }
+
+    public List<Item> getAllItems() {
+        List<Item> items = new ArrayList<>();
+
+        //select all query
+        String selectQuery = "SELECT " + ItemEntry.COLUMN_NAME + ", " + ItemEntry.COLUMN_LEVEL +
+            " FROM " + ItemEntry.TABLE_NAME;
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through rows and adding to items
+        if (cursor.moveToFirst()) {
+            do {
+                Item item = new Item();
+                item.setName(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_NAME)));
+                item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
+
+                items.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return items;
     }
 }
