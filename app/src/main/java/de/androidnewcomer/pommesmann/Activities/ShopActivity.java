@@ -14,8 +14,7 @@ import de.androidnewcomer.pommesmann.R;
 import de.androidnewcomer.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
 public class ShopActivity extends Activity implements View.OnClickListener {
-
-    ShopDatabaseHelper dbHelper;
+    
     private final String HEALTH_POWERUP = "HEALTH_POWERUP";
     private Button buyButton;
 
@@ -26,8 +25,6 @@ public class ShopActivity extends Activity implements View.OnClickListener {
 
         buyButton = findViewById(R.id.buyButton);
         buyButton.setOnClickListener(this);
-
-        dbHelper = ShopDatabaseHelper.getInstance(this);
     }
 
     @Override
@@ -41,13 +38,11 @@ public class ShopActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ShopDatabaseHelper.deleteDatabase(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buyButton) {
-            dbHelper.addOrUpdateItem(HEALTH_POWERUP, 1);
             TextView testTextView = findViewById(R.id.testTextView);
             testTextView.setText(HEALTH_POWERUP + " level: " + Integer.toString(1));
         }
