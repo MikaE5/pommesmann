@@ -15,9 +15,8 @@ import de.androidnewcomer.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
 public class ShopActivity extends Activity implements View.OnClickListener {
 
-    ShopDatabaseHelper dbHelper;
-    private final String HEALTH_POWERUP = "HEALTH_POWERUP";
     private Button buyButton;
+    private ShopDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +27,7 @@ public class ShopActivity extends Activity implements View.OnClickListener {
         buyButton.setOnClickListener(this);
 
         dbHelper = ShopDatabaseHelper.getInstance(this);
+
     }
 
     @Override
@@ -41,15 +41,12 @@ public class ShopActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ShopDatabaseHelper.deleteDatabase(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buyButton) {
-            dbHelper.addOrUpdateItem(HEALTH_POWERUP, 1);
-            TextView testTextView = findViewById(R.id.testTextView);
-            testTextView.setText(HEALTH_POWERUP + " level: " + Integer.toString(1));
+
         }
     }
 
@@ -61,12 +58,11 @@ public class ShopActivity extends Activity implements View.OnClickListener {
 
     private void showCoinsTextView() {
         int temp = getCoins();
+        TextView coinsTextView = findViewById(R.id.coinsTextView);
 
-        if (temp >= 0) {
-            TextView coinsTextView = findViewById(R.id.coinsTextView);
-            coinsTextView.setText(Integer.toString(temp) + "coins");
-            coinsTextView.setVisibility(View.VISIBLE);
-            App.startSlowFadeinAnim(coinsTextView, 3000);
-        }
+        if (temp < 0) temp = 0;
+
+        coinsTextView.setText(Integer.toString(temp) + "coins");
+        App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 }
