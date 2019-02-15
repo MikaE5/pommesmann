@@ -84,6 +84,29 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         return db.update(ItemEntry.TABLE_NAME, values, whereClause, whereArgs);
     }
 
+    public Item getItem(String name) {
+        Item item = new Item();
+
+        // select all from table should also work ?!
+        String selectQuery = "SELECT " + ItemEntry.COLUMN_NAME + ", " + ItemEntry.COLUMN_LEVEL +
+                " FROM " + ItemEntry.TABLE_NAME + " WHERE " + ItemEntry.COLUMN_NAME + "=?";
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(selectQuery, new String[]{name});
+
+            cursor.moveToFirst();
+            item.setName(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_NAME)));
+            item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return item;
+    }
+
     public List<Item> getAllItems() {
         List<Item> items = new ArrayList<>();
 
