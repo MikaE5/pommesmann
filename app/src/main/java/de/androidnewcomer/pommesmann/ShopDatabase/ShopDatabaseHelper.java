@@ -94,20 +94,32 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through rows and adding to items
-        if (cursor.moveToFirst()) {
-            do {
-                Item item = new Item();
-                item.setName(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_NAME)));
-                item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
+        db.beginTransaction();
 
-                items.add(item);
-            } while (cursor.moveToNext());
+        try {
+            // looping through rows and adding to items
+            if (cursor.moveToFirst()) {
+                do {
+                    Item item = new Item();
+                    item.setName(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_NAME)));
+                    item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
+
+                    items.add(item);
+                } while (cursor.moveToNext());
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+            cursor.close();
+            db.close();
         }
 
-        cursor.close();
-        db.close();
-
         return items;
+    }
+
+    public static void deleteDatabase(Context context) {
+        context.getApplicationContext().deleteDatabase(DATABASE_NAME);
     }
 }

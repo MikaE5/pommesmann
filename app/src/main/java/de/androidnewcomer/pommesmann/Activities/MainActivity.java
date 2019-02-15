@@ -121,7 +121,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void showCoinsTextView() {
         int temp = getCoins();
 
-        if (temp > 0) {
+        if (temp >= 0) {
             TextView coinsTextView = findViewById(R.id.coinsTextView);
             coinsTextView.setText(Integer.toString(temp) + "coins");
             coinsTextView.setVisibility(View.VISIBLE);

@@ -15,9 +15,11 @@ public class Item {
     public void setName(String name) {
         this.name = name;
     }
+    public String getName() { return name; }
 
     public void setLevel(int level) {
         this.level = level;
     }
+    public int getLevel() { return level; }
 
 }
