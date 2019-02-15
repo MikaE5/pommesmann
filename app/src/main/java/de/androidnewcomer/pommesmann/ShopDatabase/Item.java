@@ -5,7 +5,9 @@ public class Item {
     private int level;
 
 
-    public Item () {};
+    public Item () {
+        this.name = null;
+    }
 
     public Item(String name, int level) {
         this.name = name;

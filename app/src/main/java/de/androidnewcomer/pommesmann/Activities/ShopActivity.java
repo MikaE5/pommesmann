@@ -8,12 +8,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import de.androidnewcomer.pommesmann.App;
 import de.androidnewcomer.pommesmann.R;
-import de.androidnewcomer.pommesmann.ShopDatabase.Item;
 import de.androidnewcomer.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
 public class ShopActivity extends Activity implements View.OnClickListener {
