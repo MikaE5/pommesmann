@@ -9,9 +9,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import java.util.List;
+
 import de.androidnewcomer.pommesmann.App;
 import de.androidnewcomer.pommesmann.R;
+import de.androidnewcomer.pommesmann.ShopDatabase.Item;
 import de.androidnewcomer.pommesmann.ShopDatabase.ShopDatabaseHelper;
+import de.androidnewcomer.pommesmann.ShopDatabase.ShopHelper;
 
 public class ShopActivity extends Activity implements View.OnClickListener {
 
@@ -27,7 +31,7 @@ public class ShopActivity extends Activity implements View.OnClickListener {
         buyButton.setOnClickListener(this);
 
         dbHelper = ShopDatabaseHelper.getInstance(this);
-
+        dbHelper.initItems();
     }
 
     @Override
@@ -36,6 +40,7 @@ public class ShopActivity extends Activity implements View.OnClickListener {
         LinearLayout mainLayout = findViewById(R.id.mainLayout);
         App.startFadeinAnim(mainLayout);
         showCoinsTextView();
+        showItem();
     }
 
     @Override
@@ -64,5 +69,16 @@ public class ShopActivity extends Activity implements View.OnClickListener {
 
         coinsTextView.setText(Integer.toString(temp) + "coins");
         App.startSlowFadeinAnim(coinsTextView, 3000);
+    }
+
+    private void showItem() {
+        TextView nameTextView = findViewById(R.id.nameTextView);
+        TextView levelTextView = findViewById(R.id.levelTextView);
+        TextView priceTextView = findViewById(R.id.priceTextView);
+
+        Item item = dbHelper.getItemByName(ShopHelper.ITEMS.get(0).getName());
+        nameTextView.setText(item.getName());
+        levelTextView.setText(Integer.toString(item.getLevel()));
+        priceTextView.setText(Integer.toString(item.getPrice()));
     }
 }

@@ -30,4 +30,7 @@ public class Item {
         this.level = level;
     }
     public int getLevel() { return level; }
+
+    public void setPrice(int price) { this.price = price; }
+    public int getPrice() { return price; }
 }
