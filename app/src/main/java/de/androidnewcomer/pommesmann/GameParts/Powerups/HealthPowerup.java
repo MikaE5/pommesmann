@@ -1,4 +1,4 @@
-package de.androidnewcomer.pommesmann.GameParts;
+package de.androidnewcomer.pommesmann.GameParts.Powerups;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,13 +6,13 @@ import android.graphics.Paint;
 
 import de.androidnewcomer.pommesmann.Vec;
 
-public class Powerup {
+public class HealthPowerup {
 
     private Vec pos;
     private float len;
     private int duration;
 
-    public Powerup(float width, float height, float length, int dur) {
+    public HealthPowerup(float width, float height, float length, int dur) {
         float tempX = (float) Math.random() * width;
         float tempY = (float) Math.random() * height;
         this.pos = new Vec(tempX, tempY);

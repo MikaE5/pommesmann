@@ -7,9 +7,7 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 
 import de.androidnewcomer.pommesmann.App;
-import de.androidnewcomer.pommesmann.GameParts.Box;
-import de.androidnewcomer.pommesmann.GameParts.Laser;
-import de.androidnewcomer.pommesmann.GameParts.Player;
+import de.androidnewcomer.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidnewcomer.pommesmann.R;
 import de.androidnewcomer.pommesmann.Vec;
 
@@ -26,8 +24,8 @@ public class GameEngine {
     private final float animSpeed = 2;
     private final int maxBoxes = 5;
     private float maxVelBox;
-    private ArrayList<Powerup> powerups;
-    private ArrayList<Powerup> removablePowerups;
+    private ArrayList<HealthPowerup> powerups;
+    private ArrayList<HealthPowerup> removablePowerups;
     private final float powerupBonus = 100;
     private float powerupDuration = 450;
     private float healthLoss;
@@ -143,7 +141,7 @@ public class GameEngine {
     }
 
     private void updatePowerups() {
-        for (Powerup powerup : powerups) {
+        for (HealthPowerup powerup : powerups) {
             powerup.update();
             if (powerup.isRemovable()) {
                 removablePowerups.add(powerup);
@@ -181,7 +179,7 @@ public class GameEngine {
     }
 
     private void showPowerups(Canvas canvas) {
-        for (Powerup powerup : powerups) {
+        for (HealthPowerup powerup : powerups) {
             powerup.show(canvas);
         }
     }
@@ -253,7 +251,7 @@ public class GameEngine {
         }
     }
 
-    private void playerHitsPowerup(Powerup powerup) {
+    private void playerHitsPowerup(HealthPowerup powerup) {
         Vec ppos = player.getPos();
         float pr = player.getR();
         Vec pupos = powerup.getPos();
@@ -276,7 +274,7 @@ public class GameEngine {
         for (Box box : boxes) {
             playerHitsBox(box);
         }
-        for (Powerup powerup : powerups) {
+        for (HealthPowerup powerup : powerups) {
             playerHitsPowerup(powerup);
         }
         lasers.removeAll(removableLasers);
@@ -299,7 +297,7 @@ public class GameEngine {
             nextRound();
             newBoxes(width, height);
             if (Math.random() < 0.5) {
-                powerups.add(new Powerup(width, height, width / 12, (int) powerupDuration));
+                powerups.add(new HealthPowerup(width, height, width / 12, (int) powerupDuration));
             }
         }
     }
