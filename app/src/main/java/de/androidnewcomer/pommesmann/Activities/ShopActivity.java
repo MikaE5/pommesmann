@@ -47,6 +47,7 @@ public class ShopActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+
         if (v.getId() == R.id.buyButton) {
 
         }
