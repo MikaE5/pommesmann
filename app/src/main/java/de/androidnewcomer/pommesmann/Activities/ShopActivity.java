@@ -14,8 +14,7 @@ import de.androidnewcomer.pommesmann.R;
 import de.androidnewcomer.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
 public class ShopActivity extends Activity implements View.OnClickListener {
-    
-    private final String HEALTH_POWERUP = "HEALTH_POWERUP";
+
     private Button buyButton;
 
     @Override
@@ -43,8 +42,6 @@ public class ShopActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buyButton) {
-            TextView testTextView = findViewById(R.id.testTextView);
-            testTextView.setText(HEALTH_POWERUP + " level: " + Integer.toString(1));
         }
     }
 
