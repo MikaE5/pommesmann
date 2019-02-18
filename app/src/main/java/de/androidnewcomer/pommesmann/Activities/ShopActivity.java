@@ -31,7 +31,6 @@ public class ShopActivity extends Activity implements View.OnClickListener {
         buyButton.setOnClickListener(this);
 
         dbHelper = ShopDatabaseHelper.getInstance(this);
-        dbHelper.initItems();
     }
 
     @Override

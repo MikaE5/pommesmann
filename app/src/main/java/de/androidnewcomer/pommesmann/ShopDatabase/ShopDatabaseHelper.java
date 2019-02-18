@@ -17,12 +17,13 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
     private static ShopDatabaseHelper sInstance;
 
     public static final String DATABASE_NAME = "shop.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
+        // VERSION 2: added COLUMN_PRICE
 
     private ShopDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         // put all available items in table
-        //initItems();
+        initItems();
     }
 
     public static synchronized ShopDatabaseHelper getInstance(Context context) {
@@ -108,7 +109,10 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         Item item = new Item();
 
         // select all from table should also work ?!
-        String selectQuery = "SELECT " + ItemEntry.COLUMN_NAME + ", " + ItemEntry.COLUMN_LEVEL +
+        String selectQuery = "SELECT " +
+                ItemEntry.COLUMN_NAME + ", " +
+                ItemEntry.COLUMN_LEVEL + ", " +
+                ItemEntry.COLUMN_PRICE +
                 " FROM " + ItemEntry.TABLE_NAME + " WHERE " + ItemEntry.COLUMN_NAME + "=?";
 
         SQLiteDatabase db = getReadableDatabase();
@@ -116,18 +120,17 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         try {
             cursor = db.rawQuery(selectQuery, new String[]{name});
 
-            //cursor.moveToFirst();
             try {
-                item.setName(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_NAME)));
-                item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
-                item.setPrice(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_PRICE)));
+                if (cursor.moveToFirst()) {
+                    item.setName(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_NAME)));
+                    item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
+                    item.setPrice(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_PRICE)));
+                }
             } catch (CursorIndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
+            cursor.close();
         }
         return item;
     }
@@ -137,7 +140,9 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
 
         //select all query
         String selectQuery = "SELECT " +
-                ItemEntry.COLUMN_NAME + ", " + ItemEntry.COLUMN_LEVEL + ", " + ItemEntry.COLUMN_PRICE +
+                ItemEntry.COLUMN_NAME + ", " +
+                ItemEntry.COLUMN_LEVEL + ", " +
+                ItemEntry.COLUMN_PRICE +
             " FROM " + ItemEntry.TABLE_NAME;
 
         SQLiteDatabase db = getReadableDatabase();
