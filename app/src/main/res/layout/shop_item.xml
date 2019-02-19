@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/itemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/itemImage"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/itemNameTextView"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="5dp"
+        android:layout_toEndOf="@+id/itemImage"
+        android:layout_toRightOf="@+id/itemImage"
+        android:text="TextView"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/itemDescriptionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itemNameTextView"
+        android:layout_marginRight="30dp"
+        android:layout_toStartOf="@+id/itemLevelTextView"
+        android:layout_toLeftOf="@+id/itemLevelTextView"
+        android:layout_toEndOf="@+id/itemImage"
+        android:layout_toRightOf="@+id/itemImage"
+        android:text="TextView"
+        android:textSize="8sp" />
+
+    <TextView
+        android:id="@+id/itemLevelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/itemNameTextView"
+        android:layout_toRightOf="@+id/itemNameTextView"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/buyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/itemLevelTextView"
+        android:layout_toEndOf="@+id/itemNameTextView"
+        android:layout_toRightOf="@+id/itemNameTextView" />
+
+    <CheckBox
+        android:id="@+id/itemCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/itemCheckBox"
+        android:visibility="gone" />
+</RelativeLayout>

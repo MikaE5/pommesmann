@@ -20,18 +20,39 @@ import de.androidnewcomer.pommesmann.ShopDatabase.ShopHelper;
 
 public class ShopActivity extends Activity implements View.OnClickListener {
 
-    private Button buyButton;
     private ShopDatabaseHelper dbHelper;
+    private LinearLayout itemContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shop_activity);
 
-        buyButton = findViewById(R.id.buyButton);
+        dbHelper = ShopDatabaseHelper.getInstance(this);
+
+        itemContainer = findViewById(R.id.itemContainer);
+
+        View healthPowerupView = getLayoutInflater()
+                .inflate(R.layout.shop_item, itemContainer, false);
+        setItemLayout(healthPowerupView, ShopHelper.HEALTH_POWERUP,
+                ShopHelper.HEALTH_POWERUP_DESCRIPTION);
+    }
+
+    private void setItemLayout(View newItem, String name, String description) {
+        TextView itemNameTextView = newItem.findViewById(R.id.itemNameTextView);
+        TextView itemDescriptionTextView = newItem.findViewById(R.id.itemDescriptionTextView);
+        TextView itemLevelTextView = newItem.findViewById(R.id.itemLevelTextView);
+        Button buyButton = newItem.findViewById(R.id.buyButton);
+
+        Item item = dbHelper.getItemByName(name);
+
+        itemNameTextView.setText(name);
+        itemDescriptionTextView.setText(description);
+        itemLevelTextView.setText("Level " + Integer.toString(item.getLevel()+1));
+        buyButton.setText(Integer.toString(item.getPrice()) + "coins");
         buyButton.setOnClickListener(this);
 
-        dbHelper = ShopDatabaseHelper.getInstance(this);
+        itemContainer.addView(newItem);
     }
 
     @Override
@@ -40,7 +61,6 @@ public class ShopActivity extends Activity implements View.OnClickListener {
         LinearLayout mainLayout = findViewById(R.id.mainLayout);
         App.startFadeinAnim(mainLayout);
         showCoinsTextView();
-        showItem();
     }
 
     @Override
@@ -51,7 +71,7 @@ public class ShopActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.buyButton) {
-            buyItem();
+            //buyItem();
         }
     }
 
@@ -78,6 +98,7 @@ public class ShopActivity extends Activity implements View.OnClickListener {
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 
+    /*
     private void showItem() {
         TextView nameTextView = findViewById(R.id.nameTextView);
         TextView levelTextView = findViewById(R.id.levelTextView);
@@ -113,4 +134,5 @@ public class ShopActivity extends Activity implements View.OnClickListener {
             Toast.makeText(this, text, duration).show();
         }
     }
+    */
 }
