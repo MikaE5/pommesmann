@@ -18,7 +18,7 @@ import de.androidnewcomer.pommesmann.ShopDatabase.Item;
 import de.androidnewcomer.pommesmann.ShopDatabase.ShopDatabaseHelper;
 import de.androidnewcomer.pommesmann.ShopDatabase.ShopHelper;
 
-public class ShopActivity extends Activity implements View.OnClickListener {
+public class ShopActivity extends Activity {
 
     private ShopDatabaseHelper dbHelper;
     private LinearLayout itemContainer;
@@ -34,26 +34,18 @@ public class ShopActivity extends Activity implements View.OnClickListener {
 
         View healthPowerupView = getLayoutInflater()
                 .inflate(R.layout.shop_item, itemContainer, false);
-        setItemLayout(healthPowerupView, ShopHelper.HEALTH_POWERUP,
+        inflateItem(healthPowerupView, ShopHelper.HEALTH_POWERUP,
                 ShopHelper.HEALTH_POWERUP_DESCRIPTION);
+
+        View powerupChanceView = getLayoutInflater()
+                .inflate(R.layout.shop_item, itemContainer, false);
+        inflateItem(powerupChanceView, ShopHelper.POWERUP_CHANCE,
+                ShopHelper.POWERUP_CHANCE_DESCRIPTION);
     }
 
-    private void setItemLayout(View newItem, String name, String description) {
-        TextView itemNameTextView = newItem.findViewById(R.id.itemNameTextView);
-        TextView itemDescriptionTextView = newItem.findViewById(R.id.itemDescriptionTextView);
-        TextView itemLevelTextView = newItem.findViewById(R.id.itemLevelTextView);
-        Button buyButton = newItem.findViewById(R.id.buyButton);
 
-        Item item = dbHelper.getItemByName(name);
 
-        itemNameTextView.setText(name);
-        itemDescriptionTextView.setText(description);
-        itemLevelTextView.setText("Level " + Integer.toString(item.getLevel()+1));
-        buyButton.setText(Integer.toString(item.getPrice()) + "coins");
-        buyButton.setOnClickListener(this);
 
-        itemContainer.addView(newItem);
-    }
 
     @Override
     protected void onResume() {
@@ -66,13 +58,6 @@ public class ShopActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.buyButton) {
-            //buyItem();
-        }
     }
 
 
@@ -98,20 +83,37 @@ public class ShopActivity extends Activity implements View.OnClickListener {
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 
-    /*
-    private void showItem() {
-        TextView nameTextView = findViewById(R.id.nameTextView);
-        TextView levelTextView = findViewById(R.id.levelTextView);
-        TextView priceTextView = findViewById(R.id.priceTextView);
-
-        Item item = dbHelper.getItemByName(ShopHelper.ITEMS.get(0).getName());
-        nameTextView.setText(item.getName());
-        levelTextView.setText(Integer.toString(item.getLevel()));
-        priceTextView.setText(Integer.toString(item.getPrice()));
+    private void inflateItem(View newItem, String name, String description) {
+        setItemLayout(newItem, name, description);
+        itemContainer.addView(newItem);
     }
 
-    private void buyItem() {
-        Item item = dbHelper.getItemByName(ShopHelper.ITEMS.get(0).getName());
+    private void setItemLayout(View newItem, String name, String description) {
+        TextView itemNameTextView = newItem.findViewById(R.id.itemNameTextView);
+        TextView itemDescriptionTextView = newItem.findViewById(R.id.itemDescriptionTextView);
+        TextView itemLevelTextView = newItem.findViewById(R.id.itemLevelTextView);
+        Button buyButton = newItem.findViewById(R.id.buyButton);
+
+        Item item = dbHelper.getItemByName(name);
+        // dummy variables for onClick-method
+        final View copyView = newItem;
+        final Item copyItem = item;
+        final String copyName = name;
+        final String copyDescription = description;
+
+        itemNameTextView.setText(name);
+        itemDescriptionTextView.setText(description);
+        itemLevelTextView.setText("Level " + Integer.toString(item.getLevel()+1));
+        buyButton.setText(Integer.toString(item.getPrice()) + "coins");
+        buyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buyItem(copyView, copyItem, copyName, copyDescription);
+            }
+        });
+    }
+
+    public void buyItem(View newItem, Item item, String name, String description) {
         int coins = getCoins();
         int price = item.getPrice();
 
@@ -119,11 +121,11 @@ public class ShopActivity extends Activity implements View.OnClickListener {
             setCoins(coins - price);
 
             item.setLevel(item.getLevel()+1);
-            item.setPrice(item.getPrice()*2);
+            item.setPrice(item.getPrice()+50);
             dbHelper.addOrUpdateItem(item);
 
-            showItem();
             showCoinsTextView();
+            setItemLayout(newItem, name, description);
 
             CharSequence text = "You bought " + item.getName() + " Level " + item.getLevel() + "!";
             int duration = Toast.LENGTH_SHORT;
@@ -134,5 +136,4 @@ public class ShopActivity extends Activity implements View.OnClickListener {
             Toast.makeText(this, text, duration).show();
         }
     }
-    */
 }

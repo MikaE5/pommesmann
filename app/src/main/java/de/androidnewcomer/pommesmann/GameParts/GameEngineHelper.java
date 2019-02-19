@@ -11,7 +11,7 @@ public class GameEngineHelper {
 
     private ShopDatabaseHelper dbHelper;
 
-    double powerupChance;
+    double chanceOfPowerup;
 
     int healthPowerupLevel;
     int healthPowerupDuration;
@@ -20,7 +20,9 @@ public class GameEngineHelper {
     GameEngineHelper(Context context) {
         dbHelper = ShopDatabaseHelper.getInstance(context);
 
-        powerupChance = 0.5;
+        Item powerupChance = dbHelper.getItemByName(ShopHelper.POWERUP_CHANCE);
+        chanceOfPowerup = 0.40 + 10 * powerupChance.getLevel();
+        if (chanceOfPowerup > 1) chanceOfPowerup = 1;
 
         Item healthPowerup = dbHelper.getItemByName(ShopHelper.HEALTH_POWERUP);
         healthPowerupLevel = healthPowerup.getLevel();

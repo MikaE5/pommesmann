@@ -287,7 +287,7 @@ public class GameEngine {
         if (boxes.size() <= 0) {
             nextRound();
             newBoxes(width, height);
-            if (Math.random() < engineHelper.powerupChance) {
+            if (Math.random() < engineHelper.chanceOfPowerup) {
                 if (engineHelper.healthPowerupLevel > 0) {
                     powerups.add(new HealthPowerup(width, height, width / 12, engineHelper.healthPowerupDuration));
                 }
