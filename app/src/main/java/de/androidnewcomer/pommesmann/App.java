@@ -60,11 +60,6 @@ public class App extends Application {
         Toast.makeText(context, text, duration).show();
     }
 
-    public static void startFadeoutAnim(View v) {
-        Animation fadeoutAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fadeout);
-        v.startAnimation(fadeoutAnim);
-    }
-
     public static void startFadeinAnim(View v) {
         Animation fadeinAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
         v.startAnimation(fadeinAnim);

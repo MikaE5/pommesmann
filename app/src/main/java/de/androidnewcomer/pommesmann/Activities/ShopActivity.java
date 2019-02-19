@@ -10,8 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import java.util.List;
-
 import de.androidnewcomer.pommesmann.App;
 import de.androidnewcomer.pommesmann.R;
 import de.androidnewcomer.pommesmann.ShopDatabase.Item;
@@ -44,9 +42,6 @@ public class ShopActivity extends Activity {
     }
 
 
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -75,10 +70,9 @@ public class ShopActivity extends Activity {
 
     private void showCoinsTextView() {
         int temp = getCoins();
-        TextView coinsTextView = findViewById(R.id.coinsTextView);
-
         if (temp < 0) temp = 0;
 
+        TextView coinsTextView = findViewById(R.id.coinsTextView);
         coinsTextView.setText(Integer.toString(temp) + "coins");
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }

@@ -61,8 +61,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.startButton) {
-            View fade = findViewById(R.id.mainLayout);
-            App.startFadeoutAnim(fade);
             Intent intent = new Intent(this, GameActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 startActivity(intent,
@@ -120,13 +118,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void showCoinsTextView() {
         int temp = getCoins();
+        if (temp < 0) temp = 0;
 
-        if (temp >= 0) {
-            TextView coinsTextView = findViewById(R.id.coinsTextView);
-            coinsTextView.setText(Integer.toString(temp) + "coins");
-            coinsTextView.setVisibility(View.VISIBLE);
-            App.startSlowFadeinAnim(coinsTextView, 3000);
-        }
+        TextView coinsTextView = findViewById(R.id.coinsTextView);
+        coinsTextView.setText(Integer.toString(temp) + "coins");
+        App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 
 }

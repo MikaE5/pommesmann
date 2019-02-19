@@ -64,14 +64,10 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.mainMenuButton) {
-            View fade = findViewById(R.id.mainLayout);
-            App.startFadeoutAnim(fade);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
         if (v.getId() == R.id.restartButton) {
-            View fade = findViewById(R.id.mainLayout);
-            App.startFadeoutAnim(fade);
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
             App.showToast();
