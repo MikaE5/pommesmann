@@ -1,8 +1,10 @@
 package de.androidnewcomer.pommesmann.GameParts.Powerups;
 
+import android.graphics.Canvas;
+
 import de.androidnewcomer.pommesmann.Vec;
 
-public class Powerup {
+public abstract class Powerup {
 
     Vec pos;
     float len;
@@ -28,6 +30,8 @@ public class Powerup {
     public void update() {
         duration--;
     }
+
+    public abstract void show(Canvas canvas);
 
     public boolean isRemovable() {
         return duration < 0;

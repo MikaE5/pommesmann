@@ -8,10 +8,14 @@ import java.util.ArrayList;
 
 import de.androidnewcomer.pommesmann.App;
 import de.androidnewcomer.pommesmann.GameParts.Powerups.HealthPowerup;
+import de.androidnewcomer.pommesmann.GameParts.Powerups.Powerup;
 import de.androidnewcomer.pommesmann.R;
 import de.androidnewcomer.pommesmann.Vec;
 
 public class GameEngine {
+
+    private GameEngineHelper engineHelper;
+
     private boolean isRunning;
     private boolean started;
     public Player player;
@@ -24,10 +28,8 @@ public class GameEngine {
     private final float animSpeed = 2;
     private final int maxBoxes = 5;
     private float maxVelBox;
-    private ArrayList<HealthPowerup> powerups;
-    private ArrayList<HealthPowerup> removablePowerups;
-    private final float powerupBonus = 100;
-    private float powerupDuration = 450;
+    private ArrayList<Powerup> powerups;
+    private ArrayList<Powerup> removablePowerups;
     private float healthLoss;
     private float hitDamage;
     private float hitBonus;
@@ -44,6 +46,8 @@ public class GameEngine {
 
 
     public GameEngine(Context context) {
+        engineHelper = new GameEngineHelper(context);
+
         isRunning = false;
         started = false;
         player = new Player();
@@ -71,30 +75,15 @@ public class GameEngine {
         maxVelBox = player.getMaxVel();
     }
 
-    public void setIsRunning(boolean running) {
-        isRunning = running;
-    }
-
-    public boolean getIsRunning() {
-        return isRunning;
-    }
 
     public void setStarted(boolean start) {
         started = start;
     }
 
-
     public int getPoints() {
         return points;
     }
 
-    public int getMaxLasers() {
-        return maxLasers;
-    }
-
-    public int getCurrentLasers() {
-        return lasers.size();
-    }
 
 
     public void update(float width, float height) {
@@ -141,7 +130,7 @@ public class GameEngine {
     }
 
     private void updatePowerups() {
-        for (HealthPowerup powerup : powerups) {
+        for (Powerup powerup : powerups) {
             powerup.update();
             if (powerup.isRemovable()) {
                 removablePowerups.add(powerup);
@@ -179,7 +168,7 @@ public class GameEngine {
     }
 
     private void showPowerups(Canvas canvas) {
-        for (HealthPowerup powerup : powerups) {
+        for (Powerup powerup : powerups) {
             powerup.show(canvas);
         }
     }
@@ -251,14 +240,16 @@ public class GameEngine {
         }
     }
 
-    private void playerHitsPowerup(HealthPowerup powerup) {
+    private void playerHitsPowerup(Powerup powerup) {
         Vec ppos = player.getPos();
         float pr = player.getR();
         Vec pupos = powerup.getPos();
         float pulen = powerup.getLen();
 
         if (circleInSquare(ppos.x, ppos.y, pr, pupos.x, pupos.y, pulen)) {
-            player.changeHealth(powerupBonus);
+            if (powerup instanceof HealthPowerup) {
+                player.changeHealth(engineHelper.healthPowerupHealing);
+            }
             removablePowerups.add(powerup);
             soundCallback.powerupSound();
         }
@@ -274,7 +265,7 @@ public class GameEngine {
         for (Box box : boxes) {
             playerHitsBox(box);
         }
-        for (HealthPowerup powerup : powerups) {
+        for (Powerup powerup : powerups) {
             playerHitsPowerup(powerup);
         }
         lasers.removeAll(removableLasers);
@@ -296,8 +287,10 @@ public class GameEngine {
         if (boxes.size() <= 0) {
             nextRound();
             newBoxes(width, height);
-            if (Math.random() < 0.5) {
-                powerups.add(new HealthPowerup(width, height, width / 12, (int) powerupDuration));
+            if (Math.random() < engineHelper.powerupChance) {
+                if (engineHelper.healthPowerupLevel > 0) {
+                    powerups.add(new HealthPowerup(width, height, width / 12, engineHelper.healthPowerupDuration));
+                }
             }
         }
     }
@@ -308,7 +301,6 @@ public class GameEngine {
             maxVelBox += 0.5;
             healthLoss += 0.01f;
             hitDamage += 2;
-            powerupDuration *= 0.9f ;
         }
         player.setHealthLoss(healthLoss);
     }

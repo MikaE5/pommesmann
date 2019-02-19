@@ -6,10 +6,13 @@ import java.util.List;
 
 public class ShopHelper {
 
-    public static final List<Item> ITEMS = Collections.unmodifiableList(
-            Arrays.asList((
-                    new Item("HEALTH_POWERUP", 0, 100)
-            ))
-    );
+    //public static final String POWERUP_CHANCE = "Powerup Percentage";
+    public static final String HEALTH_POWERUP = "Health Powerup";
 
+    public static final List<Item> ITEMS = Collections.unmodifiableList(
+            Arrays.asList(
+                    //new Item(POWERUP_CHANCE, 0, 150),
+                    new Item(HEALTH_POWERUP, 0, 100)
+            )
+    );
 }

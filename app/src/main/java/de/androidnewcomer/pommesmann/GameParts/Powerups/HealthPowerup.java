@@ -12,8 +12,6 @@ public class HealthPowerup extends Powerup {
         super(width, height, length, dur);
     }
 
-
-
     public  void show(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.rgb(255,0,0));
