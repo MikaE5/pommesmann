@@ -61,10 +61,10 @@ public class ShopActivity extends Activity implements View.OnClickListener {
         return pref.getInt(App.SP_COINS, 0);
     }
 
-    private void setCoins(int points) {
+    private void setCoins(int coins) {
         SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(App.SP_COINS, points);
+        editor.putInt(App.SP_COINS, coins);
         editor.apply();
     }
 
@@ -92,16 +92,21 @@ public class ShopActivity extends Activity implements View.OnClickListener {
     private void buyItem() {
         Item item = dbHelper.getItemByName(ShopHelper.ITEMS.get(0).getName());
         int coins = getCoins();
+        int price = item.getPrice();
 
-        if (coins > item.getPrice()) {
-            setCoins(coins - item.getPrice());
+        if (coins >= price) {
+            setCoins(coins - price);
 
             item.setLevel(item.getLevel()+1);
             item.setPrice(item.getPrice()*2);
-
             dbHelper.addOrUpdateItem(item);
+
             showItem();
             showCoinsTextView();
+
+            CharSequence text = "You bought " + item.getName() + " Level " + item.getLevel() + "!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(this, text, duration).show();
         } else {
             CharSequence text = "Not enough Coins!";
             int duration = Toast.LENGTH_SHORT;
