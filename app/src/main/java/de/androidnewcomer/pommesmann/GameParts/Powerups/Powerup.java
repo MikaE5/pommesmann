@@ -10,12 +10,25 @@ public abstract class Powerup {
     float len;
     int duration;
 
+    // square powerups
     public Powerup(float width, float height, float length, int dur) {
         float tempX = (float) Math.random() * width;
         float tempY = (float) Math.random() * height;
         this.pos = new Vec(tempX, tempY);
         this.len = length;
         this.pos.constrain(width - len, height - len);
+        this.duration = dur;
+    }
+
+    // round powerups
+    public Powerup(float width, float height, int dur, float radius) {
+        float tempX = (float) Math.random() * width;
+        float tempY = (float) Math.random() * height;
+        this.pos = new Vec(tempX, tempY);
+        this.len = radius;
+        this.pos.constrain(width - len, height - len);
+        if (this.pos.x <= len) this.pos.x = len;
+        if (this.pos.y <= len) this.pos.y = len;
         this.duration = dur;
     }
 

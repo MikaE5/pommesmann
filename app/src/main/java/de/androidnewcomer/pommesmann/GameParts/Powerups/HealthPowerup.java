@@ -12,6 +12,7 @@ public class HealthPowerup extends Powerup {
         super(width, height, length, dur);
     }
 
+    @Override
     public  void show(Canvas canvas) {
         Paint paint = new Paint();
         paint.setColor(Color.rgb(255,0,0));
@@ -26,13 +27,5 @@ public class HealthPowerup extends Powerup {
         xoff = pos.x + 0.375f * len;
         yoff = pos.y + 0.125f * len;
         canvas.drawRect(xoff, yoff, xoff + 0.25f * len, yoff + 0.75f * len, paint);
-    }
-
-    public void update() {
-        duration--;
-    }
-
-    public boolean isRemovable() {
-        return duration < 0;
     }
 }

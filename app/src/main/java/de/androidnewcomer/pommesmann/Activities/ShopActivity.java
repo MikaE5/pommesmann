@@ -3,6 +3,7 @@ package de.androidnewcomer.pommesmann.Activities;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,15 +30,16 @@ public class ShopActivity extends Activity {
         dbHelper = ShopDatabaseHelper.getInstance(this);
 
         itemContainer = findViewById(R.id.itemContainer);
+        LayoutInflater inflater = getLayoutInflater();
 
-        View healthPowerupView = getLayoutInflater()
+        View healthPowerupView = inflater
                 .inflate(R.layout.shop_item, itemContainer, false);
-        inflateItem(healthPowerupView, ShopHelper.HEALTH_POWERUP,
+        addItemView(healthPowerupView, ShopHelper.HEALTH_POWERUP,
                 ShopHelper.HEALTH_POWERUP_DESCRIPTION);
 
-        View powerupChanceView = getLayoutInflater()
+        View powerupChanceView = inflater
                 .inflate(R.layout.shop_item, itemContainer, false);
-        inflateItem(powerupChanceView, ShopHelper.POWERUP_CHANCE,
+        addItemView(powerupChanceView, ShopHelper.POWERUP_CHANCE,
                 ShopHelper.POWERUP_CHANCE_DESCRIPTION);
     }
 
@@ -77,7 +79,7 @@ public class ShopActivity extends Activity {
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 
-    private void inflateItem(View newItem, String name, String description) {
+    private void addItemView(View newItem, String name, String description) {
         setItemLayout(newItem, name, description);
         itemContainer.addView(newItem);
     }

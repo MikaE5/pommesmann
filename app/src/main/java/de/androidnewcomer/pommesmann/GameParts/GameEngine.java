@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import de.androidnewcomer.pommesmann.App;
 import de.androidnewcomer.pommesmann.GameParts.Powerups.HealthPowerup;
+import de.androidnewcomer.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidnewcomer.pommesmann.GameParts.Powerups.Powerup;
 import de.androidnewcomer.pommesmann.R;
 import de.androidnewcomer.pommesmann.Vec;
