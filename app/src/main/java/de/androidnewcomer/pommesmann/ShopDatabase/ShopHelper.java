@@ -16,7 +16,7 @@ public class ShopHelper {
     public static final List<Item> ITEMS = Collections.unmodifiableList(
             Arrays.asList(
                     new Item(POWERUP_CHANCE, 0, 150),
-                    new Item(HEALTH_POWERUP, 0, 100)
+                    new Item(HEALTH_POWERUP, 0, 10)
             )
     );
 }

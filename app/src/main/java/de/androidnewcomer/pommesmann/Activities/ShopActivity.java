@@ -70,6 +70,11 @@ public class ShopActivity extends Activity {
         editor.apply();
     }
 
+    private boolean enoughCoins(int price) {
+        int coins = getCoins();
+        return coins >= price;
+    }
+
     private void showCoinsTextView() {
         int temp = getCoins();
         if (temp < 0) temp = 0;
@@ -79,57 +84,63 @@ public class ShopActivity extends Activity {
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 
-    private void addItemView(View newItem, String name, String description) {
-        setItemLayout(newItem, name, description);
-        itemContainer.addView(newItem);
+    private void coinsToast() {
+        CharSequence text = "Not enough Coins!";
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(this, text, duration).show();
     }
 
-    private void setItemLayout(View newItem, String name, String description) {
-        TextView itemNameTextView = newItem.findViewById(R.id.itemNameTextView);
-        TextView itemDescriptionTextView = newItem.findViewById(R.id.itemDescriptionTextView);
-        TextView itemLevelTextView = newItem.findViewById(R.id.itemLevelTextView);
-        Button buyButton = newItem.findViewById(R.id.buyButton);
+    private void addItemView(View view, String name, String description) {
+        setItemLayout(view, name, description);
+        setItemBuyButton(view, name, description);
+        itemContainer.addView(view);
+    }
+
+    private void setItemLayout(View view, String name, String description) {
+        TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
+        TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
+        TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
+        Button buyButton = view.findViewById(R.id.buyButton);
 
         Item item = dbHelper.getItemByName(name);
-        // dummy variables for onClick-method
-        final View copyView = newItem;
-        final Item copyItem = item;
-        final String copyName = name;
-        final String copyDescription = description;
 
         itemNameTextView.setText(name);
         itemDescriptionTextView.setText(description);
-        itemLevelTextView.setText("Level " + Integer.toString(item.getLevel()+1));
+        itemLevelTextView.setText("Level " + Integer.toString(item.getLevel() + 1));
         buyButton.setText(Integer.toString(item.getPrice()) + "coins");
+    }
+
+    public void setItemBuyButton(View view, String name, final String description) {
+        Item item = dbHelper.getItemByName(name);
+        Button buyButton = view.findViewById(R.id.buyButton);
+
+        // dummy final variables for onClick inner class
+        final View copyView = view;
+        final Item copyItem = item;
+        final String copyName = name;
+
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buyItem(copyView, copyItem, copyName, copyDescription);
+                if (enoughCoins(copyItem.getPrice())) {
+                    // replace with dialog
+                    buyItem(copyView, copyItem, copyName, description);
+                } else {
+                    coinsToast();
+                }
             }
         });
     }
 
-    public void buyItem(View newItem, Item item, String name, String description) {
+    public void buyItem(View view, Item item, String name, String description) {
         int coins = getCoins();
-        int price = item.getPrice();
+        setCoins(coins - item.getPrice());
 
-        if (coins >= price) {
-            setCoins(coins - price);
+        item.setLevel(item.getLevel() + 1);
+        item.setPrice(item.getPrice() + 50);
+        dbHelper.addOrUpdateItem(item);
 
-            item.setLevel(item.getLevel()+1);
-            item.setPrice(item.getPrice()+50);
-            dbHelper.addOrUpdateItem(item);
-
-            showCoinsTextView();
-            setItemLayout(newItem, name, description);
-
-            CharSequence text = "You bought " + item.getName() + " Level " + item.getLevel() + "!";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(this, text, duration).show();
-        } else {
-            CharSequence text = "Not enough Coins!";
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(this, text, duration).show();
-        }
+        showCoinsTextView();
+        setItemLayout(view, name, description);
     }
 }
