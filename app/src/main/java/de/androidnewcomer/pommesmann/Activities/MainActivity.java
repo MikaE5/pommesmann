@@ -121,7 +121,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (temp < 0) temp = 0;
 
         TextView coinsTextView = findViewById(R.id.coinsTextView);
-        coinsTextView.setText(Integer.toString(temp) + "coins");
+        coinsTextView.setText(Integer.toString(temp) + "Coins");
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 

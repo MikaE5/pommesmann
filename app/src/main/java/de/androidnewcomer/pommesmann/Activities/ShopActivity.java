@@ -36,13 +36,21 @@ public class ShopActivity extends Activity {
 
         View healthPowerupView = inflater
                 .inflate(R.layout.shop_item, itemContainer, false);
-        addItemView(healthPowerupView, ShopHelper.HEALTH_POWERUP,
-                ShopHelper.HEALTH_POWERUP_DESCRIPTION);
+        addItemView(healthPowerupView,
+                    ShopHelper.HEALTH_POWERUP,
+                    ShopHelper.HEALTH_POWERUP_DESCRIPTION);
+
+        View laserPowerupView = inflater
+                .inflate(R.layout.shop_item, itemContainer, false);
+        addItemView(laserPowerupView,
+                    ShopHelper.LASER_POWERUP,
+                    ShopHelper.LASER_POWERUP_DESCRIPTION);
 
         View powerupChanceView = inflater
                 .inflate(R.layout.shop_item, itemContainer, false);
-        addItemView(powerupChanceView, ShopHelper.POWERUP_CHANCE,
-                ShopHelper.POWERUP_CHANCE_DESCRIPTION);
+        addItemView(powerupChanceView,
+                    ShopHelper.POWERUP_CHANCE,
+                    ShopHelper.POWERUP_CHANCE_DESCRIPTION);
     }
 
 
@@ -82,7 +90,7 @@ public class ShopActivity extends Activity {
         if (temp < 0) temp = 0;
 
         TextView coinsTextView = findViewById(R.id.coinsTextView);
-        coinsTextView.setText(Integer.toString(temp) + "'Coins");
+        coinsTextView.setText(Integer.toString(temp) + "Coins");
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 

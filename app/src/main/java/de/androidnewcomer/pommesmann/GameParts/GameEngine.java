@@ -11,6 +11,7 @@ import de.androidnewcomer.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidnewcomer.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidnewcomer.pommesmann.GameParts.Powerups.Powerup;
 import de.androidnewcomer.pommesmann.R;
+import de.androidnewcomer.pommesmann.ShopDatabase.ShopHelper;
 import de.androidnewcomer.pommesmann.Vec;
 
 public class GameEngine {
@@ -22,7 +23,9 @@ public class GameEngine {
     public Player player;
     private ArrayList<Laser> lasers;
     private ArrayList<Laser> removableLasers;
-    private final int maxLasers = 3;
+    private final int MAX_LASERS = 3;
+    private int maxLasers = 3;
+    private int laserDuration = 0;
     private ArrayList<Box> boxes;
     private ArrayList<Box> animationBoxes;
     private ArrayList<Box> removableBoxes;
@@ -139,6 +142,17 @@ public class GameEngine {
         }
         powerups.removeAll(removablePowerups);
         removablePowerups.clear();
+
+        updateLaserDuration();
+    }
+
+    private void updateLaserDuration() {
+        if (maxLasers > MAX_LASERS) {
+            laserDuration--;
+            if (laserDuration < 0) {
+                maxLasers--;
+            }
+        }
     }
 
     public void show(Canvas canvas) {
@@ -247,12 +261,21 @@ public class GameEngine {
         Vec pupos = powerup.getPos();
         float pulen = powerup.getLen();
 
-        if (circleInSquare(ppos.x, ppos.y, pr, pupos.x, pupos.y, pulen)) {
-            if (powerup instanceof HealthPowerup) {
+        if (powerup instanceof HealthPowerup) {
+            if (circleInSquare(ppos.x, ppos.y, pr, pupos.x, pupos.y, pulen)) {
                 player.changeHealth(engineHelper.healthPowerupHealing);
+
+                removablePowerups.add(powerup);
+                soundCallback.powerupSound();
             }
-            removablePowerups.add(powerup);
-            soundCallback.powerupSound();
+        } else if (powerup instanceof LaserPowerup) {
+            if (circleInCircle(ppos.x, ppos.y, pr, pupos.x, pupos.y, pulen)) {
+                maxLasers++;
+                laserDuration = engineHelper.laserPowerupDuration;
+
+                removablePowerups.add(powerup);
+                soundCallback.powerupSound();
+            }
         }
     }
 
@@ -284,14 +307,32 @@ public class GameEngine {
         return (dx * dx + dy * dy < cr * cr);
     }
 
+    private boolean circleInCircle(float ax, float ay, float ar, float bx, float by, float br) {
+        float dx = ax - bx;
+        float dy = ay - by;
+        double dist = Math.sqrt(dx * dx + dy * dy);
+
+        return dist < ar + br;
+    }
+
     private void levelManagement(float width, float height) {
         if (boxes.size() <= 0) {
             nextRound();
             newBoxes(width, height);
             if (Math.random() < engineHelper.chanceOfPowerup) {
-                if (engineHelper.healthPowerupLevel > 0) {
-                    powerups.add(new HealthPowerup(width, height, width / 12, engineHelper.healthPowerupDuration));
-                }
+                newPowerup(width, height);
+            }
+        }
+    }
+
+    private void newPowerup(float width, float height) {
+        if (engineHelper.availablePowerups.size() > 0) {
+            String type = engineHelper.getRandomPowerup();
+
+            if (type == ShopHelper.HEALTH_POWERUP) {
+                powerups.add(new HealthPowerup(width, height, width / 12, engineHelper.healthPowerupDuration));
+            } else if (type == ShopHelper.LASER_POWERUP) {
+                powerups.add(new LaserPowerup(width, height, width / 24, engineHelper.laserPowerupDuration));
             }
         }
     }
