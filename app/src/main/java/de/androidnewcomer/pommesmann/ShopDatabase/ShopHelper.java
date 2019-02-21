@@ -6,6 +6,8 @@ import java.util.List;
 
 public class ShopHelper {
 
+    public static final int PRICE_INCREASE = 25;
+
     public static final String POWERUP_CHANCE = "Powerup Chance";
     public static final String POWERUP_CHANCE_DESCRIPTION = "Increase the percentage of a new " +
             "powerup at the beginning of a round";

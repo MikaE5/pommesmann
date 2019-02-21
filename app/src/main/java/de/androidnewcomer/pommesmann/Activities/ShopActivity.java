@@ -1,6 +1,8 @@
 package de.androidnewcomer.pommesmann.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -80,7 +82,7 @@ public class ShopActivity extends Activity {
         if (temp < 0) temp = 0;
 
         TextView coinsTextView = findViewById(R.id.coinsTextView);
-        coinsTextView.setText(Integer.toString(temp) + "coins");
+        coinsTextView.setText(Integer.toString(temp) + "'Coins");
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 
@@ -88,6 +90,33 @@ public class ShopActivity extends Activity {
         CharSequence text = "Not enough Coins!";
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(this, text, duration).show();
+    }
+
+    private void buyDialog(final View view, final Item item, final String name, final String description) {
+        DialogInterface.OnClickListener positiveListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        buyItem(view, item, name, description);
+                        buyToast(item);
+                    }
+                };
+
+        DialogInterface.OnClickListener negativeListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        CharSequence message = "Buy " + item.getName() + " Level " + (item.getLevel()+1) +
+                " for " + item.getPrice() + "Coins?";
+        builder.setMessage(message);
+        builder.setPositiveButton("BUY", positiveListener);
+        builder.setNegativeButton("CANCEL", negativeListener);
+        builder.show();
     }
 
     private void addItemView(View view, String name, String description) {
@@ -110,21 +139,15 @@ public class ShopActivity extends Activity {
         buyButton.setText(Integer.toString(item.getPrice()) + "coins");
     }
 
-    public void setItemBuyButton(View view, String name, final String description) {
-        Item item = dbHelper.getItemByName(name);
+    public void setItemBuyButton(final View view, final String name, final String description) {
+        final Item item = dbHelper.getItemByName(name);
         Button buyButton = view.findViewById(R.id.buyButton);
-
-        // dummy final variables for onClick inner class
-        final View copyView = view;
-        final Item copyItem = item;
-        final String copyName = name;
 
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (enoughCoins(copyItem.getPrice())) {
-                    // replace with dialog
-                    buyItem(copyView, copyItem, copyName, description);
+                if (enoughCoins(item.getPrice())) {
+                    buyDialog(view, item, name, description);
                 } else {
                     coinsToast();
                 }
@@ -137,10 +160,16 @@ public class ShopActivity extends Activity {
         setCoins(coins - item.getPrice());
 
         item.setLevel(item.getLevel() + 1);
-        item.setPrice(item.getPrice() + 50);
+        item.setPrice(item.getPrice() + ShopHelper.PRICE_INCREASE);
         dbHelper.addOrUpdateItem(item);
 
         showCoinsTextView();
         setItemLayout(view, name, description);
+    }
+
+    public void buyToast(Item item) {
+        CharSequence text = "Bought " + item.getName() + " Level " + item.getLevel() + "!";
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(this, text, duration).show();
     }
 }
