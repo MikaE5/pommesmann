@@ -63,4 +63,14 @@
         android:layout_marginTop="15dp"
         android:text="@string/itemCheckBox"
         android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/hiddenImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/itemImage"
+        android:layout_alignBottom="@+id/itemImage"
+        android:src="@drawable/alpha_imageview"
+        android:visibility="gone" />
+
 </RelativeLayout>

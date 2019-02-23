@@ -19,6 +19,7 @@ public class ShopHelper {
     public static final String LASER_POWERUP = "Laser Powerup";
     public static final String LASER_POWERUP_DESCRIPTION = "Shoot one more Laser! Upgrade" +
             " for a longer visibility of the powerup";
+    public static final int LASER_POWERUP_RESTRICTION = 40;
 
     public static final List<Item> ITEMS = Collections.unmodifiableList(
             Arrays.asList(

@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -128,8 +130,12 @@ public class ShopActivity extends Activity {
     }
 
     private void addItemView(View view, String name, String description) {
-        setItemLayout(view, name, description);
-        setItemBuyButton(view, name, description);
+        if (name == ShopHelper.LASER_POWERUP && getHighscore() < ShopHelper.LASER_POWERUP_RESTRICTION) {
+            restrictedLaserPowerup(view, name, description);
+        } else {
+            setItemLayout(view, name, description);
+            setItemBuyButton(view, name, description);
+        }
         itemContainer.addView(view);
     }
 
@@ -143,11 +149,40 @@ public class ShopActivity extends Activity {
 
         itemNameTextView.setText(name);
         itemDescriptionTextView.setText(description);
-        itemLevelTextView.setText("Level " + Integer.toString(item.getLevel() + 1));
-        buyButton.setText(Integer.toString(item.getPrice()) + "coins");
+        if (item.getLevel() < 5) {
+            itemLevelTextView.setText("Level " + Integer.toString(item.getLevel() + 1));
+            buyButton.setText(Integer.toString(item.getPrice()) + "coins");
+        } else {
+            buyButton.setVisibility(View.GONE);
+            ImageView hiddenImageView = view.findViewById(R.id.hiddenImageView);
+            hiddenImageView.setVisibility(View.VISIBLE);
+            itemLevelTextView.setText("MAX LEVEL");
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemLevelTextView.getLayoutParams();
+            params.addRule(RelativeLayout.CENTER_VERTICAL);
+            itemLevelTextView.setLayoutParams(params);
+        }
     }
 
-    public void setItemBuyButton(final View view, final String name, final String description) {
+    private void restrictedLaserPowerup(View view, String name, String description) {
+        TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
+        TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
+        TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
+        Button buyButton = view.findViewById(R.id.buyButton);
+        ImageView hiddenImageView = view.findViewById(R.id.hiddenImageView);
+
+        itemNameTextView.setText(name);
+        itemDescriptionTextView.setText(description);
+        buyButton.setVisibility(View.GONE);
+        hiddenImageView.setVisibility(View.VISIBLE);
+
+        itemLevelTextView.setText("Highscore of " + ShopHelper.LASER_POWERUP_RESTRICTION + " to unlock");
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemLevelTextView.getLayoutParams();
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        itemLevelTextView.setLayoutParams(params);
+    }
+
+
+    private void setItemBuyButton(final View view, final String name, final String description) {
         final Item item = dbHelper.getItemByName(name);
         Button buyButton = view.findViewById(R.id.buyButton);
 
@@ -173,11 +208,19 @@ public class ShopActivity extends Activity {
 
         showCoinsTextView();
         setItemLayout(view, name, description);
+        if (item.getLevel() >= 5) {
+            setItemBuyButton(view, name, description);
+        }
     }
 
     public void buyToast(Item item) {
         CharSequence text = "Bought " + item.getName() + " Level " + item.getLevel() + "!";
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(this, text, duration).show();
+    }
+
+    private int getHighscore() {
+        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
+        return pref.getInt(App.SP_HIGHSCORE, 0);
     }
 }
