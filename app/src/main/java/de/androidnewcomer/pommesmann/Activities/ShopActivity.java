@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,16 +131,22 @@ public class ShopActivity extends Activity {
     }
 
     private void addItemView(View view, String name, String description) {
-        if (name == ShopHelper.LASER_POWERUP && getHighscore() < ShopHelper.LASER_POWERUP_RESTRICTION) {
-            restrictedLaserPowerup(view, name, description);
-        } else {
-            setItemLayout(view, name, description);
-            setItemBuyButton(view, name, description);
-        }
+        setItemLayout(view, name, description);
         itemContainer.addView(view);
     }
 
     private void setItemLayout(View view, String name, String description) {
+        if (getHighscore() < ShopHelper.getRestrictionByName(name)) {
+            restrictedPowerup(view, name, description);
+        } else if (dbHelper.getItemByName(name).getLevel() > ShopHelper.MAX_LEVEL) {
+            maxLevelPowerup(view, name, description);
+        } else {
+            standardItemLayout(view, name, description);
+            setItemBuyButton(view, name, description);
+        }
+    }
+
+    private void standardItemLayout(View view, String name, String description) {
         TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
         TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
@@ -149,33 +156,42 @@ public class ShopActivity extends Activity {
 
         itemNameTextView.setText(name);
         itemDescriptionTextView.setText(description);
-        if (item.getLevel() < 5) {
-            itemLevelTextView.setText("Level " + Integer.toString(item.getLevel() + 1));
-            buyButton.setText(Integer.toString(item.getPrice()) + "coins");
-        } else {
-            buyButton.setVisibility(View.GONE);
-            ImageView hiddenImageView = view.findViewById(R.id.hiddenImageView);
-            hiddenImageView.setVisibility(View.VISIBLE);
-            itemLevelTextView.setText("MAX LEVEL");
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemLevelTextView.getLayoutParams();
-            params.addRule(RelativeLayout.CENTER_VERTICAL);
-            itemLevelTextView.setLayoutParams(params);
-        }
+        itemLevelTextView.setText("Level " + Integer.toString(item.getLevel() + 1));
+        buyButton.setText(Integer.toString(item.getPrice()) + "coins");
     }
 
-    private void restrictedLaserPowerup(View view, String name, String description) {
+    private void maxLevelPowerup(View view, String name, String description) {
         TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
         TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
         Button buyButton = view.findViewById(R.id.buyButton);
-        ImageView hiddenImageView = view.findViewById(R.id.hiddenImageView);
+
+        itemNameTextView.setText(name);
+        itemDescriptionTextView.setText(description);
+
+        buyButton.setVisibility(View.GONE);
+        view.setBackgroundColor(getResources().getColor(R.color.maxLevelItem));
+        view.setAlpha(0.8f);
+        itemLevelTextView.setText("MAX LEVEL");
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemLevelTextView.getLayoutParams();
+        params.addRule(RelativeLayout.CENTER_VERTICAL);
+        itemLevelTextView.setLayoutParams(params);
+    }
+
+    private void restrictedPowerup(View view, String name, String description) {
+        int restriction = ShopHelper.getRestrictionByName(name);
+        TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
+        TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
+        TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
+        Button buyButton = view.findViewById(R.id.buyButton);
 
         itemNameTextView.setText(name);
         itemDescriptionTextView.setText(description);
         buyButton.setVisibility(View.GONE);
-        hiddenImageView.setVisibility(View.VISIBLE);
+        view.setBackgroundColor(getResources().getColor(R.color.restrictedItem));
+        view.setAlpha(0.8f);
 
-        itemLevelTextView.setText("Highscore of " + ShopHelper.LASER_POWERUP_RESTRICTION + " to unlock");
+        itemLevelTextView.setText("Highscore of " + restriction + " to unlock");
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemLevelTextView.getLayoutParams();
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         itemLevelTextView.setLayoutParams(params);
@@ -208,9 +224,6 @@ public class ShopActivity extends Activity {
 
         showCoinsTextView();
         setItemLayout(view, name, description);
-        if (item.getLevel() >= 5) {
-            setItemBuyButton(view, name, description);
-        }
     }
 
     public void buyToast(Item item) {

@@ -9,5 +9,6 @@
     <color name="boxColor">#40d60c56</color>
     <color name="joystickColor">#0c99d6</color>
     <color name="canvasTextColor">#0c99d6</color>
-
+    <color name="maxLevelItem">#66757500</color>
+    <color name="restrictedItem">#66dc1400</color>
 </resources>

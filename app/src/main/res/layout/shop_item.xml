@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/itemLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp">
 
     <ImageView
         android:id="@+id/itemImage"
@@ -18,10 +19,10 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:layout_toEndOf="@+id/itemImage"
         android:layout_toRightOf="@+id/itemImage"
-        android:text="TextView"
         android:textSize="18sp" />
 
     <TextView
@@ -29,12 +30,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/itemNameTextView"
+        android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:layout_toStartOf="@+id/itemLevelTextView"
         android:layout_toLeftOf="@+id/itemLevelTextView"
         android:layout_toEndOf="@+id/itemImage"
         android:layout_toRightOf="@+id/itemImage"
-        android:text="TextView"
         android:textSize="8sp" />
 
     <TextView
@@ -43,8 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_toEndOf="@+id/itemNameTextView"
-        android:layout_toRightOf="@+id/itemNameTextView"
-        android:text="TextView" />
+        android:layout_toRightOf="@+id/itemNameTextView" />
 
     <Button
         android:id="@+id/buyButton"
@@ -63,14 +63,4 @@
         android:layout_marginTop="15dp"
         android:text="@string/itemCheckBox"
         android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/hiddenImageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/itemImage"
-        android:layout_alignBottom="@+id/itemImage"
-        android:src="@drawable/alpha_imageview"
-        android:visibility="gone" />
-
 </RelativeLayout>
