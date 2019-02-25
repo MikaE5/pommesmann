@@ -54,6 +54,12 @@ public class ShopActivity extends Activity {
         addItemView(powerupChanceView,
                     ShopHelper.POWERUP_CHANCE,
                     ShopHelper.POWERUP_CHANCE_DESCRIPTION);
+
+        View secretOfPommesmannView = inflater
+                .inflate(R.layout.shop_item, itemContainer, false);
+        addItemView(secretOfPommesmannView,
+                ShopHelper.SECRET_OF_POMMESMANN,
+                ShopHelper.SECRET_OF_POMMESMANN_DESCRIPTION);
     }
 
 
@@ -221,9 +227,18 @@ public class ShopActivity extends Activity {
         item.setLevel(item.getLevel() + 1);
         item.setPrice(item.getPrice() + ShopHelper.PRICE_INCREASE);
         dbHelper.addOrUpdateItem(item);
+        secretOfPommesmann(name);
 
         showCoinsTextView();
         setItemLayout(view, name, description);
+    }
+
+    private void secretOfPommesmann(String name) {
+        if (name == ShopHelper.SECRET_OF_POMMESMANN) {
+            ShopDatabaseHelper.deleteDatabase(this);
+            dbHelper = null;
+            dbHelper = ShopDatabaseHelper.getInstance(this);
+        }
     }
 
     public void buyToast(Item item) {

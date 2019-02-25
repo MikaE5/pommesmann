@@ -29,21 +29,26 @@ public class ShopHelper {
     public static final String LASER_POWERUP = "Laser Powerup";
     public static final String LASER_POWERUP_DESCRIPTION = "Shoot one more Laser! Upgrade" +
             " for a longer visibility of the powerup";
-    public static final int LASER_POWERUP_RESTRICTION = 40;
+
+
+    public static final String SECRET_OF_POMMESMANN = "Secret of POMMESMANN";
+    public static final String SECRET_OF_POMMESMANN_DESCRIPTION ="Discover the truth about POMMESMANN";
 
 
     public static final List<Item> ITEMS = Collections.unmodifiableList(
             Arrays.asList(
                     new Item(POWERUP_CHANCE, 0, 150),
                     new Item(HEALTH_POWERUP, 0, 20),
-                    new Item(LASER_POWERUP, 0, 100)
+                    new Item(LASER_POWERUP, 0, 100),
+                    new Item(SECRET_OF_POMMESMANN, 0, 3141)
             )
     );
 
     private static final List<PowerupRestriction> RESTRICTIONS = Collections.unmodifiableList(
             Arrays.asList(
                     new PowerupRestriction(POWERUP_CHANCE, 40),
-                    new PowerupRestriction(LASER_POWERUP, 30)
+                    new PowerupRestriction(LASER_POWERUP, 30),
+                    new PowerupRestriction(SECRET_OF_POMMESMANN, 70)
             )
     );
 

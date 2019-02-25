@@ -175,6 +175,7 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
 
     public static void deleteDatabase(Context context) {
         context.getApplicationContext().deleteDatabase(DATABASE_NAME);
+        sInstance = null;
     }
 
 }
