@@ -50,11 +50,12 @@
             android:text="@string/newHighscoreTextView"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/textEditLayout"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal">
+            >
 
             <EditText
                 android:id="@+id/nameEditText"
@@ -69,9 +70,13 @@
                 android:id="@+id/submitNameButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/nameEditText"
+                android:layout_toEndOf="@+id/nameEditText"
+                android:background="@drawable/oval_selector"
+                android:textColor="#FFFFFF"
                 android:text="@string/submitNameButton" />
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

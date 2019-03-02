@@ -52,7 +52,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/itemLevelTextView"
         android:layout_toEndOf="@+id/itemNameTextView"
-        android:layout_toRightOf="@+id/itemNameTextView" />
+        android:layout_toRightOf="@+id/itemNameTextView"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/oval_selector"/>
 
     <CheckBox
         android:id="@+id/itemCheckBox"

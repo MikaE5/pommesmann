@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/oval"
+        android:background="@drawable/oval_selector"
         android:textColor="#FFFFFF"
         android:text="@string/shopButton" />
 
