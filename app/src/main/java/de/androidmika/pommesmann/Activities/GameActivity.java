@@ -67,13 +67,16 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         releaseMediaPlayers();
+        super.onDestroy();
     }
 
+
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPause() {
+        releaseMediaPlayers();
+        super.onPause();
+        this.recreate();
     }
 
     @Override

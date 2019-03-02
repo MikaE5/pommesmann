@@ -64,7 +64,7 @@
                 android:layout_centerVertical="true"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/nameEditText" />
+                android:hint="@string/nameEditText" />
 
             <Button
                 android:id="@+id/submitNameButton"

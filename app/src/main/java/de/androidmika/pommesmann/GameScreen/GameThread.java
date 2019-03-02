@@ -23,14 +23,22 @@ public class GameThread extends Thread {
             canvas = null;
 
             try {
+                if (!surfaceHolder.getSurface().isValid())
+                    continue;
+
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
-                    this.gameView.update();
-                    this.gameView.draw(canvas);
+                    if (canvas != null) {
+                        this.gameView.update();
+                        this.gameView.draw(canvas);
+                    }
                 }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-            } finally {
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
+            finally {
                 if (canvas != null) {
                     try {
                         surfaceHolder.unlockCanvasAndPost(canvas);
@@ -45,4 +53,5 @@ public class GameThread extends Thread {
     public void setRunning(boolean isRunning) {
         running = isRunning;
     }
+
 }

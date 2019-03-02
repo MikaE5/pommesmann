@@ -4,6 +4,7 @@ package de.androidmika.pommesmann.GameScreen;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -56,8 +57,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        thread.setRunning(true);
-        thread.start();
+        try {
+            thread.setRunning(true);
+            thread.start();
+        } catch (IllegalThreadStateException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -98,6 +103,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             gameCallback.gameDraw(canvas);
         }
     }
-
 
 }
