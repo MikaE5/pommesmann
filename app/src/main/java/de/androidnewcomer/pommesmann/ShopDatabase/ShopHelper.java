@@ -1,17 +1,25 @@
 package de.androidnewcomer.pommesmann.ShopDatabase;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import de.androidnewcomer.pommesmann.App;
+import de.androidnewcomer.pommesmann.R;
+
 public class ShopHelper {
-    private static class PowerupRestriction{
+    private static class PowerupProperty {
         String name;
         int restriction;
+        Bitmap image;
 
-        PowerupRestriction(String name, int restriction) {
+        PowerupProperty(String name, int restriction, int id) {
             this.name = name;
             this.restriction = restriction;
+            image = BitmapFactory.decodeResource(App.getContext().getResources(), id);
         }
     }
 
@@ -44,20 +52,30 @@ public class ShopHelper {
             )
     );
 
-    private static final List<PowerupRestriction> RESTRICTIONS = Collections.unmodifiableList(
+    private static final List<PowerupProperty> PROPERTIES = Collections.unmodifiableList(
             Arrays.asList(
-                    new PowerupRestriction(POWERUP_CHANCE, 40),
-                    new PowerupRestriction(LASER_POWERUP, 30),
-                    new PowerupRestriction(SECRET_OF_POMMESMANN, 70)
+                    new PowerupProperty(HEALTH_POWERUP, 0, R.drawable.healthpowerupimage),
+                    new PowerupProperty(POWERUP_CHANCE, 40, R.drawable.powerupchanceimage),
+                    new PowerupProperty(LASER_POWERUP, 30, R.drawable.laserpowerupimage),
+                    new PowerupProperty(SECRET_OF_POMMESMANN, 70, R.drawable.pommes)
             )
     );
 
     public static int getRestrictionByName(String name) {
-        for (PowerupRestriction powerupRestriction : RESTRICTIONS) {
-            if (powerupRestriction.name == name) {
+        for (PowerupProperty powerupRestriction : PROPERTIES) {
+            if (powerupRestriction.name.equals(name)) {
                 return powerupRestriction.restriction;
             }
         }
         return 0;
+    }
+
+    public static Bitmap getImageByName(String name) {
+        for (PowerupProperty property : PROPERTIES) {
+            if (property.name.equals(name)) {
+                return property.image;
+            }
+         }
+         return null;
     }
 }

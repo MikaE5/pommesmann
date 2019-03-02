@@ -19,14 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"/>
-
-        <ImageView
-            android:id="@+id/coinsImage"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_toEndOf="@+id/coinsTextView"
-            android:layout_toRightOf="@+id/coinsTextView"
-            android:src="@drawable/pommes" />
     </RelativeLayout>
 
 
@@ -55,6 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:background="@drawable/oval"
+        android:textColor="#FFFFFF"
         android:text="@string/shopButton" />
 
     <LinearLayout

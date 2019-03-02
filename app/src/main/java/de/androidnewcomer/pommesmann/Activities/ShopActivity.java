@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -150,6 +151,7 @@ public class ShopActivity extends Activity {
             standardItemLayout(view, name, description);
             setItemBuyButton(view, name, description);
         }
+        setItemImage(view, name);
     }
 
     private void standardItemLayout(View view, String name, String description) {
@@ -218,6 +220,17 @@ public class ShopActivity extends Activity {
                 }
             }
         });
+    }
+
+    private void setItemImage(View view, String name) {
+        ImageView itemImage = view.findViewById(R.id.itemImage);
+        Bitmap image = ShopHelper.getImageByName(name);
+
+        if (image == null) {
+            itemImage.setImageResource(R.mipmap.ic_launcher);
+        } else {
+            itemImage.setImageBitmap(image);
+        }
     }
 
     public void buyItem(View view, Item item, String name, String description) {
