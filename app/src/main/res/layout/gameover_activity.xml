@@ -61,7 +61,7 @@
                 android:id="@+id/nameEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_centerVertical="true"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="@string/nameEditText" />
@@ -71,11 +71,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/nameEditText"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/nameEditText"
+                android:layout_toRightOf="@+id/nameEditText"
                 android:background="@drawable/oval_selector"
-                android:textColor="#FFFFFF"
-                android:text="@string/submitNameButton" />
+                android:text="@string/submitNameButton"
+                android:textColor="#FFFFFF" />
         </RelativeLayout>
 
     </LinearLayout>

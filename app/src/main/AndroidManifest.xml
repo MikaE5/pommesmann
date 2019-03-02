@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.androidnewcomer.pommesmann">
+    package="de.androidmika.pommesmann">
 
     <application
-        android:name=".App"
+        android:name="de.androidmika.pommesmann.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_pommesmann"
         android:roundIcon="@mipmap/ic_pommesmann_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        android:resizeableActivity="false">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="de.androidmika.pommesmann.Activities.MainActivity"
             android:noHistory="false"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -21,15 +22,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.GameActivity"
+            android:name="de.androidmika.pommesmann.Activities.GameActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.GameoverActivity"
+            android:name="de.androidmika.pommesmann.Activities.GameoverActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.ShopActivity"
+            android:name="de.androidmika.pommesmann.Activities.ShopActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" />
     </application>

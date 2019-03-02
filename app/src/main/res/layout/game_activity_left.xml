@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".Activities.GameActivity">
 
-    <de.androidnewcomer.pommesmann.GameScreen.GameView
+    <de.androidmika.pommesmann.GameScreen.GameView
         android:id="@+id/gameView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -32,7 +32,7 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/firebutton_selector" />
 
-        <de.androidnewcomer.pommesmann.GameScreen.JoystickView
+        <de.androidmika.pommesmann.GameScreen.JoystickView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentStart="true"
