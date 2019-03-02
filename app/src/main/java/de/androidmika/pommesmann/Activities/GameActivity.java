@@ -32,26 +32,9 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
     private MediaPlayer mpHit;
     private MediaPlayer mpPowerup;
 
-
-    private class AsyncCaller extends AsyncTask<Void, Void, Void> {
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            gameEngine = new GameEngine(GameActivity.this);
-            if (App.getSound()) {
-                mpLaser = MediaPlayer.create(GameActivity.this, R.raw.lasersound);
-                mpBox = MediaPlayer.create(GameActivity.this, R.raw.boxsound);
-                mpHit = MediaPlayer.create(GameActivity.this, R.raw.hitsound);
-            }
-            return null;
-        }
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //new AsyncCaller().execute();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -69,7 +52,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
 
         gameView = findViewById(R.id.gameView);
         gameView.setOnClickListener(this);
-        fireButton = (Button) findViewById(R.id.fireButton);
+        fireButton = findViewById(R.id.fireButton);
         fireButton.setOnClickListener(this);
 
 
@@ -124,6 +107,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
         Intent intent = new Intent(this, GameoverActivity.class);
         intent.putExtra("points", gameEngine.getPoints());
         startActivity(intent);
+        onDestroy();
     }
 
     @Override
