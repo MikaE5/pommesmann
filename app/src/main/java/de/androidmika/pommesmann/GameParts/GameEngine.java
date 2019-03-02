@@ -3,8 +3,10 @@ package de.androidmika.pommesmann.GameParts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
@@ -165,8 +167,13 @@ public class GameEngine {
     }
 
     private void showLasers(Canvas canvas) {
-        for (Laser laser : lasers) {
-            laser.show(canvas);
+        try {
+            for (Laser laser : lasers) {
+                laser.show(canvas);
+            }
+        } catch (ConcurrentModificationException e) {
+            Log.d("showLasers:", "exception occured");
+
         }
     }
 

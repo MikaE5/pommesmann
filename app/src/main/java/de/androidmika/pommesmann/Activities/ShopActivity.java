@@ -144,7 +144,7 @@ public class ShopActivity extends Activity {
     private void setItemLayout(View view, String name, String description) {
         if (getHighscore() < ShopHelper.getRestrictionByName(name)) {
             restrictedPowerup(view, name, description);
-        } else if (dbHelper.getItemByName(name).getLevel() > ShopHelper.MAX_LEVEL) {
+        } else if (dbHelper.getItemByName(name).getLevel() >= ShopHelper.MAX_LEVEL) {
             maxLevelPowerup(view, name, description);
         } else {
             standardItemLayout(view, name, description);
