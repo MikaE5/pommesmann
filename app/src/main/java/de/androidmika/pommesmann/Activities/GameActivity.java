@@ -76,7 +76,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
     protected void onPause() {
         releaseMediaPlayers();
         super.onPause();
-        this.recreate();
+        recreate();
     }
 
     @Override

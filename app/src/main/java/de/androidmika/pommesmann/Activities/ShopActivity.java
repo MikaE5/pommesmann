@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,36 +105,47 @@ public class ShopActivity extends Activity {
     }
 
     private void coinsToast() {
-        CharSequence text = "Not enough Coins!";
+        CharSequence text = getResources().getString(R.string.coinsToast);
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(this, text, duration).show();
     }
 
     private void buyDialog(final View view, final Item item, final String name, final String description) {
-        DialogInterface.OnClickListener positiveListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        buyItem(view, item, name, description);
-                        buyToast(item);
-                    }
-                };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
 
-        DialogInterface.OnClickListener negativeListener =
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         CharSequence message = "Buy " + item.getName() + " Level " + (item.getLevel()+1) +
                 " for " + item.getPrice() + "Coins?";
         builder.setMessage(message);
-        builder.setPositiveButton("BUY", positiveListener);
-        builder.setNegativeButton("CANCEL", negativeListener);
-        builder.show();
+
+        builder.setNegativeButton(getResources().getString(R.string.dialogNegative), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(getResources().getString(R.string.dialogPositive), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                buyItem(view, item, name, description);
+                buyToast(item);
+            }
+        });
+
+        final AlertDialog buyDialog = builder.create();
+
+        buyDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button negativeButton = buyDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                negativeButton.setBackgroundResource(R.drawable.oval_selector);
+                negativeButton.setTextColor(Color.WHITE);
+                Button positiveButton = buyDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setBackgroundResource(R.drawable.oval_selector);
+                positiveButton.setTextColor(Color.WHITE);
+            }
+        });
+
+        buyDialog.show();
     }
 
     private void addItemView(View view, String name, String description) {

@@ -62,7 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_below="@+id/buyButton"
         android:layout_marginTop="15dp"
         android:text="@string/itemCheckBox"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 </RelativeLayout>
