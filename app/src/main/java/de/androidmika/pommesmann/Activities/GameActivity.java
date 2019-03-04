@@ -26,6 +26,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
     private GameView gameView;
     private Button fireButton;
     private GameEngine gameEngine;
+    
 
     private MediaPlayer mpLaser;
     private MediaPlayer mpBox;
@@ -71,13 +72,12 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
         super.onDestroy();
     }
 
-
     @Override
-    protected void onPause() {
-        releaseMediaPlayers();
-        super.onPause();
-        recreate();
+    protected void onRestart() {
+        super.onRestart();
+        recreate(); // recreate Activity because SurfaceHolder can not find Canvas
     }
+
 
     @Override
     public void onClick(View v) {
