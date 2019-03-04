@@ -29,9 +29,9 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.gameover_activity);
 
-        int highscore = getHighscore();
+        int highscore = App.getHighscore();
         points = getIntent().getIntExtra("points", 0);
-        setCoins(points);
+        App.setCoins(points);
 
         if (points > highscore) newHighscore(points);
 
@@ -75,30 +75,13 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         if (v.getId() == R.id.submitNameButton) {
             EditText nameEditText = (EditText) findViewById(R.id.nameEditText);
             String name = nameEditText.getText().toString().trim();
-            setHighscoreName(name);
+            App.setHighscoreName(name);
             submitNameButton.setVisibility(View.GONE);
         }
     }
 
-    private int getHighscore() {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        return pref.getInt(App.SP_HIGHSCORE, 0);
-    }
-
-    private void setHighscore(int newHighscore) {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(App.SP_HIGHSCORE, newHighscore);
-        editor.apply();
-    }
 
 
-    private void setHighscoreName(String name) {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(App.SP_HIGHSCORE_NAME, name);
-        editor.apply();
-    }
 
     private void newHighscore(int highscore) {
         if (App.getSound()) {
@@ -111,29 +94,18 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         submitNameButton = findViewById(R.id.submitNameButton);
         submitNameButton.setOnClickListener(this);
 
-        setHighscore(points);
-        setHighscoreName(""); // set name to nothing in case user doesn't submit his name
+        App.setHighscore(points);
+        App.setHighscoreName(""); // set name to nothing in case user doesn't submit his name
     }
 
-    private void setCoins(int points) {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        int temp = pref.getInt(App.SP_COINS, 0);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(App.SP_COINS, temp + points);
-        editor.apply();
-    }
 
-    private int getCoins() {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        return pref.getInt(App.SP_COINS, 0);
-    }
 
     private void showCoinsTextView() {
-        int temp = getCoins();
+        int temp = App.getCoins();
 
         if (temp > 0) {
             TextView coinsTextView = findViewById(R.id.coinsTextView);
-            coinsTextView.setText(Integer.toString(temp) + "Coins");
+            coinsTextView.setText(Integer.toString(temp) + "coins");
             coinsTextView.setVisibility(View.VISIBLE);
             App.startSlowFadeinAnim(coinsTextView, 3000);
         }

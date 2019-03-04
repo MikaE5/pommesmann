@@ -37,13 +37,13 @@
         android:layout_toLeftOf="@+id/itemLevelTextView"
         android:layout_toEndOf="@+id/itemImage"
         android:layout_toRightOf="@+id/itemImage"
-        android:textSize="8sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/itemLevelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:layout_toEndOf="@+id/itemNameTextView"
         android:layout_toRightOf="@+id/itemNameTextView" />
 

@@ -2,6 +2,7 @@ package de.androidmika.pommesmann;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -62,5 +63,42 @@ public class App extends Application {
         Animation fadeinAnim = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
         fadeinAnim.setDuration(millis);
         v.startAnimation(fadeinAnim);
+    }
+
+    public static int getHighscore() {
+        SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);
+        return pref.getInt(App.SP_HIGHSCORE, 0);
+    }
+
+    public static void setHighscore(int newHighscore) {
+        SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(App.SP_HIGHSCORE, newHighscore);
+        editor.apply();
+    }
+
+    public static String getHighscoreName() {
+        SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);
+        return pref.getString(App.SP_HIGHSCORE_NAME, "");
+    }
+
+    public static void setHighscoreName(String name) {
+        SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(App.SP_HIGHSCORE_NAME, name);
+        editor.apply();
+    }
+
+    public static int getCoins() {
+        SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);
+        return pref.getInt(App.SP_COINS, 0);
+    }
+
+    public static void setCoins(int points) {
+        SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);
+        int temp = pref.getInt(App.SP_COINS, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(App.SP_COINS, temp + points);
+        editor.apply();
     }
 }

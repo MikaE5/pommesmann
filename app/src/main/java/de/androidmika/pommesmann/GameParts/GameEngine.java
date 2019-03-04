@@ -65,7 +65,7 @@ public class GameEngine {
         powerups = new ArrayList<>();
         removablePowerups = new ArrayList<>();
         healthLoss = 0.1f;
-        hitDamage = 50;
+        hitDamage = 50 + 5 * engineHelper.difficulty;
         hitBonus = 25;
         round = 0;
         points = 0;
@@ -78,7 +78,7 @@ public class GameEngine {
     public void afterSurfaceCreated(float width, float height) {
         player.setPos(width / 2, height / 2);
         player.setR((Math.min(width, height) / 16));
-        maxVelBox = player.getMaxVel();
+        maxVelBox = player.getMaxVel() + engineHelper.difficulty;
     }
 
 
@@ -347,9 +347,9 @@ public class GameEngine {
     private void nextRound() {
         round++;
         if (round > 1) {
-            maxVelBox += 0.5;
+            maxVelBox += 0.5 + 0.5 * engineHelper.difficulty;
             healthLoss += 0.01f;
-            hitDamage += 2;
+            hitDamage += 2 + 2 * engineHelper.difficulty;
         }
         player.setHealthLoss(healthLoss);
     }

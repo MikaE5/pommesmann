@@ -184,7 +184,7 @@ public class ShopActivity extends Activity {
 
     private void setItemLayout(View view, String name, String description) {
         Item item = dbHelper.getItemByName(name);
-        if (getHighscore() < ShopHelper.getRestrictionByName(name)) {
+        if (App.getHighscore() < ShopHelper.getRestrictionByName(name)) {
             restrictedPowerup(view, name, description);
         } else if (item.getLevel() >= ShopHelper.MAX_LEVEL &&
                     !item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
@@ -297,6 +297,7 @@ public class ShopActivity extends Activity {
             dbHelper = ShopDatabaseHelper.getInstance(this);
             dbHelper.addOrUpdateItem(item);
             updateShop();
+            App.setHighscore(0);
         }
     }
 
@@ -304,10 +305,5 @@ public class ShopActivity extends Activity {
         CharSequence text = "Bought " + item.getName() + " Level " + item.getLevel() + "!";
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(this, text, duration).show();
-    }
-
-    private int getHighscore() {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        return pref.getInt(App.SP_HIGHSCORE, 0);
     }
 }

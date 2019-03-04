@@ -15,7 +15,8 @@ public class GameEngineHelper {
     private ShopDatabaseHelper dbHelper;
 
     double chanceOfPowerup;
-    public ArrayList<String> availablePowerups;
+    ArrayList<String> availablePowerups;
+    int difficulty;
 
     int healthPowerupLevel;
     int healthPowerupDuration;
@@ -33,15 +34,17 @@ public class GameEngineHelper {
         chanceOfPowerup = 0.40 + 0.1f * powerupChance.getLevel();
         if (chanceOfPowerup > 1) chanceOfPowerup = 1;
 
+        difficulty = dbHelper.getItemByName(ShopHelper.SECRET_OF_POMMESMANN).getLevel();
+
         Item healthPowerup = dbHelper.getItemByName(ShopHelper.HEALTH_POWERUP);
         healthPowerupLevel = healthPowerup.getLevel();
-        healthPowerupDuration = 350 + 50 * healthPowerupLevel;
+        healthPowerupDuration = 350 + 25 * healthPowerupLevel;
         healthPowerupHealing = 85 + 15 * healthPowerupLevel;
         if (healthPowerupLevel > 0) availablePowerups.add(ShopHelper.HEALTH_POWERUP);
 
         Item laserPowerup = dbHelper.getItemByName(ShopHelper.LASER_POWERUP);
         laserPowerupLevel = laserPowerup.getLevel();
-        laserPowerupDuration = 300 + 50 * laserPowerupLevel;
+        laserPowerupDuration = 300 + 25 * laserPowerupLevel;
         if (laserPowerupLevel > 0) availablePowerups.add(ShopHelper.LASER_POWERUP);
     }
 

@@ -84,19 +84,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     }
 
-    private int getHighscore() {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        return pref.getInt(App.SP_HIGHSCORE, 0);
-    }
 
-    private String getHighscoreName() {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        return pref.getString(App.SP_HIGHSCORE_NAME, "");
-    }
+
 
     private void showHighscore() {
-        int highscore = getHighscore();
-        String name = getHighscoreName();
+        int highscore = App.getHighscore();
+        String name = App.getHighscoreName();
 
         if (highscore != 0) {
             LinearLayout highscoreLayout = findViewById(R.id.highscoreLayout);
@@ -111,13 +104,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private int getCoins() {
-        SharedPreferences pref = getSharedPreferences(App.SP_GAME, 0);
-        return pref.getInt(App.SP_COINS, 0);
-    }
+
 
     private void showCoinsTextView() {
-        int temp = getCoins();
+        int temp = App.getCoins();
         if (temp < 0) temp = 0;
 
         TextView coinsTextView = findViewById(R.id.coinsTextView);
