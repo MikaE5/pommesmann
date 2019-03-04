@@ -5,11 +5,12 @@
     <string name="newHighscoreTextView">New Highscore!</string>
     <string name="nameEditText">Your Name</string>
     <string name="submitNameButton">submit</string>
-    <string name="highscoreTextView">Highscore</string>
-    <string name="soundCheckBox">Sound</string>
+    <string name="highscoreTextView">highscore</string>
+    <string name="soundCheckBox">sound</string>
     <string name="leftHandedCheckBox">left handed</string>
     <string name="shopButton">shop</string>
     <string name="itemCheckBox">disable</string>
+    <string name="itemMaxLevel">max level!</string>
     <string name="dialogPositive">ok</string>
     <string name="dialogNegative">cancel</string>
     <string name="coinsToast">Not enough Coins!</string>

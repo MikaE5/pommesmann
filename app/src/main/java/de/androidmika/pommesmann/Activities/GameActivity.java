@@ -26,7 +26,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
     private GameView gameView;
     private Button fireButton;
     private GameEngine gameEngine;
-    
+
 
     private MediaPlayer mpLaser;
     private MediaPlayer mpBox;

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.util.ArrayList;
+
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.Item;
@@ -28,33 +30,55 @@ public class ShopActivity extends Activity {
     private ShopDatabaseHelper dbHelper;
     private LinearLayout itemContainer;
 
+    private ArrayList<View> itemViews;
+    private ArrayList<String> itemNames;
+    private ArrayList<String> itemDescriptions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shop_activity);
 
+        itemViews = new ArrayList<>();
+        itemNames = new ArrayList<>();
+        itemDescriptions = new ArrayList<>();
+
         dbHelper = ShopDatabaseHelper.getInstance(this);
 
         itemContainer = findViewById(R.id.itemContainer);
+        fillShop();
+
+    }
+
+    private void fillShop() {
         LayoutInflater inflater = getLayoutInflater();
 
         View healthPowerupView = inflater
                 .inflate(R.layout.shop_item, itemContainer, false);
         addItemView(healthPowerupView,
-                    ShopHelper.HEALTH_POWERUP,
-                    ShopHelper.HEALTH_POWERUP_DESCRIPTION);
+                ShopHelper.HEALTH_POWERUP,
+                ShopHelper.HEALTH_POWERUP_DESCRIPTION);
+        itemViews.add(healthPowerupView);
+        itemNames.add(ShopHelper.HEALTH_POWERUP);
+        itemDescriptions.add(ShopHelper.HEALTH_POWERUP_DESCRIPTION);
 
         View laserPowerupView = inflater
                 .inflate(R.layout.shop_item, itemContainer, false);
         addItemView(laserPowerupView,
-                    ShopHelper.LASER_POWERUP,
-                    ShopHelper.LASER_POWERUP_DESCRIPTION);
+                ShopHelper.LASER_POWERUP,
+                ShopHelper.LASER_POWERUP_DESCRIPTION);
+        itemViews.add(laserPowerupView);
+        itemNames.add(ShopHelper.LASER_POWERUP);
+        itemDescriptions.add(ShopHelper.LASER_POWERUP_DESCRIPTION);
 
         View powerupChanceView = inflater
                 .inflate(R.layout.shop_item, itemContainer, false);
         addItemView(powerupChanceView,
-                    ShopHelper.POWERUP_CHANCE,
-                    ShopHelper.POWERUP_CHANCE_DESCRIPTION);
+                ShopHelper.POWERUP_CHANCE,
+                ShopHelper.POWERUP_CHANCE_DESCRIPTION);
+        itemViews.add(powerupChanceView);
+        itemNames.add(ShopHelper.POWERUP_CHANCE);
+        itemDescriptions.add(ShopHelper.POWERUP_CHANCE_DESCRIPTION);
 
         View secretOfPommesmannView = inflater
                 .inflate(R.layout.shop_item, itemContainer, false);
@@ -63,6 +87,11 @@ public class ShopActivity extends Activity {
                 ShopHelper.SECRET_OF_POMMESMANN_DESCRIPTION);
     }
 
+    private void updateShop() {
+        for (int i = 0; i < itemViews.size(); i++) {
+            setItemLayout(itemViews.get(i), itemNames.get(i), itemDescriptions.get(i));
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -154,9 +183,11 @@ public class ShopActivity extends Activity {
     }
 
     private void setItemLayout(View view, String name, String description) {
+        Item item = dbHelper.getItemByName(name);
         if (getHighscore() < ShopHelper.getRestrictionByName(name)) {
             restrictedPowerup(view, name, description);
-        } else if (dbHelper.getItemByName(name).getLevel() >= ShopHelper.MAX_LEVEL) {
+        } else if (item.getLevel() >= ShopHelper.MAX_LEVEL &&
+                    !item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
             maxLevelPowerup(view, name, description);
         } else {
             standardItemLayout(view, name, description);
@@ -177,6 +208,9 @@ public class ShopActivity extends Activity {
         itemDescriptionTextView.setText(description);
         itemLevelTextView.setText("Level " + Integer.toString(item.getLevel() + 1));
         buyButton.setText(Integer.toString(item.getPrice()) + "coins");
+        buyButton.setVisibility(View.VISIBLE);
+        view.setBackgroundColor(getResources().getColor(R.color.standardItem));
+        view.setAlpha(1f);
     }
 
     private void maxLevelPowerup(View view, String name, String description) {
@@ -191,10 +225,7 @@ public class ShopActivity extends Activity {
         buyButton.setVisibility(View.GONE);
         view.setBackgroundColor(getResources().getColor(R.color.maxLevelItem));
         view.setAlpha(0.8f);
-        itemLevelTextView.setText("MAX LEVEL");
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemLevelTextView.getLayoutParams();
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-        itemLevelTextView.setLayoutParams(params);
+        itemLevelTextView.setText(getResources().getString(R.string.itemMaxLevel));
     }
 
     private void restrictedPowerup(View view, String name, String description) {
@@ -249,19 +280,23 @@ public class ShopActivity extends Activity {
         setCoins(coins - item.getPrice());
 
         item.setLevel(item.getLevel() + 1);
-        item.setPrice(item.getPrice() + ShopHelper.PRICE_INCREASE);
+        if (!item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
+            item.setPrice(item.getPrice() + ShopHelper.PRICE_INCREASE);
+        }
         dbHelper.addOrUpdateItem(item);
-        secretOfPommesmann(name);
+        secretOfPommesmann(item);
 
         showCoinsTextView();
         setItemLayout(view, name, description);
     }
 
-    private void secretOfPommesmann(String name) {
-        if (name == ShopHelper.SECRET_OF_POMMESMANN) {
+    private void secretOfPommesmann(Item item) {
+        if (item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
             ShopDatabaseHelper.deleteDatabase(this);
             dbHelper = null;
             dbHelper = ShopDatabaseHelper.getInstance(this);
+            dbHelper.addOrUpdateItem(item);
+            updateShop();
         }
     }
 

@@ -24,7 +24,7 @@ public class ShopHelper {
     }
 
     public static final int MAX_LEVEL = 5;
-    public static final int PRICE_INCREASE = 0;
+    public static final int PRICE_INCREASE = 1;
 
     public static final String POWERUP_CHANCE = "Powerup Chance";
     public static final String POWERUP_CHANCE_DESCRIPTION = "Increase the percentage of a new " +
@@ -48,7 +48,7 @@ public class ShopHelper {
                     new Item(POWERUP_CHANCE, 0, 1),
                     new Item(HEALTH_POWERUP, 0, 1),
                     new Item(LASER_POWERUP, 0, 1),
-                    new Item(SECRET_OF_POMMESMANN, 0, 3141)
+                    new Item(SECRET_OF_POMMESMANN, 0, 2)
             )
     );
 
@@ -57,7 +57,7 @@ public class ShopHelper {
                     new PowerupProperty(HEALTH_POWERUP, 0, R.drawable.healthpowerupimage),
                     new PowerupProperty(POWERUP_CHANCE, 0, R.drawable.powerupchanceimage),
                     new PowerupProperty(LASER_POWERUP, 0, R.drawable.laserpowerupimage),
-                    new PowerupProperty(SECRET_OF_POMMESMANN, 70, R.drawable.pommes)
+                    new PowerupProperty(SECRET_OF_POMMESMANN, 0, R.drawable.pommes)
             )
     );
 
