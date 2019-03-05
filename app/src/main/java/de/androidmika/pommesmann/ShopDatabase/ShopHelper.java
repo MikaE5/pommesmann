@@ -57,7 +57,7 @@ public class ShopHelper {
                     new PowerupProperty(HEALTH_POWERUP, 10, R.drawable.healthpowerupimage),
                     new PowerupProperty(LASER_POWERUP, 30, R.drawable.laserpowerupimage),
                     new PowerupProperty(POWERUP_CHANCE, 40, R.drawable.powerupchanceimage),
-                    new PowerupProperty(SECRET_OF_POMMESMANN, 0, R.drawable.pommes)
+                    new PowerupProperty(SECRET_OF_POMMESMANN, 0, R.drawable.pommesmann)
             )
     );
 
