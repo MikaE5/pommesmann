@@ -298,7 +298,35 @@ public class ShopActivity extends Activity {
             dbHelper.addOrUpdateItem(item);
             updateShop();
             App.setHighscore(0);
+            secretDialog(item);
         }
+    }
+
+    private void secretDialog(Item item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
+
+        CharSequence message = getResources().getString(R.string.app_name) +
+                " has been reset! Difficulty is now on level " + item.getLevel() + "!";
+        builder.setMessage(message);
+
+        builder.setPositiveButton(getResources().getString(R.string.dialogPositive), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        final AlertDialog secretDialog = builder.create();
+
+        secretDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button positiveButton = secretDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setBackgroundResource(R.drawable.oval_selector);
+                positiveButton.setTextColor(Color.WHITE);
+            }
+        });
+
+        secretDialog.show();
     }
 
     public void buyToast(Item item) {
