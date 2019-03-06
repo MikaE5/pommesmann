@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,8 @@ public class ShopActivity extends Activity {
     private ShopDatabaseHelper dbHelper;
     private LinearLayout itemContainer;
 
+    private MediaPlayer mpBuy;
+
     private ArrayList<View> itemViews;
     private ArrayList<String> itemNames;
     private ArrayList<String> itemDescriptions;
@@ -48,7 +51,28 @@ public class ShopActivity extends Activity {
         itemContainer = findViewById(R.id.itemContainer);
         fillShop();
 
+        if (App.getSound()) {
+            mpBuy = MediaPlayer.create(this, R.raw.buysound);
+        }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LinearLayout mainLayout = findViewById(R.id.mainLayout);
+        App.startFadeinAnim(mainLayout);
+        showCoinsTextView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mpBuy != null) {
+            mpBuy.release();
+            mpBuy = null;
+        }
+    }
+
 
     private void fillShop() {
         LayoutInflater inflater = getLayoutInflater();
@@ -91,19 +115,6 @@ public class ShopActivity extends Activity {
         for (int i = 0; i < itemViews.size(); i++) {
             setItemLayout(itemViews.get(i), itemNames.get(i), itemDescriptions.get(i));
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LinearLayout mainLayout = findViewById(R.id.mainLayout);
-        App.startFadeinAnim(mainLayout);
-        showCoinsTextView();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
 
@@ -278,6 +289,7 @@ public class ShopActivity extends Activity {
     public void buyItem(View view, Item item, String name, String description) {
         int coins = getCoins();
         setCoins(coins - item.getPrice());
+        buySound();
 
         item.setLevel(item.getLevel() + 1);
         if (!item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
@@ -288,6 +300,13 @@ public class ShopActivity extends Activity {
 
         showCoinsTextView();
         setItemLayout(view, name, description);
+    }
+
+    public void buySound() {
+        if (mpBuy != null) {
+            mpBuy.seekTo(0);
+            mpBuy.start();
+        }
     }
 
     private void secretOfPommesmann(Item item) {
