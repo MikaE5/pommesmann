@@ -48,16 +48,16 @@ public class ShopHelper {
                     new Item(HEALTH_POWERUP, 0, 20),
                     new Item(LASER_POWERUP, 0, 100),
                     new Item(POWERUP_CHANCE, 0, 150),
-                    new Item(SECRET_OF_POMMESMANN, 0, 1)
+                    new Item(SECRET_OF_POMMESMANN, 0, 3141)
             )
     );
 
     private static final List<PowerupProperty> PROPERTIES = Collections.unmodifiableList(
             Arrays.asList(
-                    new PowerupProperty(HEALTH_POWERUP, 10, R.drawable.healthpowerupimage),
-                    new PowerupProperty(LASER_POWERUP, 30, R.drawable.laserpowerupimage),
+                    new PowerupProperty(HEALTH_POWERUP, 0, R.drawable.healthpowerupimage),
+                    new PowerupProperty(LASER_POWERUP, 0, R.drawable.laserpowerupimage),
                     new PowerupProperty(POWERUP_CHANCE, 40, R.drawable.powerupchanceimage),
-                    new PowerupProperty(SECRET_OF_POMMESMANN, 0, R.drawable.pommesmann)
+                    new PowerupProperty(SECRET_OF_POMMESMANN, 70, R.drawable.pommesmann)
             )
     );
 

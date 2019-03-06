@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -20,9 +23,14 @@ import de.androidmika.pommesmann.R;
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private Button startButton;
+    private Button tutorialButton;
     private Button shopButton;
     private CheckBox soundCheckBox;
     private CheckBox leftHandedCheckBox;
+
+    private Animation rotateAnim;
+    private final int LOW_SCORE = 10;
+    private Handler animHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +44,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         startButton = findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
+        tutorialButton = findViewById(R.id.tutorialButton);
+        tutorialButton.setOnClickListener(this);
         shopButton = findViewById(R.id.shopButton);
         shopButton.setOnClickListener(this);
         soundCheckBox = findViewById(R.id.soundCheckBox);
@@ -44,6 +54,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         leftHandedCheckBox = findViewById(R.id.leftHandedCheckBox);
         leftHandedCheckBox.setChecked(App.getLeftHanded()); // set leftHanded in app accordingly
         leftHandedCheckBox.setOnClickListener(this);
+
+        if (App.getHighscore() < LOW_SCORE) {
+            rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
+        }
     }
 
     @Override
@@ -56,6 +70,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         App.startSlowFadeinAnim(leftHandedCheckBox, 2000);
         showHighscore();
         showCoinsTextView();
+        animateTutorialButton();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        animHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -71,6 +92,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 App.showToast();
             }
         }
+        if (v.getId() == R.id.tutorialButton) {
+            Intent intent = new Intent(this, TutorialActivity.class);
+            startActivity(intent);
+        }
         if (v.getId() == R.id.shopButton) {
             Intent intent = new Intent(this, ShopActivity.class);
             startActivity(intent);
@@ -85,8 +110,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
 
-
-
     private void showHighscore() {
         int highscore = App.getHighscore();
         String name = App.getHighscoreName();
@@ -94,7 +117,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (highscore != 0) {
             LinearLayout highscoreLayout = findViewById(R.id.highscoreLayout);
             TextView currentHighscoreTextView = findViewById(R.id.currentHighscoreTextView);
-            if (!name.equals("") && !name.equals(getResources().getString(R.string.nameEditText))) {
+            if (!name.equals("")) {
                 currentHighscoreTextView.setText(name + ": " + Integer.toString(highscore));
             } else {
                 currentHighscoreTextView.setText(Integer.toString(highscore));
@@ -113,6 +136,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         TextView coinsTextView = findViewById(R.id.coinsTextView);
         coinsTextView.setText(Integer.toString(temp) + "Coins");
         App.startSlowFadeinAnim(coinsTextView, 3000);
+    }
+
+    private void animateTutorialButton() {
+        if (rotateAnim != null) {
+            animHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tutorialButton.startAnimation(rotateAnim);
+                }
+            }, 1000 * 2);
+        }
     }
 
 }
