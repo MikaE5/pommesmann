@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_pommesmann_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity android:name=".Activities.TutorialActivity"></activity>
+        <activity android:name=".Activities.AboutActivity"></activity>
+        <activity android:name=".Activities.TutorialActivity" />
         <activity
             android:name=".Activities.MainActivity"
             android:noHistory="false"

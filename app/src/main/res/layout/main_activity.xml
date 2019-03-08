@@ -105,6 +105,15 @@
             android:layout_alignParentStart="true"
             android:text="@string/soundCheckBox" />
 
+        <Button
+            android:id="@+id/aboutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/aboutButton"
+            android:background="@drawable/oval_selector"
+            android:textColor="#FFFFFF"/>
+
         <CheckBox
             android:id="@+id/leftHandedCheckBox"
             android:layout_width="wrap_content"
