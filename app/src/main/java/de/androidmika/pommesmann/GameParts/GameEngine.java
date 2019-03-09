@@ -20,8 +20,10 @@ public class GameEngine {
 
     private GameEngineHelper engineHelper;
 
-    private boolean isRunning;
-    private boolean started;
+    private int REL_W_H;
+
+    private boolean isRunning = false;
+    private boolean started = false;
     public Player player;
     private ArrayList<Laser> lasers;
     private ArrayList<Laser> removableLasers;
@@ -54,8 +56,6 @@ public class GameEngine {
     public GameEngine(Context context) {
         engineHelper = new GameEngineHelper(context);
 
-        isRunning = false;
-        started = false;
         player = new Player();
         lasers = new ArrayList<>();
         removableLasers = new ArrayList<>();
@@ -75,10 +75,15 @@ public class GameEngine {
         }
     }
 
-    public void afterSurfaceCreated(float width, float height) {
-        player.setPos(width / 2, height / 2);
-        player.setR((Math.min(width, height) / 16));
-        maxVelBox = player.getMaxVel() + engineHelper.difficulty;
+    private void afterSurfaceCreated(float width, float height) {
+        if (!isRunning) {
+            REL_W_H = (int) (100 * width / height);
+            player.setPos(width / 2, height / 2);
+            player.setR(0.85f * REL_W_H);
+            Log.d("afterSurfaceCreated", "PlayerR"+player.getR());
+            maxVelBox = player.getMaxVel() + engineHelper.difficulty;
+            isRunning = true;
+        }
     }
 
 
@@ -103,7 +108,6 @@ public class GameEngine {
             levelManagement(width, height);
         } else {
             afterSurfaceCreated(width, height);
-            isRunning = true;
         }
     }
 
@@ -172,8 +176,7 @@ public class GameEngine {
                 laser.show(canvas);
             }
         } catch (ConcurrentModificationException e) {
-            Log.d("showLasers:", "exception occured");
-
+            e.printStackTrace();
         }
     }
 
@@ -336,10 +339,10 @@ public class GameEngine {
         if (engineHelper.availablePowerups.size() > 0) {
             String type = engineHelper.getRandomPowerup();
 
-            if (type == ShopHelper.HEALTH_POWERUP) {
-                powerups.add(new HealthPowerup(width, height, width / 12, engineHelper.healthPowerupDuration));
-            } else if (type == ShopHelper.LASER_POWERUP) {
-                powerups.add(new LaserPowerup(width, height, width / 24, engineHelper.laserPowerupDuration));
+            if (type.equals(ShopHelper.HEALTH_POWERUP)) {
+                powerups.add(new HealthPowerup(width, height, 1.15f * REL_W_H, engineHelper.healthPowerupDuration));
+            } else if (type.equals(ShopHelper.LASER_POWERUP)) {
+                powerups.add(new LaserPowerup(width, height, 0.58f * REL_W_H, engineHelper.laserPowerupDuration));
             }
         }
     }
@@ -360,15 +363,13 @@ public class GameEngine {
         float pr = player.getR();
         Vec bpos;
         float blen;
-        int temp = 3;
-        if (round == 1) temp = 5;
+
         for (int i = 0; i < maxBoxes; i++) {
             do {
-                tempBox = new Box(width, height, width / 10, maxVelBox);
+                tempBox = new Box(width, height, 1.35f * REL_W_H, maxVelBox);
                 bpos = tempBox.getPos();
                 blen = tempBox.getLen();
-            } while(circleInSquare(ppos.x, ppos.y, temp * pr, bpos.x, bpos.y, blen));
-
+            } while(circleInSquare(ppos.x, ppos.y, 6 * pr, bpos.x, bpos.y, blen));
             boxes.add(tempBox);
         }
     }

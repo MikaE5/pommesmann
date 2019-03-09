@@ -15,7 +15,19 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a98c4cdc-134b-457e-8109-77755f7eb762" name="Default" comment="" />
+    <list default="true" id="a98c4cdc-134b-457e-8109-77755f7eb762" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameView.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,14 +67,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="20325" />
+          <entry key="java" value="20898" />
           <entry key="txt" value="170" />
           <entry key="xml" value="1565" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="20325" />
+          <entry key="JAVA" value="20898" />
           <entry key="PLAIN_TEXT" value="170" />
           <entry key="XML" value="1565" />
         </counts>
@@ -90,46 +102,54 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/GameoverActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1865">
-              <caret line="111" column="5" selection-start-line="111" selection-start-column="5" selection-end-line="111" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="740">
+            <state relative-caret-position="342">
               <caret line="38" column="36" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1960">
-              <caret line="105" selection-start-line="105" selection-end-line="105" />
+            <state relative-caret-position="680">
+              <caret line="68" column="89" selection-start-line="68" selection-start-column="89" selection-end-line="68" selection-end-column="89" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/GameActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2298">
-              <caret line="28" selection-start-line="28" selection-end-line="28" />
+            <state relative-caret-position="320">
+              <caret line="368" column="64" selection-start-line="368" selection-start-column="64" selection-end-line="368" selection-end-column="64" />
+              <folding>
+                <element signature="e#2709#2710#0" expanded="true" />
+                <element signature="e#2740#2741#0" expanded="true" />
+                <element signature="e#2770#2771#0" expanded="true" />
+                <element signature="e#2799#2800#0" expanded="true" />
+                <element signature="e#11408#11409#0" expanded="true" />
+                <element signature="e#11455#11456#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/ShopActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/Box.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3612">
-              <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+            <state relative-caret-position="80">
+              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-538">
+              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -2447,12 +2467,10 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameThread.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/buy_dialog.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/GameActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/shop_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngineHelper.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/App.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/gameover_activity.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Vec.java" />
@@ -2467,6 +2485,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/anim/rotate.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/ShopActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java" />
       </list>
     </option>
   </component>
@@ -2483,6 +2503,28 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="POMMESMANN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="POMMESMANN" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="POMMESMANN" type="58d84e3e:PackageViewProjectNode" />
+              <item name="app" type="616d4139:PackageViewModuleNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
@@ -2524,55 +2566,7 @@
               <item name="de" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="androidmika" type="462c0819:PsiDirectoryNode" />
               <item name="pommesmann" type="462c0819:PsiDirectoryNode" />
-              <item name="Activities" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="POMMESMANN" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="de" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="androidmika" type="462c0819:PsiDirectoryNode" />
-              <item name="pommesmann" type="462c0819:PsiDirectoryNode" />
-              <item name="ShopDatabase" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="POMMESMANN" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="POMMESMANN" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="anim" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="POMMESMANN" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="raw" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="POMMESMANN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="POMMESMANN" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="POMMESMANN" type="58d84e3e:PackageViewProjectNode" />
-              <item name="app" type="616d4139:PackageViewModuleNode" />
+              <item name="GameParts" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -2705,9 +2699,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.86721313" visible="true" weight="0.16490166" />
-      <window_info id="Structure" order="1" sideWeight="0.13278688" side_tool="true" visible="true" weight="0.16490166" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.86557376" visible="true" weight="0.16490166" />
+      <window_info id="Structure" order="1" sideWeight="0.13442624" side_tool="true" visible="true" weight="0.16490166" />
       <window_info id="Designer" order="2" />
       <window_info id="Build Variants" order="3" sideWeight="0.5012285" side_tool="true" weight="0.24962178" />
       <window_info id="Captures" order="4" side_tool="true" weight="0.25" />
@@ -2716,7 +2711,7 @@
       <window_info id="Image Layers" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.37704918" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" weight="0.0" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924356" weight="0.3295082" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -2724,7 +2719,7 @@
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49924356" weight="0.0" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50075644" side_tool="true" visible="true" weight="0.0" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3295082" />
-      <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.8721634" weight="0.004918033" />
+      <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.8721634" weight="0.5868853" />
       <window_info anchor="bottom" id="Terminal" order="11" />
       <window_info anchor="bottom" id="Android Profiler" order="12" weight="0.0" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -2764,13 +2759,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
           <caret line="10" column="42" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -2858,13 +2846,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="780">
           <caret line="46" column="39" selection-start-line="46" selection-start-column="39" selection-end-line="46" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6660">
-          <caret line="351" column="31" selection-start-line="351" selection-start-column="31" selection-end-line="351" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -2985,10 +2966,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-378">
           <caret line="111" selection-start-line="111" selection-end-line="111" />
-          <folding>
-            <element signature="e#4885#5058#0" expanded="true" />
-            <element signature="e#5057#5058#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3015,15 +2992,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="740">
+        <state relative-caret-position="342">
           <caret line="38" column="36" selection-start-line="38" selection-start-column="36" selection-end-line="38" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1960">
-          <caret line="105" selection-start-line="105" selection-end-line="105" />
+        <state relative-caret-position="680">
+          <caret line="68" column="89" selection-start-line="68" selection-start-column="89" selection-end-line="68" selection-end-column="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="368" column="64" selection-start-line="368" selection-start-column="64" selection-end-line="368" selection-end-column="64" />
+          <folding>
+            <element signature="e#2709#2710#0" expanded="true" />
+            <element signature="e#2740#2741#0" expanded="true" />
+            <element signature="e#2770#2771#0" expanded="true" />
+            <element signature="e#2799#2800#0" expanded="true" />
+            <element signature="e#11408#11409#0" expanded="true" />
+            <element signature="e#11455#11456#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-538">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
         </state>
       </provider>
     </entry>
