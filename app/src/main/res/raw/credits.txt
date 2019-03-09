@@ -1,0 +1,39 @@
+Soundbible.com
+
+buysound Cha Ching Register Sound
+boxsound Jab
+highscoresound Small Crowd Applause
+hitsound Service Bell Help
+lasersound balloon popping
+powerupsound Bell Sound Ring
+
+Credits
+
+I used following sounds in this app:
+
+-Cha Ching Register
+ recorded by Muska666.
+ (http://soundbible.com/1997-Cha-Ching-Register.html)
+-Jab
+ recorded by Mike Koenig.
+ (http://soundbible.com/995-Jab.html)
+ I changed the sound by using only a smaller fraction of it.
+-Small Crowd Applause
+ recorded by Yannick Lemieux.
+ (http://soundbible.com/1964-Small-Crowd-Applause.html)
+-Service Bell Help
+ recorded by Daniel Simion.
+ (http://soundbible.com/2218-Service-Bell-Help.html)
+ I changed the sound by using only a smaller fraction of it.
+-Balloon Popping
+ recorded by Mike Koenig.
+ (http://soundbible.com/1522-Balloon-Popping.html)
+ I changed the sound by using only a smaller fraction of it.
+-Bell Sound Ring
+ recorded by Mike Koenig.
+ (http://soundbible.com/26-Bell-Sound-Ring.html)
+ I changed the sound by using only a smaller fraction of it.
+
+All sounds are licensed under the Creative Commons Attribution 3.0
+(https://creativecommons.org/licenses/by/3.0/legalcode).
+
