@@ -17,7 +17,7 @@ public class Player {
     private float healthLoss;
 
 
-    public Player() {
+    Player() {
         this.pos = new Vec(0, 0);
         this.r = 0;
         this.vel = new Vec(0, 0);
@@ -26,7 +26,7 @@ public class Player {
         this.healthLoss = 0f;
     }
 
-    public void setPos(float x, float y) {
+    void setPos(float x, float y) {
         this.pos.x = x;
         this.pos.y = y;
     }
@@ -41,11 +41,11 @@ public class Player {
         this.acc.y = y;
     }
 
-    public Vec getVel() {
+    Vec getVel() {
         return vel.copy();
     }
 
-    public Vec getPos() {
+    Vec getPos() {
         return pos.copy();
     }
 
@@ -53,24 +53,24 @@ public class Player {
         return r;
     }
 
-    public float getMaxVel() {
+    float getMaxVel() {
         return maxVel;
     }
 
-    public void setHealthLoss(float healthLoss) {
+    void setHealthLoss(float healthLoss) {
         this.healthLoss = healthLoss;
     }
 
-    public void changeHealth(float amount) {
+    void changeHealth(float amount) {
         health += amount;
         if (health > 255) health = 255f;
     }
 
-    public float getHealth() {
+    float getHealth() {
         return health;
     }
 
-    public void update(float width, float height) {
+    void update(float width, float height) {
         vel.add(acc);
         vel.limit(maxVel);
         pos.add(vel);
@@ -100,7 +100,7 @@ public class Player {
     }
 
 
-    public double getAngle(Vec a, Vec b) {
+    double getAngle(Vec a, Vec b) {
         double dot = (double) a.x * b.x + a.y * b.y;
         double det = (double) a.x * b.y - a.y * b.x;
         return Math.atan2(det, dot);

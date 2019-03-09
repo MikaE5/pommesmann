@@ -66,6 +66,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         View v = findViewById(R.id.mainLayout);
         App.startFadeinAnim(v);
         App.startSlowFadeinAnim(startButton, 1000);
+        App.startSlowFadeinAnim(tutorialButton, 1000);
+        App.startSlowFadeinAnim(shopButton, 1000);
         App.startSlowFadeinAnim(soundCheckBox, 2000);
         App.startSlowFadeinAnim(leftHandedCheckBox, 2000);
         showHighscore();

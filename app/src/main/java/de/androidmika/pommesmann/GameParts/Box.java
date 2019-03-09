@@ -14,7 +14,7 @@ public class Box {
     private Vec vel;
     private float len;
 
-    public Box(float width, float height, float len, float maxVel) {
+    Box(float width, float height, float len, float maxVel) {
         initPos(width, height, len);
 
         // vel always between 0.25*maxVel and 1*maxVel
@@ -51,15 +51,15 @@ public class Box {
         this.pos = new Vec(tempX, tempY);
     }
 
-    public Vec getPos() {
+    Vec getPos() {
         return pos.copy();
     }
 
-    public float getLen() {
+    float getLen() {
         return len;
     }
 
-    public void update(float width, float height) {
+    void update(float width, float height) {
         pos.add(vel);
         constrain(width, height);
     }
@@ -91,7 +91,7 @@ public class Box {
         canvas.drawRect(pos.x, pos.y, pos.x + len, pos.y + len, paint);
     }
 
-    public void animationShow(Canvas canvas) {
+    void animationShow(Canvas canvas) {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(App.getContext().getResources().getColor(R.color.boxColor));
@@ -102,13 +102,13 @@ public class Box {
         canvas.drawRect(pos.x, pos.y, pos.x + len, pos.y + len, paint);
     }
 
-    public void removeAnimation(float animSpeed) {
+    void removeAnimation(float animSpeed) {
         pos.x += animSpeed;
         pos.y += animSpeed;
         len -= 2 * animSpeed;
     }
 
-    public boolean animationFinished() {
+    boolean animationFinished() {
         return (len <= 0);
     }
 

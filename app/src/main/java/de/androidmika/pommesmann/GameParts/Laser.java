@@ -14,7 +14,7 @@ public class Laser {
     private int wallCount;
     private int maxWallCount;
 
-    public Laser(Player player) {
+    Laser(Player player) {
         this.wallCount = 0;
         this.maxWallCount = 2;
 
@@ -40,7 +40,7 @@ public class Laser {
         this.pos = tempPos;
     }
 
-    public Vec getPos() {
+    Vec getPos() {
         return pos.copy();
     }
 
@@ -48,11 +48,11 @@ public class Laser {
         return r;
     }
 
-    public int getWallCount() {
+    int getWallCount() {
         return wallCount;
     }
 
-    public void update(float width, float height) {
+    void update(float width, float height) {
         pos.add(vel);
         hitWall(width, height);
     }
@@ -99,7 +99,7 @@ public class Laser {
     }
 
 
-    public boolean removeLaser() {
+    boolean removeLaser() {
         return (wallCount >= maxWallCount);
     }
 }

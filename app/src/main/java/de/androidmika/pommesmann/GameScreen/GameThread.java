@@ -26,15 +26,17 @@ public class GameThread extends Thread {
                 if (!surfaceHolder.getSurface().isValid())
                     continue;
 
-                canvas = this.surfaceHolder.lockCanvas();
+                try {
+                    canvas = this.surfaceHolder.lockCanvas();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
                 synchronized (surfaceHolder) {
                     if (canvas != null) {
                         this.gameView.update();
                         this.gameView.draw(canvas);
                     }
                 }
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
             } catch (NullPointerException e){
                 e.printStackTrace();
             }
