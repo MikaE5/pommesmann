@@ -2,6 +2,7 @@ package de.androidmika.pommesmann.ShopDatabase;
 
 public class Item {
     private String name;
+    private String description;
     private int level;
     private int price;
 
@@ -10,13 +11,9 @@ public class Item {
         this.name = null;
     }
 
-    public Item(String name, int level) {
+    public Item(String name, String description, int level, int price) {
         this.name = name;
-        this.level = level;
-    }
-
-    public Item(String name, int level, int price) {
-        this.name = name;
+        this.description = description;
         this.level = level;
         this.price = price;
     }
@@ -25,6 +22,9 @@ public class Item {
         this.name = name;
     }
     public String getName() { return name; }
+
+    public void setDescription(String description) {this.description = description; }
+    public String getDescription() { return description;}
 
     public void setLevel(int level) {
         this.level = level;

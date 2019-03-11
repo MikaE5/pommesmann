@@ -35,7 +35,6 @@ public class ShopActivity extends Activity {
 
     private ArrayList<View> itemViews;
     private ArrayList<String> itemNames;
-    private ArrayList<String> itemDescriptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,6 @@ public class ShopActivity extends Activity {
 
         itemViews = new ArrayList<>();
         itemNames = new ArrayList<>();
-        itemDescriptions = new ArrayList<>();
 
         dbHelper = ShopDatabaseHelper.getInstance(this);
 
@@ -77,43 +75,17 @@ public class ShopActivity extends Activity {
     private void fillShop() {
         LayoutInflater inflater = getLayoutInflater();
 
-        View healthPowerupView = inflater
-                .inflate(R.layout.shop_item, itemContainer, false);
-        addItemView(healthPowerupView,
-                ShopHelper.HEALTH_POWERUP,
-                ShopHelper.HEALTH_POWERUP_DESCRIPTION);
-        itemViews.add(healthPowerupView);
-        itemNames.add(ShopHelper.HEALTH_POWERUP);
-        itemDescriptions.add(ShopHelper.HEALTH_POWERUP_DESCRIPTION);
-
-        View laserPowerupView = inflater
-                .inflate(R.layout.shop_item, itemContainer, false);
-        addItemView(laserPowerupView,
-                ShopHelper.LASER_POWERUP,
-                ShopHelper.LASER_POWERUP_DESCRIPTION);
-        itemViews.add(laserPowerupView);
-        itemNames.add(ShopHelper.LASER_POWERUP);
-        itemDescriptions.add(ShopHelper.LASER_POWERUP_DESCRIPTION);
-
-        View powerupChanceView = inflater
-                .inflate(R.layout.shop_item, itemContainer, false);
-        addItemView(powerupChanceView,
-                ShopHelper.POWERUP_CHANCE,
-                ShopHelper.POWERUP_CHANCE_DESCRIPTION);
-        itemViews.add(powerupChanceView);
-        itemNames.add(ShopHelper.POWERUP_CHANCE);
-        itemDescriptions.add(ShopHelper.POWERUP_CHANCE_DESCRIPTION);
-
-        View secretOfPommesmannView = inflater
-                .inflate(R.layout.shop_item, itemContainer, false);
-        addItemView(secretOfPommesmannView,
-                ShopHelper.SECRET_OF_POMMESMANN,
-                ShopHelper.SECRET_OF_POMMESMANN_DESCRIPTION);
+        for (Item item : ShopHelper.ITEMS) {
+            View view = inflater.inflate(R.layout.shop_item, itemContainer, false);
+            addItemView(view, item.getName());
+            itemViews.add(view);
+            itemNames.add(item.getName());
+        }
     }
 
     private void updateShop() {
         for (int i = 0; i < itemViews.size(); i++) {
-            setItemLayout(itemViews.get(i), itemNames.get(i), itemDescriptions.get(i));
+            setItemLayout(itemViews.get(i), itemNames.get(i));
         }
     }
 
@@ -150,7 +122,7 @@ public class ShopActivity extends Activity {
         Toast.makeText(this, text, duration).show();
     }
 
-    private void buyDialog(final View view, final Item item, final String name, final String description) {
+    private void buyDialog(final View view, final Item item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
 
         CharSequence message = "Buy " + item.getName() + " Level " + (item.getLevel()+1) +
@@ -166,7 +138,7 @@ public class ShopActivity extends Activity {
         builder.setPositiveButton(getResources().getString(R.string.dialogPositive), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                buyItem(view, item, name, description);
+                buyItem(view, item);
                 buyToast(item);
             }
         });
@@ -188,35 +160,34 @@ public class ShopActivity extends Activity {
         buyDialog.show();
     }
 
-    private void addItemView(View view, String name, String description) {
-        setItemLayout(view, name, description);
+    private void addItemView(View view, String name) {
+        setItemLayout(view, name);
         itemContainer.addView(view);
     }
 
-    private void setItemLayout(View view, String name, String description) {
+    private void setItemLayout(View view, String name) {
         Item item = dbHelper.getItemByName(name);
+        TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
+        TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
+        itemNameTextView.setText(item.getName());
+        itemDescriptionTextView.setText(item.getDescription());
+
         if (App.getHighscore() < ShopHelper.getRestrictionByName(name)) {
-            restrictedPowerup(view, name, description);
+            restrictedPowerup(view, item);
         } else if (item.getLevel() >= ShopHelper.MAX_LEVEL &&
                     !item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
-            maxLevelPowerup(view, name, description);
+            maxLevelPowerup(view, item);
         } else {
-            standardItemLayout(view, name, description);
-            setItemBuyButton(view, name, description);
+            standardItemLayout(view, item);
+            setItemBuyButton(view, item);
         }
         setItemImage(view, name);
     }
 
-    private void standardItemLayout(View view, String name, String description) {
-        TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
-        TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
+    private void standardItemLayout(View view, Item item) {
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
         Button buyButton = view.findViewById(R.id.buyButton);
 
-        Item item = dbHelper.getItemByName(name);
-
-        itemNameTextView.setText(name);
-        itemDescriptionTextView.setText(description);
         itemLevelTextView.setText("Level " + Integer.toString(item.getLevel() + 1));
         buyButton.setText(Integer.toString(item.getPrice()) + "coins");
         buyButton.setVisibility(View.VISIBLE);
@@ -224,14 +195,9 @@ public class ShopActivity extends Activity {
         view.setAlpha(1f);
     }
 
-    private void maxLevelPowerup(View view, String name, String description) {
-        TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
-        TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
+    private void maxLevelPowerup(View view, Item item) {
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
         Button buyButton = view.findViewById(R.id.buyButton);
-
-        itemNameTextView.setText(name);
-        itemDescriptionTextView.setText(description);
 
         buyButton.setVisibility(View.GONE);
         view.setBackgroundColor(getResources().getColor(R.color.maxLevelItem));
@@ -239,15 +205,11 @@ public class ShopActivity extends Activity {
         itemLevelTextView.setText(getResources().getString(R.string.itemMaxLevel));
     }
 
-    private void restrictedPowerup(View view, String name, String description) {
-        int restriction = ShopHelper.getRestrictionByName(name);
-        TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
-        TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
+    private void restrictedPowerup(View view, Item item) {
+        int restriction = ShopHelper.getRestrictionByName(item.getName());
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
         Button buyButton = view.findViewById(R.id.buyButton);
 
-        itemNameTextView.setText(name);
-        itemDescriptionTextView.setText(description);
         buyButton.setVisibility(View.GONE);
         view.setBackgroundColor(getResources().getColor(R.color.restrictedItem));
         view.setAlpha(0.8f);
@@ -259,15 +221,13 @@ public class ShopActivity extends Activity {
     }
 
 
-    private void setItemBuyButton(final View view, final String name, final String description) {
-        final Item item = dbHelper.getItemByName(name);
+    private void setItemBuyButton(final View view, final Item item) {
         Button buyButton = view.findViewById(R.id.buyButton);
-
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (enoughCoins(item.getPrice())) {
-                    buyDialog(view, item, name, description);
+                    buyDialog(view, item);
                 } else {
                     coinsToast();
                 }
@@ -286,7 +246,7 @@ public class ShopActivity extends Activity {
         }
     }
 
-    public void buyItem(View view, Item item, String name, String description) {
+    public void buyItem(View view, Item item) {
         int coins = getCoins();
         setCoins(coins - item.getPrice());
         buySound();
@@ -299,7 +259,7 @@ public class ShopActivity extends Activity {
         secretOfPommesmann(item);
 
         showCoinsTextView();
-        setItemLayout(view, name, description);
+        setItemLayout(view, item.getName());
     }
 
     public void buySound() {

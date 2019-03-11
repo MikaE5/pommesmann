@@ -2,15 +2,16 @@ package de.androidmika.pommesmann.ShopDatabase;
 
 import android.provider.BaseColumns;
 
-public class ShopContract {
+class ShopContract {
 
     private ShopContract() {};
 
-    public static final class ItemEntry implements BaseColumns {
-        public static final String TABLE_NAME = "items";
-        public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_LEVEL = "level";
-        public static final String COLUMN_PRICE = "price";
+    static final class ItemEntry implements BaseColumns {
+        static final String TABLE_NAME = "items";
+        static final String COLUMN_NAME = "name";
+        static final String COLUMN_DESCRIPTION = "description";
+        static final String COLUMN_LEVEL = "level";
+        static final String COLUMN_PRICE = "price";
     }
 
 }
