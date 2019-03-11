@@ -1,0 +1,7 @@
+About
+
+This is my first try at developing an Android Application.
+I created some parts of my code with help of the following sites:
+https://www.instructables.com/id/A-Simple-Android-UI-Joystick/
+https://www.androidauthority.com/android-game-java-785331/
+https://guides.codepath.com/android/local-databases-with-sqliteopenhelper

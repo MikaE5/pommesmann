@@ -1,12 +1,3 @@
-Soundbible.com
-
-buysound Cha Ching Register Sound
-boxsound Jab
-highscoresound Small Crowd Applause
-hitsound Service Bell Help
-lasersound balloon popping
-powerupsound Bell Sound Ring
-
 Credits
 
 I used following sounds in this app:
