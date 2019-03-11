@@ -4,6 +4,7 @@ public class Item {
     private String name;
     private String description;
     private int level;
+    private boolean active;
     private int price;
 
 
@@ -15,6 +16,7 @@ public class Item {
         this.name = name;
         this.description = description;
         this.level = level;
+        this.active = true;
         this.price = price;
     }
 
@@ -30,6 +32,9 @@ public class Item {
         this.level = level;
     }
     public int getLevel() { return level; }
+
+    public void setActive(boolean isActive) { this.active = isActive; }
+    public boolean getActive() { return active; }
 
     public void setPrice(int price) { this.price = price; }
     public int getPrice() { return price; }

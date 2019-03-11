@@ -18,7 +18,6 @@
         android:id="@+id/itemNameTextView"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:layout_toEndOf="@+id/itemImage"
@@ -32,7 +31,6 @@
         android:layout_below="@+id/itemNameTextView"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginBottom="10dp"
         android:layout_toStartOf="@+id/itemLevelTextView"
         android:layout_toLeftOf="@+id/itemLevelTextView"
         android:layout_toEndOf="@+id/itemImage"
@@ -43,7 +41,6 @@
         android:id="@+id/itemLevelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_toEndOf="@+id/itemNameTextView"
         android:layout_toRightOf="@+id/itemNameTextView" />
 
@@ -52,7 +49,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/itemLevelTextView"
-        android:layout_marginBottom="10dp"
         android:layout_toEndOf="@+id/itemNameTextView"
         android:layout_toRightOf="@+id/itemNameTextView"
         android:background="@drawable/oval_selector"
@@ -62,10 +58,8 @@
         android:id="@+id/itemCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_toEndOf="@+id/itemNameTextView"
+        android:layout_toRightOf="@+id/itemNameTextView"
         android:layout_below="@+id/buyButton"
-        android:layout_marginTop="15dp"
-        android:text="@string/itemCheckBox"
-        android:visibility="gone"/>
+        android:text="@string/itemCheckBox" />
 </RelativeLayout>

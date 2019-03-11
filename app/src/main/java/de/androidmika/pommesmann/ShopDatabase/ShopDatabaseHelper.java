@@ -17,9 +17,11 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
     private static ShopDatabaseHelper sInstance;
 
     public static final String DATABASE_NAME = "shop.db";
-    public static final int DATABASE_VERSION = 3;
+    // if I update when app is already released, I have to change onUpgrade!!!!
+    public static final int DATABASE_VERSION = 4;
         // VERSION 2: added COLUMN_PRICE
         // VERSION 3: added COLUMN_DESCRIPTION
+        // VERSION 4: added COLUMN_ACTIVE
 
     private ShopDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -55,6 +57,7 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                 ItemEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                 ItemEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 ItemEntry.COLUMN_LEVEL + " INTEGER NOT NULL, " +
+                ItemEntry.COLUMN_ACTIVE + " INTEGER NOT NULL, " +
                 ItemEntry.COLUMN_PRICE + " INTEGER NOT NULL" +
                 ");";
         db.execSQL(SQL_CREATE_ITEMS_TABLE);
@@ -68,6 +71,16 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    private ContentValues fillValues(Item item) {
+        ContentValues values = new ContentValues();
+        values.put(ItemEntry.COLUMN_NAME, item.getName());
+        values.put(ItemEntry.COLUMN_DESCRIPTION, item.getDescription());
+        values.put(ItemEntry.COLUMN_LEVEL, item.getLevel());
+        values.put(ItemEntry.COLUMN_ACTIVE, item.getActive());
+        values.put(ItemEntry.COLUMN_PRICE, item.getPrice());
+        return values;
+    }
+
     public void addOrUpdateItem(Item item) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -77,13 +90,7 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
             int updatedRows = updateItem(item);
 
             if (updatedRows <= 0) {
-                ContentValues values = new ContentValues();
-                values.put(ItemEntry.COLUMN_NAME, item.getName());
-                values.put(ItemEntry.COLUMN_DESCRIPTION, item.getDescription());
-                values.put(ItemEntry.COLUMN_LEVEL, item.getLevel());
-                values.put(ItemEntry.COLUMN_PRICE, item.getPrice());
-
-                db.insertOrThrow(ItemEntry.TABLE_NAME, null, values);
+                db.insertOrThrow(ItemEntry.TABLE_NAME, null, fillValues(item));
             }
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -96,17 +103,11 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
     public int updateItem(Item item) {
         SQLiteDatabase db = getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(ItemEntry.COLUMN_NAME, item.getName());
-        values.put(ItemEntry.COLUMN_DESCRIPTION, item.getDescription());
-        values.put(ItemEntry.COLUMN_LEVEL, item.getLevel());
-        values.put(ItemEntry.COLUMN_PRICE, item.getPrice());
-
         // update based on the item.name
         String whereClause = ItemEntry.COLUMN_NAME + " = ?";
         String[] whereArgs = new String[]{String.valueOf(item.getName())};
 
-        return db.update(ItemEntry.TABLE_NAME, values, whereClause, whereArgs);
+        return db.update(ItemEntry.TABLE_NAME, fillValues(item), whereClause, whereArgs);
     }
 
     public Item getItemByName(String name) {
@@ -117,6 +118,7 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                 ItemEntry.COLUMN_NAME + ", " +
                 ItemEntry.COLUMN_DESCRIPTION + ", " +
                 ItemEntry.COLUMN_LEVEL + ", " +
+                ItemEntry.COLUMN_ACTIVE + ", " +
                 ItemEntry.COLUMN_PRICE +
                 " FROM " + ItemEntry.TABLE_NAME + " WHERE " + ItemEntry.COLUMN_NAME + "=?";
 
@@ -130,6 +132,7 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                     item.setName(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_NAME)));
                     item.setDescription(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_DESCRIPTION)));
                     item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
+                    item.setActive(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_ACTIVE)) == 1);
                     item.setPrice(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_PRICE)));
                 }
             } catch (CursorIndexOutOfBoundsException e) {
@@ -165,6 +168,7 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                     item.setName(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_NAME)));
                     item.setDescription(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_DESCRIPTION)));
                     item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
+                    item.setActive(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_ACTIVE)) == 1);
                     item.setPrice(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_PRICE)));
                     items.add(item);
                 } while (cursor.moveToNext());

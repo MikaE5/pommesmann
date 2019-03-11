@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -169,17 +170,21 @@ public class ShopActivity extends Activity {
         Item item = dbHelper.getItemByName(name);
         TextView itemNameTextView = view.findViewById(R.id.itemNameTextView);
         TextView itemDescriptionTextView = view.findViewById(R.id.itemDescriptionTextView);
+        CheckBox itemCheckBox = view.findViewById(R.id.itemCheckBox);
         itemNameTextView.setText(item.getName());
         itemDescriptionTextView.setText(item.getDescription());
+        itemCheckBox.setChecked(item.getActive());
 
         if (App.getHighscore() < ShopHelper.getRestrictionByName(name)) {
             restrictedPowerup(view, item);
         } else if (item.getLevel() >= ShopHelper.MAX_LEVEL &&
                     !item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
             maxLevelPowerup(view, item);
+            setItemCheckBox(view, item);
         } else {
             standardItemLayout(view, item);
             setItemBuyButton(view, item);
+            setItemCheckBox(view, item);
         }
         setItemImage(view, name);
     }
@@ -198,6 +203,11 @@ public class ShopActivity extends Activity {
     private void maxLevelPowerup(View view, Item item) {
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
         Button buyButton = view.findViewById(R.id.buyButton);
+        CheckBox itemCheckBox = view.findViewById(R.id.itemCheckBox);
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemCheckBox.getLayoutParams();
+        params.addRule(RelativeLayout.BELOW, R.id.itemLevelTextView);
+        itemCheckBox.setLayoutParams(params);
 
         buyButton.setVisibility(View.GONE);
         view.setBackgroundColor(getResources().getColor(R.color.maxLevelItem));
@@ -208,13 +218,16 @@ public class ShopActivity extends Activity {
     private void restrictedPowerup(View view, Item item) {
         int restriction = ShopHelper.getRestrictionByName(item.getName());
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
+        CheckBox itemCheckBox = view.findViewById(R.id.itemCheckBox);
         Button buyButton = view.findViewById(R.id.buyButton);
 
         buyButton.setVisibility(View.GONE);
+        itemCheckBox.setVisibility(View.GONE);
+
         view.setBackgroundColor(getResources().getColor(R.color.restrictedItem));
         view.setAlpha(0.8f);
 
-        itemLevelTextView.setText("Highscore of " + restriction + " to unlock");
+        itemLevelTextView.setText("highscore of " + restriction + " to unlock");
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemLevelTextView.getLayoutParams();
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         itemLevelTextView.setLayoutParams(params);
@@ -231,6 +244,18 @@ public class ShopActivity extends Activity {
                 } else {
                     coinsToast();
                 }
+            }
+        });
+    }
+
+    private void setItemCheckBox(final View view, final Item item) {
+        final CheckBox itemCheckBox = view.findViewById(R.id.itemCheckBox);
+        itemCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean active = itemCheckBox.isChecked();
+                item.setActive(active);
+                dbHelper.addOrUpdateItem(item);
             }
         });
     }

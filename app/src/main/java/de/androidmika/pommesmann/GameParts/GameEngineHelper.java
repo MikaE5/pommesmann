@@ -40,15 +40,19 @@ public class GameEngineHelper {
         healthPowerupLevel = healthPowerup.getLevel();
         healthPowerupDuration = 350 + 25 * healthPowerupLevel;
         healthPowerupHealing = 85 + 15 * healthPowerupLevel;
-        if (healthPowerupLevel > 0) availablePowerups.add(ShopHelper.HEALTH_POWERUP);
+        if (healthPowerupLevel > 0 && healthPowerup.getActive()) {
+            availablePowerups.add(ShopHelper.HEALTH_POWERUP);
+        }
 
         Item laserPowerup = dbHelper.getItemByName(ShopHelper.LASER_POWERUP);
         laserPowerupLevel = laserPowerup.getLevel();
         laserPowerupDuration = 300 + 25 * laserPowerupLevel;
-        if (laserPowerupLevel > 0) availablePowerups.add(ShopHelper.LASER_POWERUP);
+        if (laserPowerupLevel > 0 && laserPowerup.getActive()) {
+            availablePowerups.add(ShopHelper.LASER_POWERUP);
+        }
     }
 
-    public String getRandomPowerup() {
+    String getRandomPowerup() {
         return availablePowerups.get(new Random().nextInt(availablePowerups.size()));
     }
 }
