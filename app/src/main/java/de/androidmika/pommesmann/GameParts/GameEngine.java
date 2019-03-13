@@ -3,7 +3,6 @@ package de.androidmika.pommesmann.GameParts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -80,7 +79,6 @@ public class GameEngine {
             REL_W_H = (int) (100 * width / height);
             player.setPos(width / 2, height / 2);
             player.setR(0.85f * REL_W_H);
-            Log.d("afterSurfaceCreated", "PlayerR"+player.getR());
             maxVelBox = player.getMaxVel() + engineHelper.difficulty;
             isRunning = true;
         }
