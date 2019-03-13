@@ -12,7 +12,9 @@ class ShopContract {
         static final String COLUMN_DESCRIPTION = "description";
         static final String COLUMN_LEVEL = "level";
         static final String COLUMN_ACTIVE = "active";
+        static final String COLUMN_RESTRICTION = "restriction";
         static final String COLUMN_PRICE = "price";
+        static final String COLUMN_RESOURCE = "resource";
     }
 
 }
