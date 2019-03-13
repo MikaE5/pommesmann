@@ -18,10 +18,11 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "shop.db";
     // if I update when app is already released, I have to change onUpgrade!!!!
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
         // VERSION 2: added COLUMN_PRICE
         // VERSION 3: added COLUMN_DESCRIPTION
         // VERSION 4: added COLUMN_ACTIVE
+        // VERSION 5: added COLUMN_RESTRICTION and COLUMN_RESOURCE
 
     private ShopDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -58,7 +59,9 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                 ItemEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 ItemEntry.COLUMN_LEVEL + " INTEGER NOT NULL, " +
                 ItemEntry.COLUMN_ACTIVE + " INTEGER NOT NULL, " +
-                ItemEntry.COLUMN_PRICE + " INTEGER NOT NULL" +
+                ItemEntry.COLUMN_RESTRICTION + " INTEGER NOT NULL, " +
+                ItemEntry.COLUMN_PRICE + " INTEGER NOT NULL, " +
+                ItemEntry.COLUMN_RESOURCE + " INTEGER NOT NULL" +
                 ");";
         db.execSQL(SQL_CREATE_ITEMS_TABLE);
     }
@@ -77,7 +80,9 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         values.put(ItemEntry.COLUMN_DESCRIPTION, item.getDescription());
         values.put(ItemEntry.COLUMN_LEVEL, item.getLevel());
         values.put(ItemEntry.COLUMN_ACTIVE, item.getActive());
+        values.put(ItemEntry.COLUMN_RESTRICTION, item.getRestriction());
         values.put(ItemEntry.COLUMN_PRICE, item.getPrice());
+        values.put(ItemEntry.COLUMN_RESOURCE, item.getResource());
         return values;
     }
 
@@ -119,7 +124,9 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                 ItemEntry.COLUMN_DESCRIPTION + ", " +
                 ItemEntry.COLUMN_LEVEL + ", " +
                 ItemEntry.COLUMN_ACTIVE + ", " +
-                ItemEntry.COLUMN_PRICE +
+                ItemEntry.COLUMN_RESTRICTION + ", " +
+                ItemEntry.COLUMN_PRICE + ", " +
+                ItemEntry.COLUMN_RESOURCE +
                 " FROM " + ItemEntry.TABLE_NAME + " WHERE " + ItemEntry.COLUMN_NAME + "=?";
 
         SQLiteDatabase db = getReadableDatabase();
@@ -133,7 +140,9 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                     item.setDescription(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_DESCRIPTION)));
                     item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
                     item.setActive(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_ACTIVE)) == 1);
+                    item.setRestriction(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_RESTRICTION)));
                     item.setPrice(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_PRICE)));
+                    item.setResource(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_RESOURCE)));
                 }
             } catch (CursorIndexOutOfBoundsException e) {
                 e.printStackTrace();
@@ -152,7 +161,10 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                 ItemEntry.COLUMN_NAME + ", " +
                 ItemEntry.COLUMN_DESCRIPTION + ", " +
                 ItemEntry.COLUMN_LEVEL + ", " +
-                ItemEntry.COLUMN_PRICE +
+                ItemEntry.COLUMN_ACTIVE + ", " +
+                ItemEntry.COLUMN_RESTRICTION + ", " +
+                ItemEntry.COLUMN_PRICE + ", " +
+                ItemEntry.COLUMN_RESOURCE +
             " FROM " + ItemEntry.TABLE_NAME;
 
         SQLiteDatabase db = getReadableDatabase();
@@ -169,7 +181,10 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
                     item.setDescription(cursor.getString(cursor.getColumnIndex(ItemEntry.COLUMN_DESCRIPTION)));
                     item.setLevel(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_LEVEL)));
                     item.setActive(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_ACTIVE)) == 1);
+                    item.setRestriction(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_RESTRICTION)));
                     item.setPrice(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_PRICE)));
+                    item.setResource(cursor.getInt(cursor.getColumnIndex(ItemEntry.COLUMN_RESOURCE)));
+
                     items.add(item);
                 } while (cursor.moveToNext());
             }

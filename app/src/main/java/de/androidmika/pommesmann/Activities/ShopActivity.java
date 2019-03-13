@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -175,7 +176,7 @@ public class ShopActivity extends Activity {
         itemDescriptionTextView.setText(item.getDescription());
         itemCheckBox.setChecked(item.getActive());
 
-        if (App.getHighscore() < ShopHelper.getRestrictionByName(name)) {
+        if (App.getHighscore() < item.getRestriction()) {
             restrictedPowerup(view, item);
         } else if (item.getLevel() >= ShopHelper.MAX_LEVEL &&
                     !item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
@@ -186,7 +187,7 @@ public class ShopActivity extends Activity {
             setItemBuyButton(view, item);
             setItemCheckBox(view, item);
         }
-        setItemImage(view, name);
+        setItemImage(view, item);
     }
 
     private void standardItemLayout(View view, Item item) {
@@ -216,7 +217,7 @@ public class ShopActivity extends Activity {
     }
 
     private void restrictedPowerup(View view, Item item) {
-        int restriction = ShopHelper.getRestrictionByName(item.getName());
+        int restriction = item.getRestriction();
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
         CheckBox itemCheckBox = view.findViewById(R.id.itemCheckBox);
         Button buyButton = view.findViewById(R.id.buyButton);
@@ -260,9 +261,9 @@ public class ShopActivity extends Activity {
         });
     }
 
-    private void setItemImage(View view, String name) {
+    private void setItemImage(View view, Item item) {
         ImageView itemImage = view.findViewById(R.id.itemImage);
-        Bitmap image = ShopHelper.getImageByName(name);
+        Bitmap image = BitmapFactory.decodeResource(getResources(), item.getResource());
 
         if (image == null) {
             itemImage.setImageResource(R.mipmap.ic_launcher);
