@@ -37,9 +37,9 @@ public class TutorialActivity extends Activity implements View.OnClickListener {
     );
     private final List<String> TUTORIALS = Collections.unmodifiableList(
             Arrays.asList(
-                    "Tap screen to start!",
-                    "Use Joystick to move around! \n Don't get hit by boxes!",
-                    "Use Button to shoot lasers! \n Try to hit boxes with lasers!"
+                    "Tap the screen to start!",
+                    "Use the Joystick to move around! \n Don't get hit by boxes!",
+                    "Use the Button to shoot lasers! \n Try to hit boxes with lasers!"
             )
     );
 
