@@ -3,7 +3,6 @@ package de.androidmika.pommesmann.GameParts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -45,7 +44,6 @@ public class GameEngine {
     private int points = 0;
     private SoundManager soundCallback;
 
-    private final String TAG = "GameEngine";
 
 
     public interface SoundManager {
@@ -73,12 +71,12 @@ public class GameEngine {
             REL_W_H = Math.round(REL_W_H);
             REL_W_H /= 100;
 
-            Log.d(TAG, "REL_W_H " + REL_W_H);
             player.setPos(width / 2, height / 2);
             player.setR(55 * REL_W_H);
+            player.setHealthLoss(healthLoss);
 
             // addition of difficulty is not relative
-            maxVelBox = player.getMaxVel() + engineHelper.difficulty;
+            maxVelBox = player.getMaxVel();
             isRunning = true;
         }
     }
@@ -346,12 +344,12 @@ public class GameEngine {
 
     private void nextRound() {
         round++;
+        // nextRound is called when the game starts, but I don't want to increase the values
+        // when starting
         if (round > 1) {
-            maxVelBox += 0.5 + 0.5 * engineHelper.difficulty;
-            healthLoss += 0.01f;
+            maxVelBox += (0.5 + 0.1 * engineHelper.difficulty) * REL_W_H;
             hitDamage += 2 + 2 * engineHelper.difficulty;
         }
-        player.setHealthLoss(healthLoss);
     }
 
     private void newBoxes(float width, float height) {
