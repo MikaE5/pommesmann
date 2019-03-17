@@ -180,7 +180,7 @@ public class ShopActivity extends Activity {
             restrictedPowerup(view, item);
         } else if (item.getLevel() >= ShopHelper.MAX_LEVEL &&
                     !item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
-            maxLevelPowerup(view, item);
+            maxLevelPowerup(view);
             setItemCheckBox(view, item);
         } else {
             standardItemLayout(view, item);
@@ -194,14 +194,16 @@ public class ShopActivity extends Activity {
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
         Button buyButton = view.findViewById(R.id.buyButton);
 
-        itemLevelTextView.setText("Level " + Integer.toString(item.getLevel() + 1));
-        buyButton.setText(Integer.toString(item.getPrice()) + "coins");
+        String text = "Level " + Integer.toString(item.getLevel() + 1) + "\n"
+                    + item.getPrice() + "coins";
+        itemLevelTextView.setText(text);
+        buyButton.setText(getResources().getString(R.string.itemBuyButton));
         buyButton.setVisibility(View.VISIBLE);
         view.setBackgroundColor(getResources().getColor(R.color.standardItem));
         view.setAlpha(1f);
     }
 
-    private void maxLevelPowerup(View view, Item item) {
+    private void maxLevelPowerup(View view) {
         TextView itemLevelTextView = view.findViewById(R.id.itemLevelTextView);
         Button buyButton = view.findViewById(R.id.buyButton);
         CheckBox itemCheckBox = view.findViewById(R.id.itemCheckBox);

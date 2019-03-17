@@ -10,7 +10,8 @@
     <string name="aboutButton">about</string>
     <string name="leftHandedCheckBox">left handed</string>
     <string name="shopButton">shop</string>
-    <string name="itemCheckBox">use</string>
+    <string name="itemBuyButton">buy</string>
+    <string name="itemCheckBox">in use</string>
     <string name="itemMaxLevel">max level!</string>
     <string name="dialogPositive">ok</string>
     <string name="dialogNegative">cancel</string>
