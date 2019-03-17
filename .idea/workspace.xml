@@ -18,11 +18,13 @@
     <list default="true" id="a98c4cdc-134b-457e-8109-77755f7eb762" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/gameover_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/gameover_activity.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,6 +50,7 @@
         <counts>
           <entry key="project.closed" value="23" />
           <entry key="project.open.time.103" value="1" />
+          <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.16" value="2" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.22" value="1" />
@@ -60,61 +63,47 @@
           <entry key="project.open.time.34" value="1" />
           <entry key="project.open.time.42" value="1" />
           <entry key="project.open.time.43" value="1" />
-          <entry key="project.opened" value="21" />
+          <entry key="project.opened" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="21870" />
-          <entry key="txt" value="875" />
-          <entry key="xml" value="1719" />
+          <entry key="txt" value="891" />
+          <entry key="xml" value="1880" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="21870" />
-          <entry key="PLAIN_TEXT" value="875" />
-          <entry key="XML" value="1719" />
+          <entry key="PLAIN_TEXT" value="891" />
+          <entry key="XML" value="1880" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="gradle" value="5" />
-          <entry key="java" value="70" />
+          <entry key="java" value="71" />
           <entry key="png" value="6" />
           <entry key="properties" value="3" />
           <entry key="txt" value="2" />
-          <entry key="xml" value="54" />
+          <entry key="xml" value="56" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Groovy" value="5" />
           <entry key="Image" value="6" />
-          <entry key="JAVA" value="70" />
+          <entry key="JAVA" value="71" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="Properties" value="3" />
-          <entry key="XML" value="54" />
+          <entry key="XML" value="56" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="190" selection-start-line="190" selection-end-line="190" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/nextbutton_pressed.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tutorial_activity.xml">
           <provider selected="true" editor-type-id="android-designer2" />
@@ -126,20 +115,33 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/TutorialActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="41" column="29" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml">
+          <provider selected="true" editor-type-id="android-designer2" />
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="260">
+              <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+              <folding>
+                <element signature="e#4502#4530#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/gameover_activity.xml">
+          <provider selected="true" editor-type-id="android-designer2" />
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="95" column="15" selection-start-line="95" selection-start-column="15" selection-end-line="95" selection-end-column="15" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml">
-          <provider selected="true" editor-type-id="android-designer2" />
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="2380">
-              <caret line="119" column="56" selection-start-line="119" selection-start-column="56" selection-end-line="119" selection-end-column="56" />
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2011">
+              <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -2444,13 +2446,11 @@
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/oval_selector.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/oval.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/oval_pressed.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/buy_dialog.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/GameActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/shop_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngineHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/App.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/gameover_activity.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Vec.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/GameoverActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
@@ -2467,7 +2467,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameScreen/GameThread.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/AboutActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/raw/credits.txt" />
@@ -2477,6 +2476,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/ShopActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/ShopDatabase/ShopHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/ShopDatabase/ShopDatabaseHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/gameover_activity.xml" />
       </list>
     </option>
   </component>
@@ -2530,6 +2532,11 @@
             <path>
               <item name="POMMESMANN" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
+            </path>
+            <path>
+              <item name="POMMESMANN" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
             </path>
             <path>
@@ -2571,12 +2578,6 @@
               <item name="POMMESMANN" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="drawable" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="POMMESMANN" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
               <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
           </expand>
@@ -2599,7 +2600,7 @@
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="profiler&#9;ACTION&#9;ActivateAndroidProfilerToolWindow" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="device.picker.selection" value="Nexus_6_API_Q" />
+    <property name="device.picker.selection" value="ZY322HQRZX" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Beispiel-Apps/Mueckenfang" />
   </component>
@@ -2722,8 +2723,8 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5843521" visible="true" weight="0.21785174" />
-      <window_info id="Structure" order="1" sideWeight="0.41564792" side_tool="true" visible="true" weight="0.21785174" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.58196723" visible="true" weight="0.21785174" />
+      <window_info id="Structure" order="1" sideWeight="0.4180328" side_tool="true" visible="true" weight="0.21785174" />
       <window_info id="Designer" order="2" />
       <window_info id="Build Variants" order="3" sideWeight="0.5012285" side_tool="true" weight="0.24962178" />
       <window_info id="Captures" order="4" side_tool="true" weight="0.25" />
@@ -2737,12 +2738,12 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4969743" visible="true" weight="0.3295082" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="8" sideWeight="0.5030257" side_tool="true" visible="true" weight="0.3295082" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49621785" weight="0.38360655" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50378215" side_tool="true" weight="0.47868854" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3295082" />
       <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.8721634" weight="0.7754098" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" id="Android Profiler" order="12" show_stripe_button="false" weight="0.0" />
+      <window_info anchor="bottom" id="Android Profiler" order="12" weight="0.0" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -2781,14 +2782,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/restartbutton_pressed.png">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="40">
-          <caret line="2" column="40" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="40" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest" />
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor" />
@@ -2907,10 +2900,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/gameover_activity.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -2976,13 +2965,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="29">
-          <caret line="35" column="13" lean-forward="true" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-353">
@@ -3025,9 +3007,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/TutorialActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="41" column="29" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="613">
+          <caret line="42" column="18" lean-forward="true" selection-start-line="42" selection-start-column="18" selection-end-line="42" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/GameParts/GameEngine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
+        <state relative-caret-position="102">
           <caret line="190" selection-start-line="190" selection-end-line="190" />
         </state>
       </provider>
@@ -3043,18 +3040,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/TutorialActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="41" column="29" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+        <state relative-caret-position="-2011">
+          <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml">
       <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor">
-        <state relative-caret-position="2380">
-          <caret line="119" column="56" selection-start-line="119" selection-start-column="56" selection-end-line="119" selection-end-column="56" />
+        <state relative-caret-position="260">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="16" selection-end-column="8" />
+          <folding>
+            <element signature="e#4502#4530#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/gameover_activity.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="95" column="15" selection-start-line="95" selection-start-column="15" selection-end-line="95" selection-end-column="15" />
         </state>
       </provider>
     </entry>
