@@ -23,26 +23,27 @@ public class GameEngine {
 
     private boolean isRunning = false;
     private boolean started = false;
-    public Player player;
-    private ArrayList<Laser> lasers;
-    private ArrayList<Laser> removableLasers;
+    public Player player = new Player();
+    private ArrayList<Laser> lasers = new ArrayList<>();
+    private ArrayList<Laser> removableLasers = new ArrayList<>();
     private final int MAX_LASERS = 3;
     private int maxLasers = 3;
     private int laserDuration = 0;
-    private ArrayList<Box> boxes;
-    private ArrayList<Box> animationBoxes;
-    private ArrayList<Box> removableBoxes;
+    private ArrayList<Box> boxes = new ArrayList<>();
+    private ArrayList<Box> animationBoxes = new ArrayList<>();
+    private ArrayList<Box> removableBoxes = new ArrayList<>();
     private final float animSpeed = 2;
     private final int maxBoxes = 5;
     private float maxVelBox;
-    private ArrayList<Powerup> powerups;
-    private ArrayList<Powerup> removablePowerups;
-    private float healthLoss;
+    private ArrayList<Powerup> powerups = new ArrayList<>();
+    private ArrayList<Powerup> removablePowerups = new ArrayList<>();
+    private float healthLoss = 0.1f;
     private float hitDamage;
-    private float hitBonus;
-    private int round;
-    private int points;
+    private float hitBonus = 25;
+    private int round = 0;
+    private int points = 0;
     private SoundManager soundCallback;
+
 
     public interface SoundManager {
         void laserSound();
@@ -54,20 +55,7 @@ public class GameEngine {
 
     public GameEngine(Context context) {
         engineHelper = new GameEngineHelper(context);
-
-        player = new Player();
-        lasers = new ArrayList<>();
-        removableLasers = new ArrayList<>();
-        boxes = new ArrayList<>();
-        animationBoxes = new ArrayList<>();
-        removableBoxes = new ArrayList<>();
-        powerups = new ArrayList<>();
-        removablePowerups = new ArrayList<>();
-        healthLoss = 0.1f;
         hitDamage = 50 + 5 * engineHelper.difficulty;
-        hitBonus = 25;
-        round = 0;
-        points = 0;
 
         if (context instanceof SoundManager) {
             soundCallback = (SoundManager) context;
@@ -79,6 +67,8 @@ public class GameEngine {
             REL_W_H = (int) (100 * width / height);
             player.setPos(width / 2, height / 2);
             player.setR(0.85f * REL_W_H);
+
+            // addition of difficulty is not relative
             maxVelBox = player.getMaxVel() + engineHelper.difficulty;
             isRunning = true;
         }
