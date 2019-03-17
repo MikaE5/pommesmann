@@ -3,6 +3,7 @@ package de.androidmika.pommesmann.GameParts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -19,7 +20,7 @@ public class GameEngine {
 
     private GameEngineHelper engineHelper;
 
-    private int REL_W_H;
+    private float REL_W_H;
 
     private boolean isRunning = false;
     private boolean started = false;
@@ -44,6 +45,8 @@ public class GameEngine {
     private int points = 0;
     private SoundManager soundCallback;
 
+    private final String TAG = "GameEngine";
+
 
     public interface SoundManager {
         void laserSound();
@@ -64,9 +67,15 @@ public class GameEngine {
 
     private void afterSurfaceCreated(float width, float height) {
         if (!isRunning) {
-            REL_W_H = (int) (100 * width / height);
+            REL_W_H = (float)Math.sqrt(width * height) / 1000;
+            // round to two decimal places
+            REL_W_H *= 100;
+            REL_W_H = Math.round(REL_W_H);
+            REL_W_H /= 100;
+
+            Log.d(TAG, "REL_W_H " + REL_W_H);
             player.setPos(width / 2, height / 2);
-            player.setR(0.85f * REL_W_H);
+            player.setR(55 * REL_W_H);
 
             // addition of difficulty is not relative
             maxVelBox = player.getMaxVel() + engineHelper.difficulty;
@@ -187,7 +196,7 @@ public class GameEngine {
     }
 
     private void showText(Canvas canvas) {
-        float tsize = player.getR() * 0.5f;
+        float tsize = player.getR() * 0.8f;
         Paint paint = new Paint();
         paint.setColor(App.getContext().getResources().getColor(R.color.canvasTextColor));
         paint.setTextSize(tsize);
@@ -328,9 +337,9 @@ public class GameEngine {
             String type = engineHelper.getRandomPowerup();
 
             if (type.equals(ShopHelper.HEALTH_POWERUP)) {
-                powerups.add(new HealthPowerup(width, height, 1.15f * REL_W_H, engineHelper.healthPowerupDuration));
+                powerups.add(new HealthPowerup(width, height, 75 * REL_W_H, engineHelper.healthPowerupDuration));
             } else if (type.equals(ShopHelper.LASER_POWERUP)) {
-                powerups.add(new LaserPowerup(width, height, 0.58f * REL_W_H, engineHelper.laserPowerupDuration));
+                powerups.add(new LaserPowerup(width, height, 38 * REL_W_H, engineHelper.laserPowerupDuration));
             }
         }
     }
@@ -354,7 +363,7 @@ public class GameEngine {
 
         for (int i = 0; i < maxBoxes; i++) {
             do {
-                tempBox = new Box(width, height, 1.35f * REL_W_H, maxVelBox);
+                tempBox = new Box(width, height, 88 * REL_W_H, maxVelBox);
                 bpos = tempBox.getPos();
                 blen = tempBox.getLen();
             } while(circleInSquare(ppos.x, ppos.y, 6 * pr, bpos.x, bpos.y, blen));
