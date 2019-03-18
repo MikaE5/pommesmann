@@ -20,6 +20,12 @@ public class GameEngine {
     private GameEngineHelper engineHelper;
 
     private float REL_W_H;
+    private float playerR;
+    private float playerVel;
+    private float boxWidth;
+    private float changeBoxVel;
+    private float powerupR;
+    private float powerupWidth;
 
     private boolean isRunning = false;
     private boolean started = false;
@@ -56,7 +62,7 @@ public class GameEngine {
 
     public GameEngine(Context context) {
         engineHelper = new GameEngineHelper(context);
-        hitDamage = 50 + 5 * engineHelper.difficulty;
+        hitDamage = 40 + 4 * engineHelper.difficulty;
 
         if (context instanceof SoundManager) {
             soundCallback = (SoundManager) context;
@@ -70,15 +76,27 @@ public class GameEngine {
             REL_W_H *= 100;
             REL_W_H = Math.round(REL_W_H);
             REL_W_H /= 100;
+            setParameters();
 
             player.setPos(width / 2, height / 2);
-            player.setR(55 * REL_W_H);
+            player.setR(playerR);
+            player.setMaxVel(playerVel);
             player.setHealthLoss(healthLoss);
 
-            // addition of difficulty is not relative
-            maxVelBox = player.getMaxVel();
             isRunning = true;
         }
+    }
+
+    private void setParameters() {
+        playerR = 48 * REL_W_H;
+        playerVel = 0.09f * playerR;
+        maxVelBox = 0.7f * playerVel;
+        changeBoxVel = (0.55f + 0.1f * engineHelper.difficulty) * REL_W_H;
+
+        boxWidth = 83 * REL_W_H;
+
+        powerupR = 40 * REL_W_H;
+        powerupWidth = 80 * REL_W_H;
     }
 
 
@@ -335,9 +353,9 @@ public class GameEngine {
             String type = engineHelper.getRandomPowerup();
 
             if (type.equals(ShopHelper.HEALTH_POWERUP)) {
-                powerups.add(new HealthPowerup(width, height, 75 * REL_W_H, engineHelper.healthPowerupDuration));
+                powerups.add(new HealthPowerup(width, height, powerupWidth, engineHelper.healthPowerupDuration));
             } else if (type.equals(ShopHelper.LASER_POWERUP)) {
-                powerups.add(new LaserPowerup(width, height, 38 * REL_W_H, engineHelper.laserPowerupDuration));
+                powerups.add(new LaserPowerup(width, height, powerupR, engineHelper.laserPowerupDuration));
             }
         }
     }
@@ -347,7 +365,7 @@ public class GameEngine {
         // nextRound is called when the game starts, but I don't want to increase the values
         // when starting
         if (round > 1) {
-            maxVelBox += (0.5 + 0.1 * engineHelper.difficulty) * REL_W_H;
+            maxVelBox += changeBoxVel;
             hitDamage += 2 + 2 * engineHelper.difficulty;
         }
     }
@@ -361,7 +379,7 @@ public class GameEngine {
 
         for (int i = 0; i < maxBoxes; i++) {
             do {
-                tempBox = new Box(width, height, 88 * REL_W_H, maxVelBox);
+                tempBox = new Box(width, height, boxWidth, maxVelBox);
                 bpos = tempBox.getPos();
                 blen = tempBox.getLen();
             } while(circleInSquare(ppos.x, ppos.y, 6 * pr, bpos.x, bpos.y, blen));

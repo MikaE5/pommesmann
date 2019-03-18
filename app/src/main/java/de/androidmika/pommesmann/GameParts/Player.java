@@ -33,7 +33,10 @@ public class Player {
 
     public void setR(float r) {
         this.r = r;
-        this.maxVel = 0.08f * this.r; // set maxVel wrt screenSize
+    }
+
+    public void setMaxVel(float maxVel) {
+        this.maxVel = maxVel;
     }
 
     public void setAcc(float x, float y) {

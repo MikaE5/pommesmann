@@ -56,11 +56,13 @@
 
     <CheckBox
         android:id="@+id/itemCheckBox"
+        style="@android:style/Widget.Holo.Light.CompoundButton.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/buyButton"
         android:layout_toEndOf="@+id/itemNameTextView"
         android:layout_toRightOf="@+id/itemNameTextView"
-        android:layout_below="@+id/buyButton"
+        android:layoutDirection="rtl"
         android:text="@string/itemCheckBox"
-        android:layoutDirection="rtl"/>
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
 </RelativeLayout>
