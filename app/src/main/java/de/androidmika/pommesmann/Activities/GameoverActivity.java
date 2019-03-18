@@ -10,9 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.R;
+import de.androidmika.pommesmann.ShopDatabase.Item;
+import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
 public class GameoverActivity extends Activity implements View.OnClickListener {
 
@@ -33,14 +38,17 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         points = getIntent().getIntExtra("points", 0);
         App.setCoins(points);
 
-        if (points > highscore) newHighscore(points);
+        if (points > highscore) {
+            unlockedPowerups(points, highscore);
+            newHighscore();
+        }
 
-        scoreTextView = (TextView) findViewById(R.id.scoreTextView);
+        scoreTextView = findViewById(R.id.scoreTextView);
         scoreTextView.setText(Integer.toString(points));
 
-        mainMenuButton = (Button) findViewById(R.id.mainMenuButton);
+        mainMenuButton = findViewById(R.id.mainMenuButton);
         mainMenuButton.setOnClickListener(this);
-        restartButton = (Button) findViewById(R.id.restartButton);
+        restartButton = findViewById(R.id.restartButton);
         restartButton.setOnClickListener(this);
     }
 
@@ -83,7 +91,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
 
 
 
-    private void newHighscore(int highscore) {
+    private void newHighscore() {
         if (App.getSound()) {
             mp = MediaPlayer.create(this, R.raw.highscoresound);
             mp.start();
@@ -96,6 +104,24 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
 
         App.setHighscore(points);
         App.setHighscoreName(""); // set name to nothing in case user doesn't submit his name
+    }
+
+    private void unlockedPowerups(int points, int highscore) {
+        ShopDatabaseHelper dbHelper = ShopDatabaseHelper.getInstance(this);
+        List<Item> items = dbHelper.getAllItems();
+
+        for (Item item : items) {
+            if (points >= item.getRestriction()) {
+                if (highscore < item.getRestriction()) {
+                    CharSequence text = "You unlocked " + item.getName() + "!";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast.makeText(this, text, duration).show();
+
+                    // only show one toast
+                    return;
+                }
+            }
+        }
     }
 
 
