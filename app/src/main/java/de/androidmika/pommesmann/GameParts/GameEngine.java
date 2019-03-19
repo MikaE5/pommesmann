@@ -366,8 +366,15 @@ public class GameEngine {
         // when starting
         if (round > 1) {
             maxVelBox += changeBoxVel;
+            /*
+            if (round < 5) {
+                maxVelBox += 0.5f * changeBoxVel;
+            }
+            */
             hitDamage += 2 + 2 * engineHelper.difficulty;
+            healthLoss += 0.01f;
         }
+        player.setHealthLoss(healthLoss);
     }
 
     private void newBoxes(float width, float height) {
