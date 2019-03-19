@@ -81,7 +81,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
             App.showToast();
         }
         if (v.getId() == R.id.submitNameButton) {
-            EditText nameEditText = (EditText) findViewById(R.id.nameEditText);
+            EditText nameEditText = findViewById(R.id.nameEditText);
             String name = nameEditText.getText().toString().trim();
             App.setHighscoreName(name);
             submitNameButton.setVisibility(View.GONE);
