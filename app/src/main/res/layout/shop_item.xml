@@ -49,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/itemLevelTextView"
+        android:layout_marginBottom="10dp"
         android:layout_toEndOf="@+id/itemNameTextView"
         android:layout_toRightOf="@+id/itemNameTextView"
         android:background="@drawable/oval_selector"
@@ -64,5 +65,6 @@
         android:layout_toRightOf="@+id/itemNameTextView"
         android:layoutDirection="rtl"
         android:text="@string/itemCheckBox"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small" />
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Small"
+        android:button="@drawable/checkbox_selector"/>
 </RelativeLayout>
