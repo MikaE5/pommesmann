@@ -91,8 +91,8 @@ public class GameEngine {
     private void setParameters() {
         playerR = 48 * REL_W_H;
         playerVel = 0.09f * playerR;
-        maxVelBox = 0.3f * playerVel;
-        changeVelBox = (0.7f + 0.1f * engineHelper.difficulty) * REL_W_H;
+        maxVelBox = 0.2f * playerVel;
+        changeVelBox = (0.8f + 0.1f * engineHelper.difficulty) * REL_W_H;
         boxWidth = 83 * REL_W_H;
 
         powerupR = 40 * REL_W_H;
@@ -117,7 +117,6 @@ public class GameEngine {
             float factor = 1 - 0.05f * round;
             if (factor < 0.5) factor = 0.5f;
             maxVelBox += factor * changeVelBox;
-            Log.d("nextRound", "maxVelBox " + maxVelBox + " round " + round);
             hitDamage += 2 + 2 * engineHelper.difficulty;
         }
     }
