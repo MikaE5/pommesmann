@@ -22,6 +22,7 @@ public class Player {
         this.r = 0;
         this.vel = new Vec(0, 0);
         this.acc = new Vec(0, 0);
+        this.maxVel = 1; // initialize it with 1, so it is not 0
         this.health = 255f;
         this.healthLoss = 0f;
     }
@@ -35,13 +36,13 @@ public class Player {
         this.r = r;
     }
 
-    public void setMaxVel(float maxVel) {
+    void setMaxVel(float maxVel) {
         this.maxVel = maxVel;
     }
 
     public void setAcc(float x, float y) {
-        this.acc.x = x;
-        this.acc.y = y;
+        this.acc.x = 0.2f * maxVel * x;
+        this.acc.y = 0.2f * maxVel * y;
     }
 
     Vec getVel() {
@@ -81,8 +82,6 @@ public class Player {
         constrain(width, height);
     }
 
-
-
     private void constrain(float width, float height) {
         if (pos.x + r > width) {
             pos.x = width - r;
@@ -101,7 +100,6 @@ public class Player {
             vel.y *= -0.3;
         }
     }
-
 
     double getAngle(Vec a, Vec b) {
         double dot = (double) a.x * b.x + a.y * b.y;
@@ -138,6 +136,5 @@ public class Player {
 
         canvas.restore();
     }
-
 
 }
