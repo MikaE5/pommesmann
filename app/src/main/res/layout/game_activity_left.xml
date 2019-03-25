@@ -30,7 +30,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/firebutton_selector" />
+            android:background="@drawable/firebutton_selector"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="40dp" />
 
         <de.androidmika.pommesmann.GameScreen.JoystickView
             android:layout_width="100dp"

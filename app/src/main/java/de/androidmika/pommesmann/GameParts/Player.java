@@ -42,8 +42,8 @@ public class Player {
 
     public void setAcc(float x, float y) {
         // x and y are between 0 and 1
-        this.acc.x = 0.1f * maxVel * x;
-        this.acc.y = 0.1f * maxVel * y;
+        this.acc.x = 0.2f * maxVel * x;
+        this.acc.y = 0.2f * maxVel * y;
         //this.acc.x = 0.5f * x;
         //this.acc.y = 0.5f * y;
     }
