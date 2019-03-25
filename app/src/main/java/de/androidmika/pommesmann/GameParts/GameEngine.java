@@ -3,6 +3,7 @@ package de.androidmika.pommesmann.GameParts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -23,7 +24,8 @@ public class GameEngine {
     private float playerR;
     private float playerVel;
     private float boxWidth;
-    private float changeBoxVel;
+    private float maxVelBox;
+    private float changeVelBox;
     private float powerupR;
     private float powerupWidth;
 
@@ -40,7 +42,6 @@ public class GameEngine {
     private ArrayList<Box> removableBoxes = new ArrayList<>();
     private final float animSpeed = 2;
     private final int maxBoxes = 5;
-    private float maxVelBox;
     private ArrayList<Powerup> powerups = new ArrayList<>();
     private ArrayList<Powerup> removablePowerups = new ArrayList<>();
     private float healthLoss = 0.1f;
@@ -90,13 +91,64 @@ public class GameEngine {
     private void setParameters() {
         playerR = 48 * REL_W_H;
         playerVel = 0.09f * playerR;
-        maxVelBox = 0.7f * playerVel;
-        changeBoxVel = (0.55f + 0.1f * engineHelper.difficulty) * REL_W_H;
-
+        maxVelBox = 0.3f * playerVel;
+        changeVelBox = (0.7f + 0.1f * engineHelper.difficulty) * REL_W_H;
         boxWidth = 83 * REL_W_H;
 
         powerupR = 40 * REL_W_H;
         powerupWidth = 80 * REL_W_H;
+    }
+
+    private void levelManagement(float width, float height) {
+        if (boxes.size() <= 0) {
+            nextRound();
+            newBoxes(width, height);
+            if (Math.random() < engineHelper.chanceOfPowerup) {
+                newPowerup(width, height);
+            }
+        }
+    }
+
+    private void nextRound() {
+        round++;
+        // nextRound is called when the game starts, but I don't want to increase the values
+        // when starting
+        if (round > 1) {
+            float factor = 1 - 0.05f * round;
+            if (factor < 0.5) factor = 0.5f;
+            maxVelBox += factor * changeVelBox;
+            Log.d("nextRound", "maxVelBox " + maxVelBox + " round " + round);
+            hitDamage += 2 + 2 * engineHelper.difficulty;
+        }
+    }
+
+    private void newPowerup(float width, float height) {
+        if (engineHelper.availablePowerups.size() > 0) {
+            String type = engineHelper.getRandomPowerup();
+
+            if (type.equals(ShopHelper.HEALTH_POWERUP)) {
+                powerups.add(new HealthPowerup(width, height, powerupWidth, engineHelper.healthPowerupDuration));
+            } else if (type.equals(ShopHelper.LASER_POWERUP)) {
+                powerups.add(new LaserPowerup(width, height, powerupR, engineHelper.laserPowerupDuration));
+            }
+        }
+    }
+
+    private void newBoxes(float width, float height) {
+        Box tempBox;
+        Vec ppos = player.getPos();
+        float pr = player.getR();
+        Vec bpos;
+        float blen;
+
+        for (int i = 0; i < maxBoxes; i++) {
+            do {
+                tempBox = new Box(width, height, boxWidth, maxVelBox);
+                bpos = tempBox.getPos();
+                blen = tempBox.getLen();
+            } while(circleInSquare(ppos.x, ppos.y, 6 * pr, bpos.x, bpos.y, blen));
+            boxes.add(tempBox);
+        }
     }
 
 
@@ -338,61 +390,7 @@ public class GameEngine {
         return dist < ar + br;
     }
 
-    private void levelManagement(float width, float height) {
-        if (boxes.size() <= 0) {
-            nextRound();
-            newBoxes(width, height);
-            if (Math.random() < engineHelper.chanceOfPowerup) {
-                newPowerup(width, height);
-            }
-        }
-    }
 
-    private void newPowerup(float width, float height) {
-        if (engineHelper.availablePowerups.size() > 0) {
-            String type = engineHelper.getRandomPowerup();
-
-            if (type.equals(ShopHelper.HEALTH_POWERUP)) {
-                powerups.add(new HealthPowerup(width, height, powerupWidth, engineHelper.healthPowerupDuration));
-            } else if (type.equals(ShopHelper.LASER_POWERUP)) {
-                powerups.add(new LaserPowerup(width, height, powerupR, engineHelper.laserPowerupDuration));
-            }
-        }
-    }
-
-    private void nextRound() {
-        round++;
-        // nextRound is called when the game starts, but I don't want to increase the values
-        // when starting
-        if (round > 1) {
-            maxVelBox += changeBoxVel;
-            /*
-            if (round < 5) {
-                maxVelBox += 0.5f * changeBoxVel;
-            }
-            */
-            hitDamage += 2 + 2 * engineHelper.difficulty;
-            healthLoss += 0.01f;
-        }
-        player.setHealthLoss(healthLoss);
-    }
-
-    private void newBoxes(float width, float height) {
-        Box tempBox;
-        Vec ppos = player.getPos();
-        float pr = player.getR();
-        Vec bpos;
-        float blen;
-
-        for (int i = 0; i < maxBoxes; i++) {
-            do {
-                tempBox = new Box(width, height, boxWidth, maxVelBox);
-                bpos = tempBox.getPos();
-                blen = tempBox.getLen();
-            } while(circleInSquare(ppos.x, ppos.y, 6 * pr, bpos.x, bpos.y, blen));
-            boxes.add(tempBox);
-        }
-    }
 
     public boolean gameOver() {
         return (player.getHealth() < 0);
