@@ -114,7 +114,7 @@ public class ShopActivity extends Activity {
         if (temp < 0) temp = 0;
 
         TextView coinsTextView = findViewById(R.id.coinsTextView);
-        coinsTextView.setText(Integer.toString(temp) + "Coins");
+        coinsTextView.setText(Integer.toString(temp) + " Coins");
         App.startSlowFadeinAnim(coinsTextView, 3000);
     }
 
@@ -195,7 +195,7 @@ public class ShopActivity extends Activity {
         Button buyButton = view.findViewById(R.id.buyButton);
 
         String text = "Level " + Integer.toString(item.getLevel() + 1) + "\n"
-                    + item.getPrice() + "coins";
+                    + item.getPrice() + " Coins";
         itemLevelTextView.setText(text);
         buyButton.setText(getResources().getString(R.string.itemBuyButton));
         buyButton.setVisibility(View.VISIBLE);

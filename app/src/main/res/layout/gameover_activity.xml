@@ -8,16 +8,20 @@
     android:orientation="vertical"
     tools:context=".Activities.GameoverActivity">
 
+
     <TextView
         android:id="@+id/coinsTextView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"
+        android:layout_marginStart="10dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/yourScoreTextView"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />

@@ -131,7 +131,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
 
         if (temp > 0) {
             TextView coinsTextView = findViewById(R.id.coinsTextView);
-            coinsTextView.setText(Integer.toString(temp) + "coins");
+            coinsTextView.setText(Integer.toString(temp) + " Coins");
             coinsTextView.setVisibility(View.VISIBLE);
             App.startSlowFadeinAnim(coinsTextView, 3000);
         }

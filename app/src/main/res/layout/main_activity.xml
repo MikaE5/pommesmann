@@ -12,7 +12,10 @@
     <TextView
         android:id="@+id/coinsTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"
+        android:layout_marginStart="10dp" />
 
 
     <TextView
