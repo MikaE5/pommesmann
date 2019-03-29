@@ -91,7 +91,7 @@ public class GameEngine {
     private void setParameters() {
         playerR = 48 * REL_W_H;
         playerVel = 0.09f * playerR;
-        maxVelBox = 0.2f * playerVel;
+        maxVelBox = (0.2f + 0.1f * engineHelper.difficulty) * playerVel;
         changeVelBox = (0.8f + 0.1f * engineHelper.difficulty) * REL_W_H;
         boxWidth = 83 * REL_W_H;
 
@@ -281,6 +281,31 @@ public class GameEngine {
         }
     }
 
+    private void collisionDetection() {
+        for (Box box : boxes) {
+            // one laser hits box
+            for (Laser laser : lasers) {
+                laserHitsBox(laser, box);
+            }
+            // player hits box
+            playerHitsBox(box);
+        }
+        // laser hits player
+        for (Laser laser : lasers) {
+            laserHitsPlayer(laser);
+        }
+        // player hits powerup
+        for (Powerup powerup : powerups) {
+            playerHitsPowerup(powerup);
+        }
+        lasers.removeAll(removableLasers);
+        boxes.removeAll(removableBoxes);
+        powerups.removeAll(removablePowerups);
+        removableLasers.clear();
+        removableBoxes.clear();
+        removablePowerups.clear();
+    }
+
     private void laserHitsPlayer(Laser laser) {
         if (laser.getWallCount() != 0) {
             Vec lpos = laser.getPos();
@@ -353,26 +378,6 @@ public class GameEngine {
         }
     }
 
-    private void collisionDetection() {
-        for (Laser laser : lasers) {
-            laserHitsPlayer(laser);
-            for (Box box : boxes) {
-                laserHitsBox(laser, box);
-            }
-        }
-        for (Box box : boxes) {
-            playerHitsBox(box);
-        }
-        for (Powerup powerup : powerups) {
-            playerHitsPowerup(powerup);
-        }
-        lasers.removeAll(removableLasers);
-        boxes.removeAll(removableBoxes);
-        powerups.removeAll(removablePowerups);
-        removableLasers.clear();
-        removableBoxes.clear();
-        removablePowerups.clear();
-    }
 
     private boolean circleInSquare(float cx, float cy, float cr, float sx, float sy, float slen) {
         float dx = cx - Math.max(sx, Math.min(cx, sx + slen));
