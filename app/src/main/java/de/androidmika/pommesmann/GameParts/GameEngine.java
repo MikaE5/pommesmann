@@ -308,11 +308,9 @@ public class GameEngine {
 
     private void laserHitsPlayer(Laser laser) {
         if (laser.getWallCount() != 0) {
-            Vec lpos = laser.getPos();
-            Vec ppos = player.getPos();
 
-            float dx = lpos.x - ppos.x;
-            float dy = lpos.y - ppos.y;
+            float dx = laser.getPos().x - player.getPos().x;
+            float dy = laser.getPos().y - player.getPos().y;
             float dist = (float) Math.sqrt(dx * dx + dy * dy);
 
             float minDist = laser.getR() + player.getR();
@@ -325,12 +323,8 @@ public class GameEngine {
     }
 
     private void laserHitsBox(Laser laser, Box box) {
-        Vec lpos = laser.getPos();
-        Vec bpos = box.getPos();
-        float lr = laser.getR();
-        float blen = box.getLen();
-
-        if (circleInSquare(lpos.x, lpos.y, lr, bpos.x, bpos.y, blen)) {
+        if (circleInSquare(laser.getPos().x, laser.getPos().y, laser.getR(),
+                box.getPos().x, box.getPos().y, box.getLen())) {
             player.changeHealth(hitBonus);
             removableLasers.add(laser);
             animationBoxes.add(box);
@@ -341,12 +335,8 @@ public class GameEngine {
     }
 
     private void playerHitsBox(Box box) {
-        Vec ppos = player.getPos();
-        Vec bpos = box.getPos();
-        float pr = player.getR();
-        float blen = box.getLen();
-
-        if (circleInSquare(ppos.x, ppos.y, pr, bpos.x, bpos.y, blen)) {
+        if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
+                box.getPos().x, box.getPos().y, box.getLen())) {
             player.changeHealth(-1f * hitDamage);
             animationBoxes.add(box);
             removableBoxes.add(box);
@@ -355,20 +345,17 @@ public class GameEngine {
     }
 
     private void playerHitsPowerup(Powerup powerup) {
-        Vec ppos = player.getPos();
-        float pr = player.getR();
-        Vec pupos = powerup.getPos();
-        float pulen = powerup.getLen();
-
         if (powerup instanceof HealthPowerup) {
-            if (circleInSquare(ppos.x, ppos.y, pr, pupos.x, pupos.y, pulen)) {
+            if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
+                    powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
                 player.changeHealth(engineHelper.healthPowerupHealing);
 
                 removablePowerups.add(powerup);
                 soundCallback.powerupSound();
             }
         } else if (powerup instanceof LaserPowerup) {
-            if (circleInCircle(ppos.x, ppos.y, pr, pupos.x, pupos.y, pulen)) {
+            if (circleInCircle(player.getPos().x, player.getPos().y, player.getR(),
+                    powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
                 maxLasers++;
                 laserDuration = engineHelper.laserPowerupDuration;
 

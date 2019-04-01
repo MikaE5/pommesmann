@@ -306,13 +306,15 @@ public class ShopActivity extends Activity {
             updateShop();
             App.setHighscore(0);
             secretDialog(item);
+            updateShop();
         }
     }
 
     private void secretDialog(Item item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_DARK);
 
-        CharSequence message = getResources().getString(R.string.app_name) +
+        CharSequence message = "Secret #" + item.getLevel() + ": The next secret is the most interesting secret! \n" +
+                getResources().getString(R.string.app_name) +
                 " has been reset! Difficulty is now on level " + item.getLevel() + "!";
         builder.setMessage(message);
 
