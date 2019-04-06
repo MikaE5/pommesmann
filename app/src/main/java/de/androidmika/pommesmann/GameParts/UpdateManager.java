@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
 
-public class UpdateManager implements Game.UpdateInterface{
+public class UpdateManager {
 
     // Helper ArrayLists for removing elements
     private ArrayList<Laser> removableLasers = new ArrayList<>();
@@ -27,8 +27,8 @@ public class UpdateManager implements Game.UpdateInterface{
         return assignedSize;
     }
 
-    @Override
-    public void updateLasers(ArrayList<Laser> lasers) {
+
+    void updateLasers(ArrayList<Laser> lasers) {
         for (Laser laser : lasers) {
             laser.update(width, height);
             if (laser.removeLaser()) {
@@ -39,32 +39,27 @@ public class UpdateManager implements Game.UpdateInterface{
         removableLasers.clear();
     }
 
-    @Override
-    public void updateBoxes(ArrayList<Box> boxes) {
+
+    void updateBoxes(ArrayList<Box> boxes) {
         for (Box box : boxes) {
             box.update(width, height);
-        }
-    }
 
-    @Override
-    public void updatePlayer(Player player) {
-        player.update(width, height);
-    }
-
-    @Override
-    public void updateAnimationBoxes(ArrayList<Box> animBoxes) {
-        for (Box box : animBoxes) {
-            box.removeAnimation(animSpeed);
+            // this function can also be used for AnimationBoxes
             if (box.animationFinished()) {
                 removableBoxes.add(box);
             }
         }
-        animBoxes.removeAll(removableBoxes);
+        boxes.removeAll(removableBoxes);
         removableBoxes.clear();
     }
 
-    @Override
-    public void updatePowerups(ArrayList<Powerup> powerups) {
+
+    void updatePlayer(Player player) {
+        player.update(width, height);
+    }
+
+
+    void updatePowerups(ArrayList<Powerup> powerups) {
         for (Powerup powerup : powerups) {
             powerup.update();
             if (powerup.isRemovable()) {

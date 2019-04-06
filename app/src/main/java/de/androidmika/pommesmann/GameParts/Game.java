@@ -24,13 +24,6 @@ public class Game {
         void powerupSound();
     }
 
-    public interface UpdateInterface {
-        void updateLasers(ArrayList<Laser> lasers);
-        void updateBoxes(ArrayList<Box> boxes);
-        void updatePlayer(Player player);
-        void updateAnimationBoxes(ArrayList<Box> animBoxes);
-        void updatePowerups(ArrayList<Powerup> powerups);
-    }
 
     private GameHelper engineHelper;
 
@@ -59,18 +52,20 @@ public class Game {
     private ArrayList<Powerup> removablePowerups = new ArrayList<>();
     private float healthLoss = 0.1f;
     private float hitDamage;
-    private float hitBonus = 25;
     private int round = 0;
     private int points = 0;
 
     private SoundManager soundCallback;
     private UpdateManager updateManager = new UpdateManager();
+    private ShowManager showManager = new ShowManager();
+    private CollisionManager collisionManager;
 
 
 
     public Game(Context context) {
         engineHelper = new GameHelper(context);
         hitDamage = 40 + 4 * engineHelper.difficulty;
+
 
         if (context instanceof SoundManager) {
             soundCallback = (SoundManager) context;
@@ -177,7 +172,7 @@ public class Game {
         if (isRunning && started) {
 
             collisionDetection();
-            updateManager.updateAnimationBoxes(animationBoxes);
+            updateManager.updateBoxes(animationBoxes);
             updateManager.updatePlayer(player);
             updateManager.updateLasers(lasers);
             updateManager.updateBoxes(boxes);
@@ -201,40 +196,16 @@ public class Game {
 
     public void show(Canvas canvas) {
         showText(canvas);
-        showPowerups(canvas);
-        showBoxes(canvas);
-        showAnimationBoxes(canvas);
-        showLasers(canvas);
-        player.show(canvas);
+        showManager.showPowerups(powerups, canvas);
+        showManager.showBoxes(boxes, canvas);
+        showManager.showBoxes(animationBoxes, canvas);
+        showManager.showLasers(lasers, canvas);
+        showManager.showPlayer(player, canvas);
     }
 
-    private void showLasers(Canvas canvas) {
-        try {
-            for (Laser laser : lasers) {
-                laser.show(canvas);
-            }
-        } catch (ConcurrentModificationException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private void showBoxes(Canvas canvas) {
-        for (Box box : boxes) {
-            box.show(canvas);
-        }
-    }
 
-    private void showAnimationBoxes(Canvas canvas) {
-        for (Box box : animationBoxes) {
-            box.animationShow(canvas);
-        }
-    }
 
-    private void showPowerups(Canvas canvas) {
-        for (Powerup powerup : powerups) {
-            powerup.show(canvas);
-        }
-    }
 
     private void showText(Canvas canvas) {
         float tsize = player.getR() * 0.8f;
@@ -278,81 +249,6 @@ public class Game {
         removableLasers.clear();
         removableBoxes.clear();
         removablePowerups.clear();
-    }
-
-    private void laserHitsPlayer(Laser laser) {
-        if (laser.getWallCount() != 0) {
-
-            float dx = laser.getPos().x - player.getPos().x;
-            float dy = laser.getPos().y - player.getPos().y;
-            float dist = (float) Math.sqrt(dx * dx + dy * dy);
-
-            float minDist = laser.getR() + player.getR();
-
-            if (dist < minDist) {
-                removableLasers.add(laser);
-                player.changeHealth(-0.5f * hitDamage);
-            }
-        }
-    }
-
-    private void laserHitsBox(Laser laser, Box box) {
-        if (circleInSquare(laser.getPos().x, laser.getPos().y, laser.getR(),
-                box.getPos().x, box.getPos().y, box.getLen())) {
-            player.changeHealth(hitBonus);
-            removableLasers.add(laser);
-            animationBoxes.add(box);
-            removableBoxes.add(box);
-            points += 1;
-            soundCallback.hitSound();
-        }
-    }
-
-    private void playerHitsBox(Box box) {
-        if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
-                box.getPos().x, box.getPos().y, box.getLen())) {
-            player.changeHealth(-1f * hitDamage);
-            animationBoxes.add(box);
-            removableBoxes.add(box);
-            soundCallback.boxSound();
-        }
-    }
-
-    private void playerHitsPowerup(Powerup powerup) {
-        if (powerup instanceof HealthPowerup) {
-            if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
-                    powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
-                player.changeHealth(engineHelper.healthPowerupHealing);
-
-                removablePowerups.add(powerup);
-                soundCallback.powerupSound();
-            }
-        } else if (powerup instanceof LaserPowerup) {
-            if (circleInCircle(player.getPos().x, player.getPos().y, player.getR(),
-                    powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
-                maxLasers++;
-                laserDuration = engineHelper.laserPowerupDuration;
-
-                removablePowerups.add(powerup);
-                soundCallback.powerupSound();
-            }
-        }
-    }
-
-
-    private boolean circleInSquare(float cx, float cy, float cr, float sx, float sy, float slen) {
-        float dx = cx - Math.max(sx, Math.min(cx, sx + slen));
-        float dy = cy - Math.max(sy, Math.min(cy, sy + slen));
-
-        return (dx * dx + dy * dy < cr * cr);
-    }
-
-    private boolean circleInCircle(float ax, float ay, float ar, float bx, float by, float br) {
-        float dx = ax - bx;
-        float dy = ay - by;
-        double dist = Math.sqrt(dx * dx + dy * dy);
-
-        return dist < ar + br;
     }
 
 

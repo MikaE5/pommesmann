@@ -13,6 +13,7 @@ public class Box {
     private Vec pos;
     private Vec vel;
     private float len;
+    private boolean animating = false;
 
     Box(float width, float height, float len, float maxVel) {
         initPos(width, height, len);
@@ -23,6 +24,10 @@ public class Box {
         this.vel = new Vec(tempX, tempY);
 
         this.len = len;
+    }
+
+    void setToAnimating() {
+        animating = true;
     }
 
     private void initPos(float width, float height, float length) {
@@ -60,8 +65,12 @@ public class Box {
     }
 
     void update(float width, float height) {
-        pos.add(vel);
-        constrain(width, height);
+        if (animating) {
+           removeAnimation(2);
+        } else {
+            pos.add(vel);
+            constrain(width, height);
+        }
     }
 
     private void constrain(float width, float height) {
@@ -84,14 +93,18 @@ public class Box {
     }
 
     public void show(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        paint.setStrokeWidth(len * 0.05f);
-        paint.setColor(App.getContext().getResources().getColor(R.color.boxColor));
-        canvas.drawRect(pos.x, pos.y, pos.x + len, pos.y + len, paint);
+        if (animating) {
+            animationShow(canvas);
+        } else {
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL_AND_STROKE);
+            paint.setStrokeWidth(len * 0.05f);
+            paint.setColor(App.getContext().getResources().getColor(R.color.boxColor));
+            canvas.drawRect(pos.x, pos.y, pos.x + len, pos.y + len, paint);
+        }
     }
 
-    void animationShow(Canvas canvas) {
+    private void animationShow(Canvas canvas) {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(App.getContext().getResources().getColor(R.color.boxColor));
@@ -102,7 +115,7 @@ public class Box {
         canvas.drawRect(pos.x, pos.y, pos.x + len, pos.y + len, paint);
     }
 
-    void removeAnimation(float animSpeed) {
+    private void removeAnimation(float animSpeed) {
         pos.x += animSpeed;
         pos.y += animSpeed;
         len -= 2 * animSpeed;
