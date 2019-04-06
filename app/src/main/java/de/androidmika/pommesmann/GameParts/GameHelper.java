@@ -10,7 +10,7 @@ import de.androidmika.pommesmann.ShopDatabase.Item;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
 
-public class GameEngineHelper {
+public class GameHelper {
 
     private ShopDatabaseHelper dbHelper;
 
@@ -26,7 +26,7 @@ public class GameEngineHelper {
     int laserPowerupDuration;
 
 
-    GameEngineHelper(Context context) {
+    GameHelper(Context context) {
         dbHelper = ShopDatabaseHelper.getInstance(context);
         availablePowerups = new ArrayList<>();
 

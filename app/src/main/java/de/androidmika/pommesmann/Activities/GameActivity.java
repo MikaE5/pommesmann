@@ -4,28 +4,26 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.Explode;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
 import de.androidmika.pommesmann.App;
-import de.androidmika.pommesmann.GameParts.GameEngine;
+import de.androidmika.pommesmann.GameParts.Game;
 import de.androidmika.pommesmann.GameScreen.GameView;
 import de.androidmika.pommesmann.GameScreen.JoystickView;
 import de.androidmika.pommesmann.R;
 
 public class GameActivity extends Activity implements JoystickView.JoystickListener,
-        View.OnClickListener, GameView.GameOperations, GameEngine.SoundManager {
+        View.OnClickListener, GameView.GameOperations, Game.SoundManager {
 
     private GameView gameView;
     private Button fireButton;
-    private GameEngine gameEngine;
+    private Game game;
 
 
     private MediaPlayer mpLaser;
@@ -57,7 +55,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
         fireButton.setOnClickListener(this);
 
 
-        gameEngine = new GameEngine(this);
+        game = new Game(this);
         if (App.getSound()) {
             mpLaser = MediaPlayer.create(this, R.raw.lasersound);
             mpBox = MediaPlayer.create(this, R.raw.boxsound);
@@ -82,40 +80,40 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.fireButton) {
-            gameEngine.fire();
+            game.fire();
         }
         if (v.getId() == R.id.gameView) {
-            gameEngine.setStarted(true);
+            game.setStarted(true);
             gameView.setClickable(false);
         }
     }
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent) {
-        gameEngine.player.setAcc(xPercent, yPercent);
+        game.player.setAcc(xPercent, yPercent);
     }
 
     @Override
     public void gameUpdate() {
-        gameEngine.update(gameView.getWidth(), gameView.getHeight());
+        game.update(gameView.getWidth(), gameView.getHeight());
     }
 
     @Override
     public void gameDraw(Canvas canvas) {
-        gameEngine.show(canvas);
+        game.show(canvas);
     }
 
     @Override
     public void endOfGame() {
         Intent intent = new Intent(this, GameoverActivity.class);
-        intent.putExtra("points", gameEngine.getPoints());
+        intent.putExtra("points", game.getPoints());
         startActivity(intent);
         onDestroy();
     }
 
     @Override
     public boolean gameOver() {
-        return gameEngine.gameOver();
+        return game.gameOver();
     }
 
     @Override

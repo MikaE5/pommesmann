@@ -3,7 +3,6 @@ package de.androidmika.pommesmann.GameParts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -16,9 +15,24 @@ import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
 import de.androidmika.pommesmann.Vec;
 
-public class GameEngine {
+public class Game {
 
-    private GameEngineHelper engineHelper;
+    public interface SoundManager {
+        void laserSound();
+        void hitSound();
+        void boxSound();
+        void powerupSound();
+    }
+
+    public interface UpdateInterface {
+        void updateLasers(ArrayList<Laser> lasers);
+        void updateBoxes(ArrayList<Box> boxes);
+        void updatePlayer(Player player);
+        void updateAnimationBoxes(ArrayList<Box> animBoxes);
+        void updatePowerups(ArrayList<Powerup> powerups);
+    }
+
+    private GameHelper engineHelper;
 
     private float REL_W_H;
     private float playerR;
@@ -40,7 +54,6 @@ public class GameEngine {
     private ArrayList<Box> boxes = new ArrayList<>();
     private ArrayList<Box> animationBoxes = new ArrayList<>();
     private ArrayList<Box> removableBoxes = new ArrayList<>();
-    private final float animSpeed = 2;
     private final int maxBoxes = 5;
     private ArrayList<Powerup> powerups = new ArrayList<>();
     private ArrayList<Powerup> removablePowerups = new ArrayList<>();
@@ -49,20 +62,14 @@ public class GameEngine {
     private float hitBonus = 25;
     private int round = 0;
     private int points = 0;
+
     private SoundManager soundCallback;
+    private UpdateManager updateManager = new UpdateManager();
 
 
 
-    public interface SoundManager {
-        void laserSound();
-        void hitSound();
-        void boxSound();
-        void powerupSound();
-    }
-
-
-    public GameEngine(Context context) {
-        engineHelper = new GameEngineHelper(context);
+    public Game(Context context) {
+        engineHelper = new GameHelper(context);
         hitDamage = 40 + 4 * engineHelper.difficulty;
 
         if (context instanceof SoundManager) {
@@ -72,6 +79,11 @@ public class GameEngine {
 
     private void afterSurfaceCreated(float width, float height) {
         if (!isRunning) {
+            // get the screen size in updateManager
+            if (!updateManager.isSizeAssigned()) {
+                updateManager.assignSize(width, height);
+            }
+
             REL_W_H = (float)Math.sqrt(width * height) / 1000;
             // round to two decimal places
             REL_W_H *= 100;
@@ -163,58 +175,20 @@ public class GameEngine {
 
     public void update(float width, float height) {
         if (isRunning && started) {
+
             collisionDetection();
-            updateAnimationBoxes();
-            player.update(width, height);
-            updateLasers(width, height);
-            updateBoxes(width, height);
-            updatePowerups();
+            updateManager.updateAnimationBoxes(animationBoxes);
+            updateManager.updatePlayer(player);
+            updateManager.updateLasers(lasers);
+            updateManager.updateBoxes(boxes);
+            updateManager.updatePowerups(powerups);
+            updateLaserDuration();
             levelManagement(width, height);
         } else {
             afterSurfaceCreated(width, height);
         }
     }
 
-    private void updateLasers(float width, float height) {
-        for (Laser laser : lasers) {
-            laser.update(width, height);
-            if (laser.removeLaser()) {
-                removableLasers.add(laser);
-            }
-        }
-        lasers.removeAll(removableLasers);
-        removableLasers.clear();
-    }
-
-    private void updateBoxes(float width, float height) {
-        for (Box box : boxes) {
-            box.update(width, height);
-        }
-    }
-
-    private void updateAnimationBoxes() {
-        for (Box box : animationBoxes) {
-            box.removeAnimation(animSpeed);
-            if (box.animationFinished()) {
-                removableBoxes.add(box);
-            }
-        }
-        animationBoxes.removeAll(removableBoxes);
-        removableBoxes.clear();
-    }
-
-    private void updatePowerups() {
-        for (Powerup powerup : powerups) {
-            powerup.update();
-            if (powerup.isRemovable()) {
-                removablePowerups.add(powerup);
-            }
-        }
-        powerups.removeAll(removablePowerups);
-        removablePowerups.clear();
-
-        updateLaserDuration();
-    }
 
     private void updateLaserDuration() {
         if (maxLasers > MAX_LASERS) {
