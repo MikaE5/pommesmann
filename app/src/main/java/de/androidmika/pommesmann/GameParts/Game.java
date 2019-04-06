@@ -51,6 +51,7 @@ public class Game {
     private ArrayList<Powerup> powerups = new ArrayList<>();
     private ArrayList<Powerup> removablePowerups = new ArrayList<>();
     private float healthLoss = 0.1f;
+    private float hitBonus = 25;
     private float hitDamage;
     private int round = 0;
     private int points = 0;
@@ -58,7 +59,6 @@ public class Game {
     private SoundManager soundCallback;
     private UpdateManager updateManager = new UpdateManager();
     private ShowManager showManager = new ShowManager();
-    private CollisionManager collisionManager;
 
 
 
@@ -249,6 +249,87 @@ public class Game {
         removableLasers.clear();
         removableBoxes.clear();
         removablePowerups.clear();
+    }
+
+    private void laserHitsPlayer(Laser laser) {
+        if (laser.getWallCount() != 0) {
+
+            float dx = laser.getPos().x - player.getPos().x;
+            float dy = laser.getPos().y - player.getPos().y;
+            float dist = (float) Math.sqrt(dx * dx + dy * dy);
+
+            float minDist = laser.getR() + player.getR();
+
+            if (dist < minDist) {
+                removableLasers.add(laser);
+                player.changeHealth(-0.5f * hitDamage);
+            }
+        }
+    }
+
+    private void laserHitsBox(Laser laser, Box box) {
+        if (circleInSquare(laser.getPos().x, laser.getPos().y, laser.getR(),
+                box.getPos().x, box.getPos().y, box.getLen())) {
+            player.changeHealth(hitBonus);
+            removableLasers.add(laser);
+
+            box.setToAnimating();
+            animationBoxes.add(box);
+            removableBoxes.add(box);
+
+            points += 1;
+            soundCallback.hitSound();
+        }
+    }
+
+    private void playerHitsBox(Box box) {
+        if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
+                box.getPos().x, box.getPos().y, box.getLen())) {
+            player.changeHealth(-1f * hitDamage);
+
+            box.setToAnimating();
+            animationBoxes.add(box);
+            removableBoxes.add(box);
+            
+            soundCallback.boxSound();
+        }
+    }
+
+    private void playerHitsPowerup(Powerup powerup) {
+        if (powerup instanceof HealthPowerup) {
+            if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
+                    powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
+                player.changeHealth(engineHelper.healthPowerupHealing);
+
+                removablePowerups.add(powerup);
+                soundCallback.powerupSound();
+            }
+        } else if (powerup instanceof LaserPowerup) {
+            if (circleInCircle(player.getPos().x, player.getPos().y, player.getR(),
+                    powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
+                maxLasers++;
+                laserDuration = engineHelper.laserPowerupDuration;
+
+                removablePowerups.add(powerup);
+                soundCallback.powerupSound();
+            }
+        }
+    }
+
+
+    private boolean circleInSquare(float cx, float cy, float cr, float sx, float sy, float slen) {
+        float dx = cx - Math.max(sx, Math.min(cx, sx + slen));
+        float dy = cy - Math.max(sy, Math.min(cy, sy + slen));
+
+        return (dx * dx + dy * dy < cr * cr);
+    }
+
+    private boolean circleInCircle(float ax, float ay, float ar, float bx, float by, float br) {
+        float dx = ax - bx;
+        float dy = ay - by;
+        double dist = Math.sqrt(dx * dx + dy * dy);
+
+        return dist < ar + br;
     }
 
 
