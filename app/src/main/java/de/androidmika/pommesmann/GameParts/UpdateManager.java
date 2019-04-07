@@ -3,6 +3,7 @@ package de.androidmika.pommesmann.GameParts;
 import java.util.ArrayList;
 
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
+import de.androidmika.pommesmann.GameParts.User.User;
 
 public class UpdateManager {
 
@@ -56,11 +57,10 @@ public class UpdateManager {
 
     void updatePlayer(Player player) {
         player.update(width, height);
-        updateLaserDuration(player);
     }
 
-    private void updateLaserDuration(Player player) {
-        player.updateLaserPowerup();
+    private void updateUserAttribs(User user) {
+        user.updateAttribs();
     }
 
 

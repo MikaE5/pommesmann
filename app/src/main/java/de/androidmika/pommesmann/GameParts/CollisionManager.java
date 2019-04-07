@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
+import de.androidmika.pommesmann.GameParts.User.UserHelper;
 
 public class CollisionManager {
 
@@ -18,7 +19,7 @@ public class CollisionManager {
 
     private CollisionSoundManager soundCallback;
 
-    private GameHelper gameHelper;
+    private UserHelper userHelper;
 
     private ArrayList<Laser> removableLasers = new ArrayList<>();
     private ArrayList<Box> removableBoxes = new ArrayList<>();
@@ -28,7 +29,7 @@ public class CollisionManager {
         if (context instanceof CollisionSoundManager) {
             soundCallback = (CollisionSoundManager) context;
         }
-        gameHelper = new GameHelper(context);
+        userHelper = new UserHelper(context);
     }
 
 
@@ -136,7 +137,7 @@ public class CollisionManager {
         if (powerup instanceof HealthPowerup) {
             if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
                     powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
-                player.changeHealth(gameHelper.healthPowerupHealing);
+                player.changeHealth(userHelper.healthPowerupHealing);
 
                 removablePowerups.add(powerup);
                 soundCallback.powerupSound();
@@ -145,7 +146,7 @@ public class CollisionManager {
             if (circleInCircle(player.getPos().x, player.getPos().y, player.getR(),
                     powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
                 player.increaseMaxLaser();
-                player.setLaserDuration(gameHelper.laserPowerupDuration);
+                player.setLaserDuration(userHelper.laserPowerupDuration);
 
                 removablePowerups.add(powerup);
                 soundCallback.powerupSound();

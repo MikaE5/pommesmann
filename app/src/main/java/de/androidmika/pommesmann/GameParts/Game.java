@@ -10,6 +10,8 @@ import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
+import de.androidmika.pommesmann.GameParts.User.User;
+import de.androidmika.pommesmann.GameParts.User.UserHelper;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
 import de.androidmika.pommesmann.Vec;
@@ -21,11 +23,9 @@ public class Game {
     }
 
 
-    private GameHelper gameHelper;
+    private UserHelper userHelper;
 
     private float REL_W_H;
-    private float playerR;
-    private float playerVel;
     private float boxWidth;
     private float maxVelBox;
     private float changeVelBox;
@@ -34,6 +34,8 @@ public class Game {
 
     private boolean isRunning = false;
     private boolean started = false;
+
+    private User user = new User();
 
 
     public Player player = new Player();
@@ -56,7 +58,7 @@ public class Game {
 
 
     public Game(Context context) {
-        gameHelper = new GameHelper(context);
+        userHelper = new UserHelper(context);
         collisionManager = new CollisionManager(context);
 
 
@@ -79,20 +81,16 @@ public class Game {
             REL_W_H /= 100;
             setParameters();
 
-            player.setPos(width / 2, height / 2);
-            player.setR(playerR);
-            player.setMaxVel(playerVel);
-            player.setHealthLoss(player.attributes.healthLoss);
+            user.setPlayerParams(REL_W_H, width, height);
 
             isRunning = true;
         }
     }
 
     private void setParameters() {
-        playerR = 48 * REL_W_H;
-        playerVel = 0.09f * playerR;
-        maxVelBox = (0.2f + 0.1f * gameHelper.difficulty) * playerVel;
-        changeVelBox = (0.8f + 0.1f * gameHelper.difficulty) * REL_W_H;
+        // playerVel = 0.09f * 48 * REL_W_H
+        maxVelBox = (0.2f + 0.1f * userHelper.difficulty) * 0.09f * 48 * REL_W_H;
+        changeVelBox = (0.8f + 0.1f * userHelper.difficulty) * REL_W_H;
         boxWidth = 83 * REL_W_H;
 
         powerupR = 40 * REL_W_H;
@@ -103,7 +101,7 @@ public class Game {
         if (boxes.size() <= 0) {
             nextRound();
             newBoxes(width, height);
-            if (Math.random() < gameHelper.chanceOfPowerup) {
+            if (Math.random() < userHelper.chanceOfPowerup) {
                 newPowerup(width, height);
             }
         }
@@ -117,18 +115,18 @@ public class Game {
             float factor = 1 - 0.05f * round;
             if (factor < 0.5) factor = 0.5f;
             maxVelBox += factor * changeVelBox;
-            player.updateAttributes();
+            user.updateAttributes();
         }
     }
 
     private void newPowerup(float width, float height) {
-        if (gameHelper.availablePowerups.size() > 0) {
-            String type = gameHelper.getRandomPowerup();
+        if (userHelper.availablePowerups.size() > 0) {
+            String type = userHelper.getRandomPowerup();
 
             if (type.equals(ShopHelper.HEALTH_POWERUP)) {
-                powerups.add(new HealthPowerup(width, height, powerupWidth, gameHelper.healthPowerupDuration));
+                powerups.add(new HealthPowerup(width, height, powerupWidth, userHelper.healthPowerupDuration));
             } else if (type.equals(ShopHelper.LASER_POWERUP)) {
-                powerups.add(new LaserPowerup(width, height, powerupR, gameHelper.laserPowerupDuration));
+                powerups.add(new LaserPowerup(width, height, powerupR, userHelper.laserPowerupDuration));
             }
         }
     }

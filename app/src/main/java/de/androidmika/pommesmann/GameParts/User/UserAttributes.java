@@ -1,8 +1,8 @@
-package de.androidmika.pommesmann.GameParts;
+package de.androidmika.pommesmann.GameParts.User;
 
 import static de.androidmika.pommesmann.App.getContext;
 
-class PlayerAttributes {
+class UserAttributes {
 
     final int MAX_LASERS = 3;
     int maxLasers = 3;
@@ -16,9 +16,9 @@ class PlayerAttributes {
     int points = 0;
 
 
-    PlayerAttributes() {
-        GameHelper gameHelper = new GameHelper(getContext());
-        difficulty = gameHelper.difficulty;
+    UserAttributes() {
+        UserHelper userHelper = new UserHelper(getContext());
+        difficulty = userHelper.difficulty;
         hitDamage = 40 + 4 * difficulty;
     }
 

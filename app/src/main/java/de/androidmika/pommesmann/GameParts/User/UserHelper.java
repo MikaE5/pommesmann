@@ -1,4 +1,4 @@
-package de.androidmika.pommesmann.GameParts;
+package de.androidmika.pommesmann.GameParts.User;
 
 
 import android.content.Context;
@@ -10,7 +10,7 @@ import de.androidmika.pommesmann.ShopDatabase.Item;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
 
-public class GameHelper {
+public class UserHelper {
 
 
     double chanceOfPowerup;
@@ -19,11 +19,10 @@ public class GameHelper {
 
     int healthPowerupDuration;
     float healthPowerupHealing;
-
     int laserPowerupDuration;
 
 
-    GameHelper(Context context) {
+    UserHelper(Context context) {
         ShopDatabaseHelper dbHelper = ShopDatabaseHelper.getInstance(context);
         availablePowerups = new ArrayList<>();
 

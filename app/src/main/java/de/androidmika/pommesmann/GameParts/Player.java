@@ -16,10 +16,9 @@ public class Player {
     private float health;
     private float healthLoss;
 
-    PlayerAttributes attributes;
 
 
-    Player() {
+    public Player() {
         this.pos = new Vec(0, 0);
         this.r = 0;
         this.vel = new Vec(0, 0);
@@ -27,11 +26,9 @@ public class Player {
         this.maxVel = 1; // initialize it with 1, so it is not 0
         this.health = 255f;
         this.healthLoss = 0f;
-
-        attributes = new PlayerAttributes();
     }
 
-    void setPos(float x, float y) {
+    public void setPos(float x, float y) {
         this.pos.x = x;
         this.pos.y = y;
     }
@@ -40,7 +37,7 @@ public class Player {
         this.r = r;
     }
 
-    void setMaxVel(float maxVel) {
+    public void setMaxVel(float maxVel) {
         this.maxVel = maxVel;
     }
 
@@ -151,52 +148,4 @@ public class Player {
     }
 
 
-
-    // access players attributes
-    void updateAttributes() {
-        attributes.update();
-    }
-
-    int getPoints() {
-        return attributes.points;
-    }
-
-    int getMaxLaser() {
-        return attributes.maxLasers;
-    }
-
-    float getHitDamage() {
-        return attributes.hitDamage;
-    }
-
-    float getHitBonus() {
-        return attributes.hitBonus;
-    }
-
-    void increasePoints(int number) {
-        attributes.points += number;
-    }
-
-    void setLaserDuration(int duration) {
-        attributes.laserDuration = duration;
-    }
-
-    void increaseMaxLaser() {
-        attributes.maxLasers++;
-    }
-
-    private void decreaseMaxLaser() {
-        if (attributes.maxLasers > attributes.MAX_LASERS) {
-            attributes.maxLasers--;
-        }
-    }
-
-    void updateLaserPowerup() {
-        if (getMaxLaser() > attributes.MAX_LASERS) {
-            attributes.laserDuration--;
-            if (attributes.laserDuration < 0) {
-                decreaseMaxLaser();
-            }
-        }
-    }
 }
