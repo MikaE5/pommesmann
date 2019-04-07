@@ -16,6 +16,8 @@ public class Player {
     private float health;
     private float healthLoss;
 
+    PlayerAttributes attributes;
+
 
     Player() {
         this.pos = new Vec(0, 0);
@@ -25,6 +27,8 @@ public class Player {
         this.maxVel = 1; // initialize it with 1, so it is not 0
         this.health = 255f;
         this.healthLoss = 0f;
+
+        attributes = new PlayerAttributes();
     }
 
     void setPos(float x, float y) {

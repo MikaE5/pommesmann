@@ -12,22 +12,19 @@ import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
 
 public class GameHelper {
 
-    private ShopDatabaseHelper dbHelper;
 
     double chanceOfPowerup;
     ArrayList<String> availablePowerups;
     int difficulty;
 
-    int healthPowerupLevel;
     int healthPowerupDuration;
     float healthPowerupHealing;
 
-    int laserPowerupLevel;
     int laserPowerupDuration;
 
 
     GameHelper(Context context) {
-        dbHelper = ShopDatabaseHelper.getInstance(context);
+        ShopDatabaseHelper dbHelper = ShopDatabaseHelper.getInstance(context);
         availablePowerups = new ArrayList<>();
 
         Item powerupChance = dbHelper.getItemByName(ShopHelper.POWERUP_CHANCE);
@@ -37,7 +34,7 @@ public class GameHelper {
         difficulty = dbHelper.getItemByName(ShopHelper.SECRET_OF_POMMESMANN).getLevel();
 
         Item healthPowerup = dbHelper.getItemByName(ShopHelper.HEALTH_POWERUP);
-        healthPowerupLevel = healthPowerup.getLevel();
+        int healthPowerupLevel = healthPowerup.getLevel();
         healthPowerupDuration = 350 + 25 * healthPowerupLevel;
         healthPowerupHealing = 85 + 15 * healthPowerupLevel;
         if (healthPowerupLevel > 0 && healthPowerup.getActive()) {
@@ -45,7 +42,7 @@ public class GameHelper {
         }
 
         Item laserPowerup = dbHelper.getItemByName(ShopHelper.LASER_POWERUP);
-        laserPowerupLevel = laserPowerup.getLevel();
+        int laserPowerupLevel = laserPowerup.getLevel();
         laserPowerupDuration = 300 + 25 * laserPowerupLevel;
         if (laserPowerupLevel > 0 && laserPowerup.getActive()) {
             availablePowerups.add(ShopHelper.LASER_POWERUP);

@@ -56,6 +56,16 @@ public class UpdateManager {
 
     void updatePlayer(Player player) {
         player.update(width, height);
+        updateLaserDuration(player);
+    }
+
+    private void updateLaserDuration(Player player) {
+        if (player.attributes.maxLasers > player.attributes.MAX_LASERS) {
+            player.attributes.laserDuration--;
+            if (player.attributes.laserDuration < 0) {
+                player.attributes.maxLasers--;
+            }
+        }
     }
 
 

@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
@@ -25,7 +24,7 @@ public class Game {
     }
 
 
-    private GameHelper engineHelper;
+    private GameHelper gameHelper;
 
     private float REL_W_H;
     private float playerR;
@@ -38,33 +37,30 @@ public class Game {
 
     private boolean isRunning = false;
     private boolean started = false;
+
+
     public Player player = new Player();
     private ArrayList<Laser> lasers = new ArrayList<>();
-    private ArrayList<Laser> removableLasers = new ArrayList<>();
-    private final int MAX_LASERS = 3;
-    private int maxLasers = 3;
-    private int laserDuration = 0;
+
     private ArrayList<Box> boxes = new ArrayList<>();
     private ArrayList<Box> animationBoxes = new ArrayList<>();
-    private ArrayList<Box> removableBoxes = new ArrayList<>();
+
     private final int maxBoxes = 5;
     private ArrayList<Powerup> powerups = new ArrayList<>();
-    private ArrayList<Powerup> removablePowerups = new ArrayList<>();
-    private float healthLoss = 0.1f;
-    private float hitBonus = 25;
-    private float hitDamage;
+
     private int round = 0;
-    private int points = 0;
+
 
     private SoundManager soundCallback;
     private UpdateManager updateManager = new UpdateManager();
     private ShowManager showManager = new ShowManager();
+    private CollisionManager collisionManager;
 
 
 
     public Game(Context context) {
-        engineHelper = new GameHelper(context);
-        hitDamage = 40 + 4 * engineHelper.difficulty;
+        gameHelper = new GameHelper(context);
+        collisionManager = new CollisionManager(context);
 
 
         if (context instanceof SoundManager) {
@@ -89,7 +85,7 @@ public class Game {
             player.setPos(width / 2, height / 2);
             player.setR(playerR);
             player.setMaxVel(playerVel);
-            player.setHealthLoss(healthLoss);
+            player.setHealthLoss(player.attributes.healthLoss);
 
             isRunning = true;
         }
@@ -98,8 +94,8 @@ public class Game {
     private void setParameters() {
         playerR = 48 * REL_W_H;
         playerVel = 0.09f * playerR;
-        maxVelBox = (0.2f + 0.1f * engineHelper.difficulty) * playerVel;
-        changeVelBox = (0.8f + 0.1f * engineHelper.difficulty) * REL_W_H;
+        maxVelBox = (0.2f + 0.1f * gameHelper.difficulty) * playerVel;
+        changeVelBox = (0.8f + 0.1f * gameHelper.difficulty) * REL_W_H;
         boxWidth = 83 * REL_W_H;
 
         powerupR = 40 * REL_W_H;
@@ -110,7 +106,7 @@ public class Game {
         if (boxes.size() <= 0) {
             nextRound();
             newBoxes(width, height);
-            if (Math.random() < engineHelper.chanceOfPowerup) {
+            if (Math.random() < gameHelper.chanceOfPowerup) {
                 newPowerup(width, height);
             }
         }
@@ -124,18 +120,18 @@ public class Game {
             float factor = 1 - 0.05f * round;
             if (factor < 0.5) factor = 0.5f;
             maxVelBox += factor * changeVelBox;
-            hitDamage += 2 + 2 * engineHelper.difficulty;
+            player.attributes.hitDamage += 2 + 2 * gameHelper.difficulty;
         }
     }
 
     private void newPowerup(float width, float height) {
-        if (engineHelper.availablePowerups.size() > 0) {
-            String type = engineHelper.getRandomPowerup();
+        if (gameHelper.availablePowerups.size() > 0) {
+            String type = gameHelper.getRandomPowerup();
 
             if (type.equals(ShopHelper.HEALTH_POWERUP)) {
-                powerups.add(new HealthPowerup(width, height, powerupWidth, engineHelper.healthPowerupDuration));
+                powerups.add(new HealthPowerup(width, height, powerupWidth, gameHelper.healthPowerupDuration));
             } else if (type.equals(ShopHelper.LASER_POWERUP)) {
-                powerups.add(new LaserPowerup(width, height, powerupR, engineHelper.laserPowerupDuration));
+                powerups.add(new LaserPowerup(width, height, powerupR, gameHelper.laserPowerupDuration));
             }
         }
     }
@@ -152,7 +148,7 @@ public class Game {
                 tempBox = new Box(width, height, boxWidth, maxVelBox);
                 bpos = tempBox.getPos();
                 blen = tempBox.getLen();
-            } while(circleInSquare(ppos.x, ppos.y, 6 * pr, bpos.x, bpos.y, blen));
+            } while(collisionManager.circleInSquare(ppos.x, ppos.y, 6 * pr, bpos.x, bpos.y, blen));
             boxes.add(tempBox);
         }
     }
@@ -163,7 +159,7 @@ public class Game {
     }
 
     public int getPoints() {
-        return points;
+        return player.attributes.points;
     }
 
 
@@ -177,7 +173,6 @@ public class Game {
             updateManager.updateLasers(lasers);
             updateManager.updateBoxes(boxes);
             updateManager.updatePowerups(powerups);
-            updateLaserDuration();
             levelManagement(width, height);
         } else {
             afterSurfaceCreated(width, height);
@@ -185,14 +180,6 @@ public class Game {
     }
 
 
-    private void updateLaserDuration() {
-        if (maxLasers > MAX_LASERS) {
-            laserDuration--;
-            if (laserDuration < 0) {
-                maxLasers--;
-            }
-        }
-    }
 
     public void show(Canvas canvas) {
         showText(canvas);
@@ -204,21 +191,19 @@ public class Game {
     }
 
 
-
-
-
     private void showText(Canvas canvas) {
         float tsize = player.getR() * 0.8f;
         Paint paint = new Paint();
         paint.setColor(App.getContext().getResources().getColor(R.color.canvasTextColor));
         paint.setTextSize(tsize);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawText("Points: " + Integer.toString(points) + " Round: " + Integer.toString(round),
+        canvas.drawText("Points: " + Integer.toString(player.attributes.points) +
+                        " Round: " + Integer.toString(round),
                 0.5f * tsize, 1.1f * tsize, paint);
     }
 
     public void fire() {
-        if (lasers.size() < maxLasers) {
+        if (lasers.size() < player.attributes.maxLasers) {
             Laser newLaser = new Laser(player);
 
             lasers.add(0, newLaser);
@@ -227,111 +212,12 @@ public class Game {
     }
 
     private void collisionDetection() {
-        for (Box box : boxes) {
-            // one laser hits box
-            for (Laser laser : lasers) {
-                laserHitsBox(laser, box);
-            }
-            // player hits box
-            playerHitsBox(box);
-        }
-        // laser hits player
-        for (Laser laser : lasers) {
-            laserHitsPlayer(laser);
-        }
-        // player hits powerup
-        for (Powerup powerup : powerups) {
-            playerHitsPowerup(powerup);
-        }
-        lasers.removeAll(removableLasers);
-        boxes.removeAll(removableBoxes);
-        powerups.removeAll(removablePowerups);
-        removableLasers.clear();
-        removableBoxes.clear();
-        removablePowerups.clear();
+
+        // does all the collisionDetection and adds all boxes, that are now set to animate
+        animationBoxes.addAll(
+                collisionManager.collisionDetection(player, boxes, lasers, powerups)
+        );
     }
-
-    private void laserHitsPlayer(Laser laser) {
-        if (laser.getWallCount() != 0) {
-
-            float dx = laser.getPos().x - player.getPos().x;
-            float dy = laser.getPos().y - player.getPos().y;
-            float dist = (float) Math.sqrt(dx * dx + dy * dy);
-
-            float minDist = laser.getR() + player.getR();
-
-            if (dist < minDist) {
-                removableLasers.add(laser);
-                player.changeHealth(-0.5f * hitDamage);
-            }
-        }
-    }
-
-    private void laserHitsBox(Laser laser, Box box) {
-        if (circleInSquare(laser.getPos().x, laser.getPos().y, laser.getR(),
-                box.getPos().x, box.getPos().y, box.getLen())) {
-            player.changeHealth(hitBonus);
-            removableLasers.add(laser);
-
-            box.setToAnimating();
-            animationBoxes.add(box);
-            removableBoxes.add(box);
-
-            points += 1;
-            soundCallback.hitSound();
-        }
-    }
-
-    private void playerHitsBox(Box box) {
-        if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
-                box.getPos().x, box.getPos().y, box.getLen())) {
-            player.changeHealth(-1f * hitDamage);
-
-            box.setToAnimating();
-            animationBoxes.add(box);
-            removableBoxes.add(box);
-            
-            soundCallback.boxSound();
-        }
-    }
-
-    private void playerHitsPowerup(Powerup powerup) {
-        if (powerup instanceof HealthPowerup) {
-            if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
-                    powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
-                player.changeHealth(engineHelper.healthPowerupHealing);
-
-                removablePowerups.add(powerup);
-                soundCallback.powerupSound();
-            }
-        } else if (powerup instanceof LaserPowerup) {
-            if (circleInCircle(player.getPos().x, player.getPos().y, player.getR(),
-                    powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
-                maxLasers++;
-                laserDuration = engineHelper.laserPowerupDuration;
-
-                removablePowerups.add(powerup);
-                soundCallback.powerupSound();
-            }
-        }
-    }
-
-
-    private boolean circleInSquare(float cx, float cy, float cr, float sx, float sy, float slen) {
-        float dx = cx - Math.max(sx, Math.min(cx, sx + slen));
-        float dy = cy - Math.max(sy, Math.min(cy, sy + slen));
-
-        return (dx * dx + dy * dy < cr * cr);
-    }
-
-    private boolean circleInCircle(float ax, float ay, float ar, float bx, float by, float br) {
-        float dx = ax - bx;
-        float dy = ay - by;
-        double dist = Math.sqrt(dx * dx + dy * dy);
-
-        return dist < ar + br;
-    }
-
 
 
     public boolean gameOver() {
