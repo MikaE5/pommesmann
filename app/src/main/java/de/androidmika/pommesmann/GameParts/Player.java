@@ -89,6 +89,12 @@ public class Player {
         constrain(width, height);
     }
 
+
+
+
+
+
+
     private void constrain(float width, float height) {
         if (pos.x + r > width) {
             pos.x = width - r;
@@ -108,7 +114,7 @@ public class Player {
         }
     }
 
-    double getAngle(Vec a, Vec b) {
+    private double getAngle(Vec a, Vec b) {
         double dot = (double) a.x * b.x + a.y * b.y;
         double det = (double) a.x * b.y - a.y * b.x;
         return Math.atan2(det, dot);
@@ -144,4 +150,53 @@ public class Player {
         canvas.restore();
     }
 
+
+
+    // access players attributes
+    void updateAttributes() {
+        attributes.update();
+    }
+
+    int getPoints() {
+        return attributes.points;
+    }
+
+    int getMaxLaser() {
+        return attributes.maxLasers;
+    }
+
+    float getHitDamage() {
+        return attributes.hitDamage;
+    }
+
+    float getHitBonus() {
+        return attributes.hitBonus;
+    }
+
+    void increasePoints(int number) {
+        attributes.points += number;
+    }
+
+    void setLaserDuration(int duration) {
+        attributes.laserDuration = duration;
+    }
+
+    void increaseMaxLaser() {
+        attributes.maxLasers++;
+    }
+
+    private void decreaseMaxLaser() {
+        if (attributes.maxLasers > attributes.MAX_LASERS) {
+            attributes.maxLasers--;
+        }
+    }
+
+    void updateLaserPowerup() {
+        if (getMaxLaser() > attributes.MAX_LASERS) {
+            attributes.laserDuration--;
+            if (attributes.laserDuration < 0) {
+                decreaseMaxLaser();
+            }
+        }
+    }
 }

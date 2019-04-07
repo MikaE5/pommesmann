@@ -8,7 +8,7 @@ public abstract class Powerup {
 
     Vec pos;
     float len;
-    int duration;
+    int duration; // duration of visibility
 
     // square powerups
     public Powerup(float width, float height, float length, int dur) {

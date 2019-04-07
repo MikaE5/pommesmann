@@ -85,7 +85,7 @@ public class CollisionManager {
 
             if (dist < minDist) {
                 removableLasers.add(laser);
-                player.changeHealth(-0.5f * player.attributes.hitDamage);
+                player.changeHealth(-0.5f * player.getHitDamage());
             }
         }
     }
@@ -96,13 +96,13 @@ public class CollisionManager {
 
             if (circleInSquare(laser.getPos().x, laser.getPos().y, laser.getR(),
                     box.getPos().x, box.getPos().y, box.getLen())) {
-                player.changeHealth(player.attributes.hitBonus);
+                player.changeHealth(player.getHitBonus());
                 removableLasers.add(laser);
 
                 box.setToAnimating();
                 removableBoxes.add(box);
 
-                player.attributes.points += 1;
+                player.increasePoints(1);
                 soundCallback.hitSound();
 
                 return box;
@@ -118,7 +118,7 @@ public class CollisionManager {
 
         if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
                 box.getPos().x, box.getPos().y, box.getLen())) {
-            player.changeHealth(-1f * player.attributes.hitDamage);
+            player.changeHealth(-1f * player.getHitDamage());
 
             box.setToAnimating();
             removableBoxes.add(box);
@@ -144,8 +144,8 @@ public class CollisionManager {
         } else if (powerup instanceof LaserPowerup) {
             if (circleInCircle(player.getPos().x, player.getPos().y, player.getR(),
                     powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
-                player.attributes.maxLasers++;
-                player.attributes.laserDuration = gameHelper.laserPowerupDuration;
+                player.increaseMaxLaser();
+                player.setLaserDuration(gameHelper.laserPowerupDuration);
 
                 removablePowerups.add(powerup);
                 soundCallback.powerupSound();

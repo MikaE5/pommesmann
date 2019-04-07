@@ -11,12 +11,18 @@ class PlayerAttributes {
     float healthLoss = 0.1f;
     float hitBonus = 25;
     float hitDamage;
+    int difficulty;
 
     int points = 0;
 
-    private GameHelper gameHelper = new GameHelper(getContext());
 
     PlayerAttributes() {
-        hitDamage = 40 + 4 * gameHelper.difficulty;
+        GameHelper gameHelper = new GameHelper(getContext());
+        difficulty = gameHelper.difficulty;
+        hitDamage = 40 + 4 * difficulty;
+    }
+
+    void update() {
+        hitDamage += 2 + 2 * difficulty;
     }
 }

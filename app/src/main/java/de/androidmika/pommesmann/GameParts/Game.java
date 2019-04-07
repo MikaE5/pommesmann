@@ -117,7 +117,7 @@ public class Game {
             float factor = 1 - 0.05f * round;
             if (factor < 0.5) factor = 0.5f;
             maxVelBox += factor * changeVelBox;
-            player.attributes.hitDamage += 2 + 2 * gameHelper.difficulty;
+            player.updateAttributes();
         }
     }
 
@@ -156,7 +156,7 @@ public class Game {
     }
 
     public int getPoints() {
-        return player.attributes.points;
+        return player.getPoints();
     }
 
 
@@ -194,13 +194,13 @@ public class Game {
         paint.setColor(App.getContext().getResources().getColor(R.color.canvasTextColor));
         paint.setTextSize(tsize);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawText("Points: " + Integer.toString(player.attributes.points) +
+        canvas.drawText("Points: " + Integer.toString(player.getPoints()) +
                         " Round: " + Integer.toString(round),
                 0.5f * tsize, 1.1f * tsize, paint);
     }
 
     public void fire() {
-        if (lasers.size() < player.attributes.maxLasers) {
+        if (lasers.size() < player.getMaxLaser()) {
             Laser newLaser = new Laser(player);
 
             lasers.add(0, newLaser);
