@@ -18,9 +18,6 @@ public class Game {
 
     public interface SoundManager {
         void laserSound();
-        void hitSound();
-        void boxSound();
-        void powerupSound();
     }
 
 

@@ -10,14 +10,13 @@ import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
 
 public class CollisionManager {
 
-    public interface SoundManager {
-        void laserSound();
+    public interface CollisionSoundManager {
         void hitSound();
         void boxSound();
         void powerupSound();
     }
 
-    private SoundManager soundCallback;
+    private CollisionSoundManager soundCallback;
 
     private GameHelper gameHelper;
 
@@ -26,8 +25,8 @@ public class CollisionManager {
     private ArrayList<Powerup> removablePowerups = new ArrayList<>();
 
     CollisionManager(Context context) {
-        if (context instanceof SoundManager) {
-            soundCallback = (SoundManager) context;
+        if (context instanceof CollisionSoundManager) {
+            soundCallback = (CollisionSoundManager) context;
         }
         gameHelper = new GameHelper(context);
     }
@@ -108,7 +107,6 @@ public class CollisionManager {
 
                 return box;
             }
-
 
         return null;
     }
