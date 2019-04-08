@@ -19,6 +19,10 @@ public class ShopHelper {
     static final String POWERUP_CHANCE_DESCRIPTION = "Increase the percentage of a new " +
             "powerup at the beginning of a round";
 
+    public static final String FAST_LASER = "Fast Laser";
+    static final String FAST_LASER_DESCRIPTION = "Shoot faster lasers! " +
+            "Upgrade for even faster lasers.";
+
     public static final String HEALTH_POWERUP = "Health Powerup";
     static final String HEALTH_POWERUP_DESCRIPTION = "Gives you a Healthboost! Upgrade" +
             " for a greater boost and a longer visibility of the powerup";
@@ -43,6 +47,10 @@ public class ShopHelper {
                             0, 20,
                             75,
                             R.drawable.laserpowerupimage),
+                    new Item(FAST_LASER, FAST_LASER_DESCRIPTION,
+                            0, 25,
+                            75,
+                            R.drawable.ic_launcher_background),
                     new Item(POWERUP_CHANCE, POWERUP_CHANCE_DESCRIPTION,
                             0, 30,
                             100,

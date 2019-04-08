@@ -146,7 +146,7 @@ public class User {
     public boolean fire() {
         boolean success = false;
         if (lasers.size() < getMaxLaser()) {
-            Laser newLaser = new Laser(player);
+            Laser newLaser = new Laser(player, attributes.laserSpeedFactor);
             lasers.add(0, newLaser);
             success = true;
         }

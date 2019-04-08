@@ -3,6 +3,7 @@ package de.androidmika.pommesmann.GameParts;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import de.androidmika.pommesmann.Vec;
 
@@ -14,7 +15,7 @@ public class Laser {
     private int wallCount;
     private int maxWallCount;
 
-    public Laser(Player player) {
+    public Laser(Player player, float speedfactor) {
         this.wallCount = 0;
         this.maxWallCount = 2;
 
@@ -28,10 +29,10 @@ public class Laser {
         // normalize tempVel
         float velLength = (float) Math.sqrt(tempVel.x * tempVel.x + tempVel.y * tempVel.y);
         tempVel.mult(1 / velLength);
-        Vec tempNormVel = tempVel.copy();
+        Vec tempNormVel = tempVel.copy(); //copy for setting pos, tempVel is also normalized
 
         // setting vel of laser
-        tempVel.mult(1.75f * player.getMaxVel());
+        tempVel.mult(1.75f * player.getMaxVel() * speedfactor);
         this.vel = tempVel;
 
         // setting pos of laser

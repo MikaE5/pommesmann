@@ -19,6 +19,9 @@ class UserAttributes {
     double chanceOfPowerup;
     int availablePowerupsCount;
 
+    //LaserSpeed
+    float laserSpeedFactor;
+
     // setting for HealthPowerup
     int HEALTH_POWERUP_DURATION;
     float healthPowerupHealing;
@@ -38,6 +41,8 @@ class UserAttributes {
 
         chanceOfPowerup = userHelper.chanceOfPowerup;
         availablePowerupsCount = userHelper.availablePowerups.size();
+
+        laserSpeedFactor = userHelper.fastLaserSpeed;
 
         HEALTH_POWERUP_DURATION = userHelper.healthPowerupDuration;
         healthPowerupHealing = userHelper.healthPowerupHealing;
