@@ -3,7 +3,6 @@ package de.androidmika.pommesmann.GameParts;
 import java.util.ArrayList;
 
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
-import de.androidmika.pommesmann.GameParts.User.User;
 
 public class UpdateManager {
 

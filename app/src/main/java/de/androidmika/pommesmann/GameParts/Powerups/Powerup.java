@@ -11,7 +11,7 @@ public abstract class Powerup {
     int duration; // duration of visibility
 
     // square powerups
-    public Powerup(float width, float height, float length, int dur) {
+    Powerup(float width, float height, float length, int dur) {
         float tempX = (float) Math.random() * width;
         float tempY = (float) Math.random() * height;
         this.pos = new Vec(tempX, tempY);
@@ -21,7 +21,7 @@ public abstract class Powerup {
     }
 
     // round powerups
-    public Powerup(float width, float height, int dur, float radius) {
+    Powerup(float width, float height, int dur, float radius) {
         float tempX = (float) Math.random() * width;
         float tempY = (float) Math.random() * height;
         this.pos = new Vec(tempX, tempY);

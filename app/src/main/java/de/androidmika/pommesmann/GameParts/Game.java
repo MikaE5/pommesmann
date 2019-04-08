@@ -4,16 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+
 import java.util.ArrayList;
 
 import de.androidmika.pommesmann.App;
-import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
-import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
-import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
 import de.androidmika.pommesmann.GameParts.User.User;
-import de.androidmika.pommesmann.GameParts.User.UserHelper;
 import de.androidmika.pommesmann.R;
-import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
 import de.androidmika.pommesmann.Vec;
 
 public class Game {
@@ -97,7 +93,7 @@ public class Game {
             float factor = 1 - 0.05f * round;
             if (factor < 0.5) factor = 0.5f;
             maxVelBox += factor * changeVelBox;
-            user.updateAttributes();
+            user.updateHitDamage();
         }
     }
 
@@ -141,6 +137,7 @@ public class Game {
         } else {
             afterSurfaceCreated(width, height);
         }
+
     }
 
 

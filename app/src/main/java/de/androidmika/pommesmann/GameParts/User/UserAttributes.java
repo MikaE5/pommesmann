@@ -1,9 +1,5 @@
 package de.androidmika.pommesmann.GameParts.User;
 
-import java.util.ArrayList;
-
-import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
-
 import static de.androidmika.pommesmann.App.getContext;
 
 class UserAttributes {
@@ -20,19 +16,18 @@ class UserAttributes {
     float hitDamage;
 
     //Powerups
-    ArrayList<String> availablePowerups;
     double chanceOfPowerup;
+    int availablePowerupsCount;
 
     // setting for HealthPowerup
-    int healthPowerupDuration;
+    int HEALTH_POWERUP_DURATION;
     float healthPowerupHealing;
 
     // settings for LaserPowerup
-    final int MAX_LASERS = 3;
-    int maxLasers = 3;
+    int LASER_POWERUP_DURATION;       //The max Duration set by the PowerupLevel
     int laserPowerupDuration = 0;     // The current Duration in the actual game
-    final int LASER_POWERUP_DURATION; //The max Duration set by the PowerupLevel
-
+    final int MAX_LASERS = 3;
+    int currentMaxLaser = 3;
 
 
 
@@ -41,11 +36,12 @@ class UserAttributes {
         difficulty = userHelper.difficulty;
         hitDamage = 40 + 4 * difficulty;
 
-        availablePowerups = userHelper.availablePowerups;
         chanceOfPowerup = userHelper.chanceOfPowerup;
+        availablePowerupsCount = userHelper.availablePowerups.size();
 
-        healthPowerupDuration = userHelper.healthPowerupDuration;
+        HEALTH_POWERUP_DURATION = userHelper.healthPowerupDuration;
         healthPowerupHealing = userHelper.healthPowerupHealing;
+
         LASER_POWERUP_DURATION = userHelper.laserPowerupDuration;
     }
 
@@ -54,13 +50,15 @@ class UserAttributes {
     }
 
     void update() {
-        hitDamage += 2 + 2 * difficulty;
-
-        if (maxLasers > MAX_LASERS) {
+        if (currentMaxLaser > MAX_LASERS) {
             laserPowerupDuration--;
             if (laserPowerupDuration < 0) {
-                maxLasers--;
+                currentMaxLaser--;
             }
         }
+    }
+
+    void updateHitDamage() {
+        hitDamage += 2 + 2 * difficulty;
     }
 }

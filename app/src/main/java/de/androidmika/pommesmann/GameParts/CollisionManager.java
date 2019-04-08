@@ -8,7 +8,6 @@ import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
 import de.androidmika.pommesmann.GameParts.User.User;
-import de.androidmika.pommesmann.GameParts.User.UserHelper;
 
 public class CollisionManager {
 
@@ -41,12 +40,14 @@ public class CollisionManager {
         for (Box box : boxes) {
             // one laser hits box
             for (Laser laser : user.lasers) {
-                animBox = laserHitsBox(user.player, laser, box, user.getHitBonus(), points);
-                user.increasePoints(points);
+                animBox = laserHitsBox(user.player, laser, box, user.getHitBonus());
                 if (animBox != null) {
+                    // laser hit a box
                     animationBoxes.add(animBox);
+                    user.increasePoints(1);
                 }
             }
+            user.increasePoints(points);
             // player hits box
             animBox = playerHitsBox(user.player, box, user.getHitDamage());
             if (animBox != null) {
@@ -61,9 +62,8 @@ public class CollisionManager {
         for (Powerup powerup : user.powerups) {
             if (playerHitsPowerup(user.player, powerup, user.getHealthPowerupHealing())) {
                 user.increaseMaxLaser();
+                user.setLaserPowerupDuration();
             }
-            user.increaseMaxLaser();
-            user.setLaserPowerupDuration();
         }
         user.lasers.removeAll(removableLasers);
         boxes.removeAll(removableBoxes);
@@ -94,8 +94,7 @@ public class CollisionManager {
 
     // checks if the laser of the player hits the box
     // returns the box, if it is hit, so it can change to animationBoxes
-    private Box laserHitsBox(Player player, Laser laser, Box box, float hitBonus, int points) {
-            points = 0;
+    private Box laserHitsBox(Player player, Laser laser, Box box, float hitBonus) {
             if (circleInSquare(laser.getPos().x, laser.getPos().y, laser.getR(),
                     box.getPos().x, box.getPos().y, box.getLen())) {
                 player.changeHealth(hitBonus);
@@ -104,7 +103,6 @@ public class CollisionManager {
                 box.setToAnimating();
                 removableBoxes.add(box);
 
-                points++;
                 soundCallback.hitSound();
 
                 return box;

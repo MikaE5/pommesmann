@@ -10,7 +10,7 @@ import de.androidmika.pommesmann.ShopDatabase.Item;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
 
-public class UserHelper {
+class UserHelper {
 
 
     double chanceOfPowerup;

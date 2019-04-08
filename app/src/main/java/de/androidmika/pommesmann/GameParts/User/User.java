@@ -46,6 +46,16 @@ public class User {
     }
 
 
+    // update HitDamage at beginning of each round
+    public void updateHitDamage() {
+        attributes.updateHitDamage();
+    }
+
+    private void updateAttributes() {
+        attributes.update();
+    }
+
+
     public void showLasers(Canvas canvas) {
         showManager.showLasers(lasers, canvas);
     }
@@ -76,10 +86,6 @@ public class User {
         powerupWidth = 80 * scale;
     }
 
-    // updates Attributes at beginning of a new round
-    public void updateAttributes() {
-        attributes.update();
-    }
 
     // gets the difficulty set by Secret of Pommesmann
     public int getDifficulty() {
@@ -93,13 +99,13 @@ public class User {
     }
 
     private void addNewPowerup(float width, float height) {
-        if (attributes.availablePowerups.size() > 0) {
+        if (attributes.availablePowerupsCount > 0) {
             String type = attributes.getRandomPowerup();
 
             if (type.equals(ShopHelper.HEALTH_POWERUP)) {
-                powerups.add(new HealthPowerup(width, height, powerupWidth, attributes.healthPowerupDuration));
+                powerups.add(new HealthPowerup(width, height, powerupWidth, attributes.HEALTH_POWERUP_DURATION));
             } else if (type.equals(ShopHelper.LASER_POWERUP)) {
-                powerups.add(new LaserPowerup(width, height, powerupR, attributes.laserPowerupDuration));
+                powerups.add(new LaserPowerup(width, height, powerupR, attributes.LASER_POWERUP_DURATION));
             }
         }
     }
@@ -108,8 +114,12 @@ public class User {
         return attributes.points;
     }
 
-    int getMaxLaser() {
-        return attributes.maxLasers;
+    public void increasePoints(int number) {
+        attributes.points += number;
+    }
+
+    private int getMaxLaser() {
+        return attributes.currentMaxLaser;
     }
 
     public float getHitDamage() {
@@ -122,16 +132,13 @@ public class User {
 
     public float getHealthPowerupHealing() { return attributes.healthPowerupHealing; }
 
-    public void increasePoints(int number) {
-        attributes.points += number;
-    }
 
     public void setLaserPowerupDuration() {
         attributes.laserPowerupDuration = attributes.LASER_POWERUP_DURATION;
     }
 
     public void increaseMaxLaser() {
-        attributes.maxLasers++;
+        attributes.currentMaxLaser++;
     }
 
 
