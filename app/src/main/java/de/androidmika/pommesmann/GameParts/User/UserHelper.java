@@ -39,7 +39,7 @@ class UserHelper {
         Item fastLaser = dbHelper.getItemByName(ShopHelper.FAST_LASER);
         // Tobi H. empfiehlt: Level 5 = 3-4mal so schnell
         if (fastLaser.getActive()) {
-            fastLaserSpeed = 1 + 0.1f * fastLaser.getLevel(); // 1.5 times as fast at level 5
+            fastLaserSpeed = 1 + 0.07f * fastLaser.getLevel(); // 1.35 times as fast at level 5
         } else {
             fastLaserSpeed = 1;
         }

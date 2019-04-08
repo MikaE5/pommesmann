@@ -1,13 +1,9 @@
 package de.androidmika.pommesmann.ShopDatabase;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.R;
 
 public class ShopHelper {
@@ -47,14 +43,14 @@ public class ShopHelper {
                             0, 20,
                             75,
                             R.drawable.laserpowerupimage),
-                    new Item(FAST_LASER, FAST_LASER_DESCRIPTION,
-                            0, 25,
-                            75,
-                            R.drawable.ic_launcher_background),
                     new Item(POWERUP_CHANCE, POWERUP_CHANCE_DESCRIPTION,
                             0, 30,
                             100,
                             R.drawable.powerupchanceimage),
+                    new Item(FAST_LASER, FAST_LASER_DESCRIPTION,
+                            0, 35,
+                            100,
+                            R.drawable.fastlaserimage),
                     new Item(SECRET_OF_POMMESMANN, SECRET_OF_POMMESMANN_DESCRIPTION,
                             0, 60,
                             3141,

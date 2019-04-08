@@ -281,7 +281,11 @@ public class ShopActivity extends Activity {
 
         item.setLevel(item.getLevel() + 1);
         if (!item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
-            item.setPrice(item.getPrice() + ShopHelper.PRICE_INCREASE);
+            if (item.getName().equals(ShopHelper.FAST_LASER)) {
+                item.setPrice(item.getPrice() + 2 * ShopHelper.PRICE_INCREASE);
+            } else {
+                item.setPrice(item.getPrice() + ShopHelper.PRICE_INCREASE);
+            }
         }
         dbHelper.addOrUpdateItem(item);
         secretOfPommesmann(item);
