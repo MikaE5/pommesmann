@@ -53,7 +53,7 @@ public class Player {
         return vel.copy();
     }
 
-    Vec getPos() {
+    public Vec getPos() {
         return pos.copy();
     }
 
@@ -65,7 +65,7 @@ public class Player {
         return maxVel;
     }
 
-    void setHealthLoss(float healthLoss) {
+    public void setHealthLoss(float healthLoss) {
         this.healthLoss = healthLoss;
     }
 
@@ -74,7 +74,7 @@ public class Player {
         if (health > 255) health = 255f;
     }
 
-    float getHealth() {
+    public float getHealth() {
         return health;
     }
 

@@ -18,18 +18,18 @@ public class UpdateManager {
     private float width;
     private float height;
 
-    void assignSize(float width, float height) {
+    public void assignSize(float width, float height) {
         this.width = width;
         this.height = height;
         assignedSize = true;
     }
 
-    boolean isSizeAssigned() {
+    public boolean isSizeAssigned() {
         return assignedSize;
     }
 
 
-    void updateLasers(ArrayList<Laser> lasers) {
+    public void updateLasers(ArrayList<Laser> lasers) {
         for (Laser laser : lasers) {
             laser.update(width, height);
             if (laser.removeLaser()) {
@@ -55,16 +55,12 @@ public class UpdateManager {
     }
 
 
-    void updatePlayer(Player player) {
+    public void updatePlayer(Player player) {
         player.update(width, height);
     }
 
-    private void updateUserAttribs(User user) {
-        user.updateAttribs();
-    }
 
-
-    void updatePowerups(ArrayList<Powerup> powerups) {
+    public void updatePowerups(ArrayList<Powerup> powerups) {
         for (Powerup powerup : powerups) {
             powerup.update();
             if (powerup.isRemovable()) {

@@ -14,7 +14,7 @@ public class Laser {
     private int wallCount;
     private int maxWallCount;
 
-    Laser(Player player) {
+    public Laser(Player player) {
         this.wallCount = 0;
         this.maxWallCount = 2;
 

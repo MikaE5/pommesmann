@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
+import de.androidmika.pommesmann.GameParts.User.User;
 import de.androidmika.pommesmann.GameParts.User.UserHelper;
 
 public class CollisionManager {
@@ -19,7 +20,6 @@ public class CollisionManager {
 
     private CollisionSoundManager soundCallback;
 
-    private UserHelper userHelper;
 
     private ArrayList<Laser> removableLasers = new ArrayList<>();
     private ArrayList<Box> removableBoxes = new ArrayList<>();
@@ -29,44 +29,45 @@ public class CollisionManager {
         if (context instanceof CollisionSoundManager) {
             soundCallback = (CollisionSoundManager) context;
         }
-        userHelper = new UserHelper(context);
     }
 
 
     // does all the collisionDetection and returns ArrayList of Boxes, which change to animating
-    ArrayList<Box> collisionDetection(Player player,
-                            ArrayList<Box> boxes,
-                            ArrayList<Laser> lasers,
-                            ArrayList<Powerup> powerups) {
+    ArrayList<Box> collisionDetection(ArrayList<Box> boxes, User user) {
 
         ArrayList<Box> animationBoxes = new ArrayList<>();
         Box animBox;
-
+        int points = 0;
         for (Box box : boxes) {
             // one laser hits box
-            for (Laser laser : lasers) {
-                animBox = laserHitsBox(player, laser, box);
+            for (Laser laser : user.lasers) {
+                animBox = laserHitsBox(user.player, laser, box, user.getHitBonus(), points);
+                user.increasePoints(points);
                 if (animBox != null) {
                     animationBoxes.add(animBox);
                 }
             }
             // player hits box
-            animBox = playerHitsBox(player, box);
+            animBox = playerHitsBox(user.player, box, user.getHitDamage());
             if (animBox != null) {
                 animationBoxes.add(animBox);
             }
         }
         // laser hits player
-        for (Laser laser : lasers) {
-            laserHitsPlayer(player, laser);
+        for (Laser laser : user.lasers) {
+            laserHitsPlayer(user.player, laser, user.getHitDamage());
         }
         // player hits powerup
-        for (Powerup powerup : powerups) {
-            playerHitsPowerup(player, powerup);
+        for (Powerup powerup : user.powerups) {
+            if (playerHitsPowerup(user.player, powerup, user.getHealthPowerupHealing())) {
+                user.increaseMaxLaser();
+            }
+            user.increaseMaxLaser();
+            user.setLaserPowerupDuration();
         }
-        lasers.removeAll(removableLasers);
+        user.lasers.removeAll(removableLasers);
         boxes.removeAll(removableBoxes);
-        powerups.removeAll(removablePowerups);
+        user.powerups.removeAll(removablePowerups);
         removableLasers.clear();
         removableBoxes.clear();
         removablePowerups.clear();
@@ -75,7 +76,7 @@ public class CollisionManager {
     }
 
 
-    private void laserHitsPlayer(Player player, Laser laser) {
+    private void laserHitsPlayer(Player player, Laser laser, float hitDamage) {
         if (laser.getWallCount() != 0) {
 
             float dx = laser.getPos().x - player.getPos().x;
@@ -86,24 +87,24 @@ public class CollisionManager {
 
             if (dist < minDist) {
                 removableLasers.add(laser);
-                player.changeHealth(-0.5f * player.getHitDamage());
+                player.changeHealth(-0.5f * hitDamage);
             }
         }
     }
 
     // checks if the laser of the player hits the box
     // returns the box, if it is hit, so it can change to animationBoxes
-    private Box laserHitsBox(Player player, Laser laser, Box box) {
-
+    private Box laserHitsBox(Player player, Laser laser, Box box, float hitBonus, int points) {
+            points = 0;
             if (circleInSquare(laser.getPos().x, laser.getPos().y, laser.getR(),
                     box.getPos().x, box.getPos().y, box.getLen())) {
-                player.changeHealth(player.getHitBonus());
+                player.changeHealth(hitBonus);
                 removableLasers.add(laser);
 
                 box.setToAnimating();
                 removableBoxes.add(box);
 
-                player.increasePoints(1);
+                points++;
                 soundCallback.hitSound();
 
                 return box;
@@ -115,11 +116,11 @@ public class CollisionManager {
 
     // checks if the player hits the box
     // returns the box, if it is hit, so it can change to animationBoxes
-    private Box playerHitsBox(Player player, Box box) {
+    private Box playerHitsBox(Player player, Box box, float hitDamage) {
 
         if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
                 box.getPos().x, box.getPos().y, box.getLen())) {
-            player.changeHealth(-1f * player.getHitDamage());
+            player.changeHealth(-1f * hitDamage);
 
             box.setToAnimating();
             removableBoxes.add(box);
@@ -133,11 +134,13 @@ public class CollisionManager {
 
 
     // check if player hits powerup, based on the type of the powerup
-    private void playerHitsPowerup(Player player, Powerup powerup) {
+    // returns true if the player hits laserpowerup to set the laserduration in user
+    private boolean playerHitsPowerup(Player player, Powerup powerup, float healing) {
+        boolean laserPowerup = false;
         if (powerup instanceof HealthPowerup) {
             if (circleInSquare(player.getPos().x, player.getPos().y, player.getR(),
                     powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
-                player.changeHealth(userHelper.healthPowerupHealing);
+                player.changeHealth(healing);
 
                 removablePowerups.add(powerup);
                 soundCallback.powerupSound();
@@ -145,13 +148,13 @@ public class CollisionManager {
         } else if (powerup instanceof LaserPowerup) {
             if (circleInCircle(player.getPos().x, player.getPos().y, player.getR(),
                     powerup.getPos().x, powerup.getPos().y, powerup.getLen())) {
-                player.increaseMaxLaser();
-                player.setLaserDuration(userHelper.laserPowerupDuration);
+                laserPowerup = true;
 
                 removablePowerups.add(powerup);
                 soundCallback.powerupSound();
             }
         }
+        return laserPowerup;
     }
 
     boolean circleInSquare(float cx, float cy, float cr, float sx, float sy, float slen) {

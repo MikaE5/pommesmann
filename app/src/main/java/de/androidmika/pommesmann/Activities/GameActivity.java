@@ -91,7 +91,7 @@ public class GameActivity extends Activity implements JoystickView.JoystickListe
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent) {
-        game.player.setAcc(xPercent, yPercent);
+        game.user.movePlayer(xPercent, yPercent);
     }
 
     @Override

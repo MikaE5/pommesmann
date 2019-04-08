@@ -9,7 +9,7 @@ import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
 
 public class ShowManager {
 
-    void showLasers(ArrayList<Laser> lasers, Canvas canvas) {
+    public void showLasers(ArrayList<Laser> lasers, Canvas canvas) {
         try {
             for (Laser laser : lasers) {
                 laser.show(canvas);
@@ -19,19 +19,19 @@ public class ShowManager {
         }
     }
 
-    void showBoxes(ArrayList<Box> boxes, Canvas canvas) {
+    public void showBoxes(ArrayList<Box> boxes, Canvas canvas) {
         for (Box box : boxes) {
             box.show(canvas);
         }
     }
 
-    void showPowerups(ArrayList<Powerup> powerups, Canvas canvas) {
+    public void showPowerups(ArrayList<Powerup> powerups, Canvas canvas) {
         for (Powerup powerup : powerups) {
             powerup.show(canvas);
         }
     }
 
-    void showPlayer(Player player, Canvas canvas) {
+    public void showPlayer(Player player, Canvas canvas) {
         player.show(canvas);
     }
 

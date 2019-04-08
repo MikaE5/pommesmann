@@ -23,32 +23,20 @@ public class Game {
     }
 
 
-    private UserHelper userHelper;
+    private boolean isRunning = false;
+    private boolean started = false;
+    private int round = 0;
 
     private float REL_W_H;
     private float boxWidth;
     private float maxVelBox;
     private float changeVelBox;
-    private float powerupR;
-    private float powerupWidth;
 
-    private boolean isRunning = false;
-    private boolean started = false;
-
-    private User user = new User();
-
-
-    public Player player = new Player();
-    private ArrayList<Laser> lasers = new ArrayList<>();
-
+    private final int maxBoxes = 5;
     private ArrayList<Box> boxes = new ArrayList<>();
     private ArrayList<Box> animationBoxes = new ArrayList<>();
 
-    private final int maxBoxes = 5;
-    private ArrayList<Powerup> powerups = new ArrayList<>();
-
-    private int round = 0;
-
+    public User user = new User();
 
     private SoundManager soundCallback;
     private UpdateManager updateManager = new UpdateManager();
@@ -58,9 +46,7 @@ public class Game {
 
 
     public Game(Context context) {
-        userHelper = new UserHelper(context);
         collisionManager = new CollisionManager(context);
-
 
         if (context instanceof SoundManager) {
             soundCallback = (SoundManager) context;
@@ -79,31 +65,27 @@ public class Game {
             REL_W_H *= 100;
             REL_W_H = Math.round(REL_W_H);
             REL_W_H /= 100;
-            setParameters();
 
-            user.setPlayerParams(REL_W_H, width, height);
+            setBoxParameters();
+
+            user.setParams(REL_W_H, width, height);
 
             isRunning = true;
         }
     }
 
-    private void setParameters() {
+    private void setBoxParameters() {
         // playerVel = 0.09f * 48 * REL_W_H
-        maxVelBox = (0.2f + 0.1f * userHelper.difficulty) * 0.09f * 48 * REL_W_H;
-        changeVelBox = (0.8f + 0.1f * userHelper.difficulty) * REL_W_H;
+        maxVelBox = (0.2f + 0.1f * user.getDifficulty()) * 0.09f * 48 * REL_W_H;
+        changeVelBox = (0.8f + 0.1f * user.getDifficulty()) * REL_W_H;
         boxWidth = 83 * REL_W_H;
-
-        powerupR = 40 * REL_W_H;
-        powerupWidth = 80 * REL_W_H;
     }
 
     private void levelManagement(float width, float height) {
         if (boxes.size() <= 0) {
             nextRound();
             newBoxes(width, height);
-            if (Math.random() < userHelper.chanceOfPowerup) {
-                newPowerup(width, height);
-            }
+            user.newPowerup(width, height);
         }
     }
 
@@ -119,22 +101,11 @@ public class Game {
         }
     }
 
-    private void newPowerup(float width, float height) {
-        if (userHelper.availablePowerups.size() > 0) {
-            String type = userHelper.getRandomPowerup();
-
-            if (type.equals(ShopHelper.HEALTH_POWERUP)) {
-                powerups.add(new HealthPowerup(width, height, powerupWidth, userHelper.healthPowerupDuration));
-            } else if (type.equals(ShopHelper.LASER_POWERUP)) {
-                powerups.add(new LaserPowerup(width, height, powerupR, userHelper.laserPowerupDuration));
-            }
-        }
-    }
 
     private void newBoxes(float width, float height) {
         Box tempBox;
-        Vec ppos = player.getPos();
-        float pr = player.getR();
+        Vec ppos = user.getPlayerPos();
+        float pr = user.getPlayerR();
         Vec bpos;
         float blen;
 
@@ -154,7 +125,7 @@ public class Game {
     }
 
     public int getPoints() {
-        return player.getPoints();
+        return user.getPoints();
     }
 
 
@@ -164,10 +135,8 @@ public class Game {
 
             collisionDetection();
             updateManager.updateBoxes(animationBoxes);
-            updateManager.updatePlayer(player);
-            updateManager.updateLasers(lasers);
             updateManager.updateBoxes(boxes);
-            updateManager.updatePowerups(powerups);
+            user.update(width, height);
             levelManagement(width, height);
         } else {
             afterSurfaceCreated(width, height);
@@ -178,46 +147,39 @@ public class Game {
 
     public void show(Canvas canvas) {
         showText(canvas);
-        showManager.showPowerups(powerups, canvas);
+        user.showPowerups(canvas);
         showManager.showBoxes(boxes, canvas);
         showManager.showBoxes(animationBoxes, canvas);
-        showManager.showLasers(lasers, canvas);
-        showManager.showPlayer(player, canvas);
+        user.showLasers(canvas);
+        user.showPlayer(canvas);
     }
 
 
     private void showText(Canvas canvas) {
-        float tsize = player.getR() * 0.8f;
+        float tsize = 40 * REL_W_H;
         Paint paint = new Paint();
         paint.setColor(App.getContext().getResources().getColor(R.color.canvasTextColor));
         paint.setTextSize(tsize);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawText("Points: " + Integer.toString(player.getPoints()) +
+        canvas.drawText("Points: " + Integer.toString(user.getPoints()) +
                         " Round: " + Integer.toString(round),
                 0.5f * tsize, 1.1f * tsize, paint);
     }
 
     public void fire() {
-        if (lasers.size() < player.getMaxLaser()) {
-            Laser newLaser = new Laser(player);
-
-            lasers.add(0, newLaser);
+        if (user.fire())
             soundCallback.laserSound();
-        }
     }
 
     private void collisionDetection() {
-
         // does all the collisionDetection and adds all boxes, that are now set to animate
         animationBoxes.addAll(
-                collisionManager.collisionDetection(player, boxes, lasers, powerups)
+                collisionManager.collisionDetection(boxes, user)
         );
     }
 
 
     public boolean gameOver() {
-        return (player.getHealth() < 0);
+        return (user.getHealth() < 0);
     }
-
-
 }
