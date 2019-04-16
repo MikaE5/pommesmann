@@ -9,9 +9,9 @@ The Game has basically three Activities, Main-, Game- and GameoverActivity.
 The other Activites can be accessed via the MainActivity.
 
 1. MainActivity
-+ AboutActivity
-+ TutorialActivity
-+ ShopActivity
+    + AboutActivity
+    + TutorialActivity
+    + ShopActivity
 2. GameActivity
 3. GameoverActivity
 
