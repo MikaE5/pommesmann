@@ -16,9 +16,9 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
 
     private static ShopDatabaseHelper sInstance;
 
-    public static final String DATABASE_NAME = "shop.db";
+    private static final String DATABASE_NAME = "shop.db";
     // if I update when app is already released, I have to change onUpgrade!!!!
-    public static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 5;
         // VERSION 2: added COLUMN_PRICE
         // VERSION 3: added COLUMN_DESCRIPTION
         // VERSION 4: added COLUMN_ACTIVE
@@ -37,7 +37,7 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         return sInstance;
     }
 
-    public void initItems() {
+    private void initItems() {
         for (Item item : ShopHelper.ITEMS) {
 
             Item itemInTable = getItemByName(item.getName());
@@ -105,7 +105,8 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public int updateItem(Item item) {
+    // returns number of items, that were updated
+    private int updateItem(Item item) {
         SQLiteDatabase db = getWritableDatabase();
 
         // update based on the item.name
