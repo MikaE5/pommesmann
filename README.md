@@ -17,7 +17,7 @@ The other Activites can be accessed via the MainActivity.
 
 
 ## Game-Loop
-The Game-Loop is realised through an custom SurfaceView.
+The Game-Loop is realised through a custom SurfaceView.
 The drawing is done by accessing the canvas of the view.
 The SurfaceView also has a custom Thread, where the actual Game-Loop (updating, drawing) is managed.
 
