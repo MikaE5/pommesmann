@@ -15,7 +15,7 @@ public class Box {
     private float len;
     private boolean animating = false;
 
-    Box(float width, float height, float len, float maxVel) {
+    public Box(float width, float height, float len, float maxVel) {
         initPos(width, height, len);
 
         // vel always between 0.25*maxVel and 1*maxVel
@@ -26,7 +26,7 @@ public class Box {
         this.len = len;
     }
 
-    void setToAnimating() {
+    public void setToAnimating() {
         animating = true;
     }
 
@@ -56,15 +56,15 @@ public class Box {
         this.pos = new Vec(tempX, tempY);
     }
 
-    Vec getPos() {
+    public Vec getPos() {
         return pos.copy();
     }
 
-    float getLen() {
+    public float getLen() {
         return len;
     }
 
-    void update(float width, float height) {
+    public void update(float width, float height) {
         if (animating) {
            removeAnimation(2);
         } else {
@@ -121,8 +121,7 @@ public class Box {
         len -= 2 * animSpeed;
     }
 
-    boolean animationFinished() {
+    public boolean animationFinished() {
         return (len <= 0);
     }
-
 }

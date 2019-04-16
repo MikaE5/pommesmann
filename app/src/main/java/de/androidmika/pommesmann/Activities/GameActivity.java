@@ -13,8 +13,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import de.androidmika.pommesmann.App;
-import de.androidmika.pommesmann.GameParts.CollisionManager;
-import de.androidmika.pommesmann.GameParts.Game;
+import de.androidmika.pommesmann.GameParts.Game.CollisionManager;
+import de.androidmika.pommesmann.GameParts.Game.Game;
 import de.androidmika.pommesmann.GameScreen.GameView;
 import de.androidmika.pommesmann.GameScreen.JoystickView;
 import de.androidmika.pommesmann.R;

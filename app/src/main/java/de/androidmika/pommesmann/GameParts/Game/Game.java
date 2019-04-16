@@ -1,4 +1,4 @@
-package de.androidmika.pommesmann.GameParts;
+package de.androidmika.pommesmann.GameParts.Game;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 
 import de.androidmika.pommesmann.App;
+import de.androidmika.pommesmann.GameParts.Box;
 import de.androidmika.pommesmann.GameParts.User.User;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.Vec;
@@ -35,7 +36,6 @@ public class Game {
     public User user = new User();
 
     private SoundManager soundCallback;
-    private UpdateManager updateManager = new UpdateManager();
     private ShowManager showManager = new ShowManager();
     private CollisionManager collisionManager;
 
@@ -52,9 +52,6 @@ public class Game {
     private void afterSurfaceCreated(float width, float height) {
         if (!isRunning) {
             // get the screen size in updateManager
-            if (!updateManager.isSizeAssigned()) {
-                updateManager.assignSize(width, height);
-            }
 
             REL_W_H = (float)Math.sqrt(width * height) / 1000;
             // round to two decimal places
@@ -63,7 +60,6 @@ public class Game {
             REL_W_H /= 100;
 
             setBoxParameters();
-
             user.setParams(REL_W_H, width, height);
 
             isRunning = true;
@@ -130,9 +126,12 @@ public class Game {
         if (isRunning && started) {
 
             collisionDetection();
-            updateManager.updateBoxes(animationBoxes);
-            updateManager.updateBoxes(boxes);
-            user.update(width, height);
+            UpdateManager.updateBoxes(animationBoxes, width, height);
+            UpdateManager.updateBoxes(boxes, width, height);
+            UpdateManager.updatePlayer(user.player, width, height);
+            UpdateManager.updateLasers(user.lasers, width, height);
+            UpdateManager.updatePowerups(user.powerups);
+            user.updateAttributes();
             levelManagement(width, height);
         } else {
             afterSurfaceCreated(width, height);
@@ -143,12 +142,12 @@ public class Game {
 
 
     public void show(Canvas canvas) {
+        ShowManager.showPowerups(user.powerups, canvas);
         showText(canvas);
-        user.showPowerups(canvas);
-        showManager.showBoxes(boxes, canvas);
-        showManager.showBoxes(animationBoxes, canvas);
-        user.showLasers(canvas);
-        user.showPlayer(canvas);
+        ShowManager.showBoxes(boxes, canvas);
+        ShowManager.showBoxes(animationBoxes, canvas);
+        ShowManager.showLasers(user.lasers, canvas);
+        ShowManager.showPlayer(user.player, canvas);
     }
 
 

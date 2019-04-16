@@ -1,34 +1,23 @@
-package de.androidmika.pommesmann.GameParts;
+package de.androidmika.pommesmann.GameParts.Game;
 
 import java.util.ArrayList;
 
+import de.androidmika.pommesmann.GameParts.Box;
+import de.androidmika.pommesmann.GameParts.Laser;
+import de.androidmika.pommesmann.GameParts.Player;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
 
 public class UpdateManager {
 
     // Helper ArrayLists for removing elements
-    private ArrayList<Laser> removableLasers = new ArrayList<>();
-    private ArrayList<Box> removableBoxes = new ArrayList<>();
-    private ArrayList<Powerup> removablePowerups = new ArrayList<>();
+    private static ArrayList<Laser> removableLasers = new ArrayList<>();
+    private static ArrayList<Box> removableBoxes = new ArrayList<>();
+    private static ArrayList<Powerup> removablePowerups = new ArrayList<>();
 
     private final float animSpeed = 2;
 
-    private boolean assignedSize = false;
-    private float width;
-    private float height;
 
-    public void assignSize(float width, float height) {
-        this.width = width;
-        this.height = height;
-        assignedSize = true;
-    }
-
-    public boolean isSizeAssigned() {
-        return assignedSize;
-    }
-
-
-    public void updateLasers(ArrayList<Laser> lasers) {
+    static void updateLasers(ArrayList<Laser> lasers, float width, float height) {
         for (Laser laser : lasers) {
             laser.update(width, height);
             if (laser.removeLaser()) {
@@ -40,7 +29,7 @@ public class UpdateManager {
     }
 
 
-    void updateBoxes(ArrayList<Box> boxes) {
+    static void updateBoxes(ArrayList<Box> boxes, float width, float height) {
         for (Box box : boxes) {
             box.update(width, height);
 
@@ -54,12 +43,12 @@ public class UpdateManager {
     }
 
 
-    public void updatePlayer(Player player) {
+    static void updatePlayer(Player player, float width, float height) {
         player.update(width, height);
     }
 
 
-    public void updatePowerups(ArrayList<Powerup> powerups) {
+    static void updatePowerups(ArrayList<Powerup> powerups) {
         for (Powerup powerup : powerups) {
             powerup.update();
             if (powerup.isRemovable()) {

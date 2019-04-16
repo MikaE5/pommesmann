@@ -11,8 +11,6 @@ import de.androidmika.pommesmann.GameParts.Player;
 import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
-import de.androidmika.pommesmann.GameParts.ShowManager;
-import de.androidmika.pommesmann.GameParts.UpdateManager;
 import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
 import de.androidmika.pommesmann.Vec;
 
@@ -28,44 +26,13 @@ public class User {
     private float powerupWidth;
 
 
-    // User has its own Update- and ShowManager but CollisionDetection is handled by Game.class
-    private UpdateManager updateManager = new UpdateManager();
-    private ShowManager showManager = new ShowManager();
-
-
-
-    public void update(float width, float height) {
-        if (!updateManager.isSizeAssigned()) {
-            updateManager.assignSize(width, height);
-        }
-        updateManager.updatePlayer(player);
-        updateManager.updateLasers(lasers);
-        updateManager.updatePowerups(powerups);
-
-        updateAttributes();
-    }
-
-
     // update HitDamage at beginning of each round
     public void updateHitDamage() {
         attributes.updateHitDamage();
     }
 
-    private void updateAttributes() {
+    public void updateAttributes() {
         attributes.update();
-    }
-
-
-    public void showLasers(Canvas canvas) {
-        showManager.showLasers(lasers, canvas);
-    }
-
-    public void showPlayer(Canvas canvas) {
-        showManager.showPlayer(player, canvas);
-    }
-
-    public void showPowerups(Canvas canvas) {
-        showManager.showPowerups(powerups, canvas);
     }
 
     public void setParams(float scale, float width, float height) {
@@ -169,7 +136,5 @@ public class User {
     public void movePlayer(float xPercent, float yPercent) {
         player.setAcc(xPercent, yPercent);
     }
-
-
 
 }

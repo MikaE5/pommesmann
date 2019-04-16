@@ -29,7 +29,7 @@ class UserAttributes {
     // settings for LaserPowerup
     int LASER_POWERUP_DURATION;       //The max Duration set by the PowerupLevel
     int laserPowerupDuration = 0;     // The current Duration in the actual game
-    final int MAX_LASERS = 3;
+    private final int MAX_LASERS = 3;
     int currentMaxLaser = 3;
 
 

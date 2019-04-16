@@ -69,7 +69,7 @@ public class Player {
         this.healthLoss = healthLoss;
     }
 
-    void changeHealth(float amount) {
+    public void changeHealth(float amount) {
         health += amount;
         if (health > 255) health = 255f;
     }
@@ -78,7 +78,7 @@ public class Player {
         return health;
     }
 
-    void update(float width, float height) {
+    public void update(float width, float height) {
         vel.add(acc);
         vel.limit(maxVel);
         pos.add(vel);

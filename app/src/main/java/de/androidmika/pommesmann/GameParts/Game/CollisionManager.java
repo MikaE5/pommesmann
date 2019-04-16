@@ -1,9 +1,12 @@
-package de.androidmika.pommesmann.GameParts;
+package de.androidmika.pommesmann.GameParts.Game;
 
 import android.content.Context;
 
 import java.util.ArrayList;
 
+import de.androidmika.pommesmann.GameParts.Box;
+import de.androidmika.pommesmann.GameParts.Laser;
+import de.androidmika.pommesmann.GameParts.Player;
 import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
