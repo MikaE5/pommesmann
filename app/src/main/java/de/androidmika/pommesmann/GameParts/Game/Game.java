@@ -36,7 +36,6 @@ public class Game {
     public User user = new User();
 
     private SoundManager soundCallback;
-    private ShowManager showManager = new ShowManager();
     private CollisionManager collisionManager;
 
 
@@ -96,17 +95,12 @@ public class Game {
 
     private void newBoxes(float width, float height) {
         Box tempBox;
-        Vec ppos = user.getPlayerPos();
-        float pr = user.getPlayerR();
-        Vec bpos;
-        float blen;
 
         for (int i = 0; i < maxBoxes; i++) {
             do {
                 tempBox = new Box(width, height, boxWidth, maxVelBox);
-                bpos = tempBox.getPos();
-                blen = tempBox.getLen();
-            } while(collisionManager.circleInSquare(ppos.x, ppos.y, 6 * pr, bpos.x, bpos.y, blen));
+
+            } while(collisionManager.isBoxNearby(user.player, tempBox, 6));
             boxes.add(tempBox);
         }
     }

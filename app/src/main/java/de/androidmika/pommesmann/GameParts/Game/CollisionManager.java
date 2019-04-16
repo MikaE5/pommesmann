@@ -11,6 +11,7 @@ import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
 import de.androidmika.pommesmann.GameParts.User.User;
+import de.androidmika.pommesmann.Vec;
 
 public class CollisionManager {
 
@@ -158,7 +159,13 @@ public class CollisionManager {
         return laserPowerup;
     }
 
-    boolean circleInSquare(float cx, float cy, float cr, float sx, float sy, float slen) {
+    boolean isBoxNearby(Player player, Box box, float radius) {
+        Vec pos = player.getPos();
+        Vec boxPos = box.getPos();
+        return circleInSquare(pos.x, pos.y, radius * player.getR(), boxPos.x, boxPos.y, box.getLen());
+    }
+
+    private boolean circleInSquare(float cx, float cy, float cr, float sx, float sy, float slen) {
         float dx = cx - Math.max(sx, Math.min(cx, sx + slen));
         float dy = cy - Math.max(sy, Math.min(cy, sy + slen));
 
