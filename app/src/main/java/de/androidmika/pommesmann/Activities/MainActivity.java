@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,11 +18,20 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.R;
 
 public class MainActivity extends Activity implements View.OnClickListener {
+
+    // Firebase Authentication
+    private FirebaseAuth auth;
 
     private Button startButton;
     private Button tutorialButton;
@@ -40,6 +51,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
+        // initialize FirebaseAuth
+        auth = FirebaseAuth.getInstance();
+        signInAnonymously();
 
         setContentView(R.layout.main_activity);
 
@@ -61,6 +77,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (App.getHighscore() < LOW_SCORE) {
             rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
         }
+    }
+
+    private void signInAnonymously() {
+        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d("SignInAnonymously", "Sign in successfull!");
+                    Toast.makeText(MainActivity.this, "Sign in successful", Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    Log.w("SignInAnonymously", "Sign in failed");
+                    Toast.makeText(MainActivity.this, "Sign in failed", Toast.LENGTH_LONG)
+                            .show();
+                }
+            }
+        });
     }
 
     @Override
