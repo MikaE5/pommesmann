@@ -24,6 +24,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.R;
@@ -32,6 +36,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     // Firebase Authentication
     private FirebaseAuth auth;
+    // Firestore Database
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private Button startButton;
     private Button tutorialButton;
@@ -55,7 +61,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // initialize FirebaseAuth
         auth = FirebaseAuth.getInstance();
-        signInAnonymously();
+
+        if (auth.getCurrentUser() == null) {
+            signInAnonymously();
+        } else {
+            Toast.makeText(MainActivity.this, "already signed in", Toast.LENGTH_LONG)
+                    .show();
+        }
 
         setContentView(R.layout.main_activity);
 
@@ -96,6 +108,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         });
     }
 
+    private void addData() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", "test");
+        data.put("score", 1234);
+        db.collection("scores").document(auth.getUid())
+                .set(data);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -117,6 +137,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         animHandler.removeCallbacksAndMessages(null);
     }
 
+
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.startButton) {
@@ -131,8 +152,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
         if (v.getId() == R.id.tutorialButton) {
+            /*
             Intent intent = new Intent(this, TutorialActivity.class);
             startActivity(intent);
+            */
+            addData();
         }
         if (v.getId() == R.id.shopButton) {
             Intent intent = new Intent(this, ShopActivity.class);
