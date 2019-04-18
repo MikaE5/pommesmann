@@ -2,6 +2,8 @@ package de.androidmika.pommesmann.Activities;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -70,6 +73,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
 
         setContentView(R.layout.main_activity);
+
+        showChooseNameDialog();
 
         startButton = findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
@@ -215,6 +220,28 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             }, 1000 * 2);
         }
+    }
+
+    private void showChooseNameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.choosename_dialog, null);
+        builder.setView(dialogView);
+
+        final Dialog dialog = builder.create();
+        dialog.setTitle(R.string.chooseNameDialogTitle);
+
+        Button confirmButton = dialogView.findViewById(R.id.confirmButton);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 }

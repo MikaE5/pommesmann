@@ -16,4 +16,12 @@
     <string name="dialogPositive">ok</string>
     <string name="dialogNegative">cancel</string>
     <string name="coinsToast">Not enough Coins!</string>
+
+
+    <!-- chooseNameDialog  -->
+    <string name="chooseNameDialogTitle">Welcome to POMMESMANN!</string>
+    <string name="chooseNameDialogText">Please choose a name! \n
+        If you want to publish your highscore, your name will be published alongside the score.</string>
+    <string name="chooseNameHint">Name</string>
+    <string name="confirmButton">confirm</string>
 </resources>
