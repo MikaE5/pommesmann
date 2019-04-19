@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +68,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         if (auth.getCurrentUser() == null) {
             signInAnonymously();
+            showChooseNameDialog();
         } else {
             Toast.makeText(MainActivity.this, "already signed in", Toast.LENGTH_LONG)
                     .show();
@@ -74,7 +76,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.main_activity);
 
-        showChooseNameDialog();
 
         startButton = findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
@@ -157,11 +158,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
         if (v.getId() == R.id.tutorialButton) {
-            /*
+
             Intent intent = new Intent(this, TutorialActivity.class);
             startActivity(intent);
-            */
-            addData();
+
         }
         if (v.getId() == R.id.shopButton) {
             Intent intent = new Intent(this, ShopActivity.class);
@@ -233,10 +233,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
         final Dialog dialog = builder.create();
         dialog.setTitle(R.string.chooseNameDialogTitle);
 
+
+        final EditText editName = dialogView.findViewById(R.id.editText);
         Button confirmButton = dialogView.findViewById(R.id.confirmButton);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = editName.getText().toString().trim();
+                Map<String, Object> data = new HashMap<>();
+                data.put("userID", auth.getUid());
+                data.put("name", name);
+                db.collection("users").document(auth.getUid())
+                        .set(data);
+
+
                 dialog.dismiss();
             }
         });
