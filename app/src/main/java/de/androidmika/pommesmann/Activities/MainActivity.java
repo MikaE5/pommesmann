@@ -38,11 +38,6 @@ import de.androidmika.pommesmann.R;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    // Firebase Authentication
-    private FirebaseAuth auth;
-    // Firestore Database
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     private Button startButton;
     private Button tutorialButton;
     private Button shopButton;
@@ -62,17 +57,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-
-        // initialize FirebaseAuth
-        auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() == null) {
-            signInAnonymously();
-            showChooseNameDialog();
-        } else {
-            Toast.makeText(MainActivity.this, "already signed in", Toast.LENGTH_LONG)
-                    .show();
-        }
 
         setContentView(R.layout.main_activity);
 
@@ -97,30 +81,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private void signInAnonymously() {
-        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d("SignInAnonymously", "Sign in successfull!");
-                    Toast.makeText(MainActivity.this, "Sign in successful", Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    Log.w("SignInAnonymously", "Sign in failed");
-                    Toast.makeText(MainActivity.this, "Sign in failed", Toast.LENGTH_LONG)
-                            .show();
-                }
-            }
-        });
-    }
 
-    private void addData() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", "test");
-        data.put("score", 1234);
-        db.collection("scores").document(auth.getUid())
-                .set(data);
-    }
+
 
     @Override
     protected void onResume() {
@@ -158,10 +120,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
         if (v.getId() == R.id.tutorialButton) {
-
             Intent intent = new Intent(this, TutorialActivity.class);
             startActivity(intent);
-
         }
         if (v.getId() == R.id.shopButton) {
             Intent intent = new Intent(this, ShopActivity.class);
@@ -220,38 +180,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             }, 1000 * 2);
         }
-    }
-
-    private void showChooseNameDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.choosename_dialog, null);
-        builder.setView(dialogView);
-
-        final Dialog dialog = builder.create();
-        dialog.setTitle(R.string.chooseNameDialogTitle);
-
-
-        final EditText editName = dialogView.findViewById(R.id.editText);
-        Button confirmButton = dialogView.findViewById(R.id.confirmButton);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = editName.getText().toString().trim();
-                Map<String, Object> data = new HashMap<>();
-                data.put("userID", auth.getUid());
-                data.put("name", name);
-                db.collection("users").document(auth.getUid())
-                        .set(data);
-
-
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
 }

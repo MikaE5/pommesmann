@@ -51,34 +51,22 @@
             android:text="@string/newHighscoreTextView"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
-        <RelativeLayout
-            android:id="@+id/textEditLayout"
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:text="@string/highscoreSubmitTextView" />
 
-            <EditText
-                android:id="@+id/nameEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:ems="10"
-                android:hint="@string/nameEditText"
-                android:inputType="textPersonName" />
+        <Button
+            android:id="@+id/submitHighscoreButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/oval_selector"
+            android:textColor="#FFF"
+            android:text="@string/submitHighscoreButton" />
 
-            <Button
-                android:id="@+id/submitNameButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_toEndOf="@+id/nameEditText"
-                android:layout_toRightOf="@+id/nameEditText"
-                android:background="@drawable/oval_selector"
-                android:text="@string/submitNameButton"
-                android:textColor="#FFFFFF" />
-        </RelativeLayout>
 
     </LinearLayout>
 

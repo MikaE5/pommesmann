@@ -1,10 +1,15 @@
 package de.androidmika.pommesmann.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,25 +17,48 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.androidmika.pommesmann.App;
+import de.androidmika.pommesmann.FBContract;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.Item;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
 public class GameoverActivity extends Activity implements View.OnClickListener {
 
+
+    // Firebase Authentication
+    private FirebaseAuth auth;
+    // Firestore Database
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+    // Shopdatabase
+    ShopDatabaseHelper dbHelper = ShopDatabaseHelper.getInstance(this);
+
     private TextView scoreTextView;
     private Button mainMenuButton;
     private Button restartButton;
     private int points;
-    private Button submitNameButton;
+    private Button submitHighscoreButton;
     private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // initialize FirebaseAuth
+        auth = FirebaseAuth.getInstance();
+
 
         setContentView(R.layout.gameover_activity);
 
@@ -80,11 +108,19 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
             startActivity(intent);
             App.showToast();
         }
-        if (v.getId() == R.id.submitNameButton) {
-            EditText nameEditText = findViewById(R.id.nameEditText);
-            String name = nameEditText.getText().toString().trim();
-            App.setHighscoreName(name);
-            submitNameButton.setVisibility(View.GONE);
+        if (v.getId() == R.id.submitHighscoreButton) {
+            if (auth.getCurrentUser() != null) {
+                // update Data
+                Map<String, Object> data = new HashMap<>();
+                data.put(FBContract.score, points);
+                data.put(FBContract.level, dbHelper.getSecretOfPommesmannLevel());
+
+                db.collection(FBContract.userCollection).document(auth.getUid())
+                        .update(data);
+            } else {
+                signInAnonymously();
+                showChooseNameDialog();
+            }
         }
     }
 
@@ -99,11 +135,11 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         LinearLayout highscoreLayout = findViewById(R.id.highscoreLayout);
         highscoreLayout.setVisibility(View.VISIBLE);
 
-        submitNameButton = findViewById(R.id.submitNameButton);
-        submitNameButton.setOnClickListener(this);
+        submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
+        submitHighscoreButton.setOnClickListener(this);
+
 
         App.setHighscore(points);
-        App.setHighscoreName(""); // set name to nothing in case user doesn't submit his name
     }
 
     private void unlockedPowerups(int points, int highscore) {
@@ -124,8 +160,6 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         }
     }
 
-
-
     private void showCoinsTextView() {
         int temp = App.getCoins();
 
@@ -136,4 +170,59 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
             App.startSlowFadeinAnim(coinsTextView, 3000);
         }
     }
+
+    private void signInAnonymously() {
+        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d("SignInAnonymously", "Sign in successfull!");
+                    Toast.makeText(GameoverActivity.this, "Sign in successful", Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    Log.w("SignInAnonymously", "Sign in failed");
+                    Toast.makeText(GameoverActivity.this, "Sign in failed", Toast.LENGTH_LONG)
+                            .show();
+                }
+            }
+        });
+    }
+
+    private void showChooseNameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.choosename_dialog, null);
+        builder.setView(dialogView);
+
+        final Dialog dialog = builder.create();
+        dialog.setTitle(R.string.chooseNameDialogTitle);
+
+
+        final EditText editName = dialogView.findViewById(R.id.editText);
+        Button confirmButton = dialogView.findViewById(R.id.confirmButton);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editName.getText().toString().trim();
+                Map<String, Object> data = new HashMap<>();
+                data.put(FBContract.userID, auth.getUid());
+                data.put(FBContract.name, name);
+                data.put(FBContract.score, points);
+
+                // get SecretOfPommesmannLevel from Shopdatabase
+                data.put(FBContract.level, dbHelper.getSecretOfPommesmannLevel());
+
+                db.collection(FBContract.userCollection).document(auth.getUid())
+                        .set(data);
+
+
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 }

@@ -24,4 +24,6 @@
         If you want to publish your highscore, your name will be published alongside the score.</string>
     <string name="chooseNameHint">Name</string>
     <string name="confirmButton">confirm</string>
+    <string name="highscoreSubmitTextView">Upload to Online HighscoreList</string>
+    <string name="submitHighscoreButton">submit</string>
 </resources>

@@ -201,6 +201,12 @@ public class ShopDatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    public int getSecretOfPommesmannLevel() {
+        Item secret = getItemByName(ShopHelper.SECRET_OF_POMMESMANN);
+
+        return secret.getLevel();
+    }
+
     public static void deleteDatabase(Context context) {
         context.getApplicationContext().deleteDatabase(DATABASE_NAME);
         sInstance = null;
