@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.androidmika.pommesmann.App;
-import de.androidmika.pommesmann.FBContract;
+import de.androidmika.pommesmann.FireContract;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.Item;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
@@ -37,7 +36,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
 
 
     // Firebase Authentication
-    private FirebaseAuth auth;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     // Firestore Database
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -45,20 +44,12 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
     // Shopdatabase
     ShopDatabaseHelper dbHelper = ShopDatabaseHelper.getInstance(this);
 
-    private TextView scoreTextView;
-    private Button mainMenuButton;
-    private Button restartButton;
     private int points;
-    private Button submitHighscoreButton;
     private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // initialize FirebaseAuth
-        auth = FirebaseAuth.getInstance();
-
 
         setContentView(R.layout.gameover_activity);
 
@@ -71,12 +62,12 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
             newHighscore();
         }
 
-        scoreTextView = findViewById(R.id.scoreTextView);
+        TextView scoreTextView = findViewById(R.id.scoreTextView);
         scoreTextView.setText(Integer.toString(points));
 
-        mainMenuButton = findViewById(R.id.mainMenuButton);
+        Button mainMenuButton = findViewById(R.id.mainMenuButton);
         mainMenuButton.setOnClickListener(this);
-        restartButton = findViewById(R.id.restartButton);
+        Button restartButton = findViewById(R.id.restartButton);
         restartButton.setOnClickListener(this);
     }
 
@@ -112,10 +103,10 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
             if (auth.getCurrentUser() != null) {
                 // update Data
                 Map<String, Object> data = new HashMap<>();
-                data.put(FBContract.score, points);
-                data.put(FBContract.level, dbHelper.getSecretOfPommesmannLevel());
+                data.put(FireContract.score, points);
+                data.put(FireContract.level, dbHelper.getSecretOfPommesmannLevel());
 
-                db.collection(FBContract.userCollection).document(auth.getUid())
+                db.collection(FireContract.userCollection).document(auth.getUid())
                         .update(data);
             } else {
                 signInAnonymously();
@@ -135,7 +126,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         LinearLayout highscoreLayout = findViewById(R.id.highscoreLayout);
         highscoreLayout.setVisibility(View.VISIBLE);
 
-        submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
+        Button submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
         submitHighscoreButton.setOnClickListener(this);
 
 
@@ -207,14 +198,14 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
             public void onClick(View v) {
                 String name = editName.getText().toString().trim();
                 Map<String, Object> data = new HashMap<>();
-                data.put(FBContract.userID, auth.getUid());
-                data.put(FBContract.name, name);
-                data.put(FBContract.score, points);
+                data.put(FireContract.userID, auth.getUid());
+                data.put(FireContract.name, name);
+                data.put(FireContract.score, points);
 
                 // get SecretOfPommesmannLevel from Shopdatabase
-                data.put(FBContract.level, dbHelper.getSecretOfPommesmannLevel());
+                data.put(FireContract.level, dbHelper.getSecretOfPommesmannLevel());
 
-                db.collection(FBContract.userCollection).document(auth.getUid())
+                db.collection(FireContract.userCollection).document(auth.getUid())
                         .set(data);
 
 
