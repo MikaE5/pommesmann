@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -32,10 +32,27 @@ public class FireManager {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private int level;
 
-    public FireManager() {
+    public interface DataInterface {
+        void receivedHighscore(double score);
+    }
+    private DataInterface dataInterface;
+
+    public interface UIInterface{
+        void hideButton();
+    }
+    private UIInterface uiInterface;
+
+    public FireManager(Context context) {
         // get SecretOfPommesmannLevel from Shopdatabase
         ShopDatabaseHelper dbHelper = ShopDatabaseHelper.getInstance(getContext());
         level = dbHelper.getSecretOfPommesmannLevel();
+
+        if (context instanceof DataInterface) {
+            dataInterface = (DataInterface) context;
+        }
+        if (context instanceof UIInterface) {
+            uiInterface = (UIInterface) context;
+        }
     }
 
     public boolean userExists() {
@@ -47,12 +64,10 @@ public class FireManager {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Log.d("SignInAnonymously", "Sign in successfull!");
                     Toast.makeText(context, "Sign in successful", Toast.LENGTH_LONG)
                             .show();
                     setFirstData(name);
                 } else {
-                    Log.w("SignInAnonymously", "Sign in failed");
                     Toast.makeText(context, "Sign in failed", Toast.LENGTH_LONG)
                             .show();
                 }
@@ -63,7 +78,7 @@ public class FireManager {
 
     // returns true if a name was chosen and a user created
     // returns false if the dialog was just dismissed
-    public void showChooseNameDialog(final Context context, final Button startButton) {
+    public void showChooseNameDialog(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
 
@@ -84,8 +99,7 @@ public class FireManager {
                 signInAnonymously(context, name);
 
                 dialog.dismiss();
-                startButton.setVisibility(View.GONE);
-                startButton.setClickable(false);
+                uiInterface.hideButton();
             }
         });
 
@@ -110,7 +124,6 @@ public class FireManager {
 
             db.collection(FireContract.userCollection).document(auth.getUid())
                     .set(data);
-            Log.d("firstData", "successfull");
         }
     }
 
@@ -120,10 +133,27 @@ public class FireManager {
         data.put(FireContract.score, points);
         data.put(FireContract.level, level);
 
-        if (auth.getUid() != null) {
+        if (auth.getUid() != null)
             db.collection(FireContract.userCollection).document(auth.getUid())
                     .update(data);
-            Log.d("updateData", "successfull");
+
+    }
+
+
+    public void isHighscoreUpdated() {
+        if (auth.getUid() != null) {
+            db.collection(FireContract.userCollection).document(auth.getUid()).
+                    get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        final DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            dataInterface.receivedHighscore(document.getDouble(FireContract.score));
+                        }
+                    }
+                }
+            });
         }
     }
 }

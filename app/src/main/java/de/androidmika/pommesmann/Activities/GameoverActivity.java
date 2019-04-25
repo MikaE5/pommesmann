@@ -33,10 +33,10 @@ import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.Item;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
-public class GameoverActivity extends Activity implements View.OnClickListener {
+public class GameoverActivity extends Activity implements View.OnClickListener, FireManager.UIInterface {
 
 
-    private FireManager manager = new FireManager();
+    private FireManager manager;
 
     Button submitHighscoreButton;
 
@@ -46,6 +46,8 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        manager = new FireManager(this);
 
         setContentView(R.layout.gameover_activity);
 
@@ -103,7 +105,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
                 submitHighscoreButton.setVisibility(View.GONE);
                 submitHighscoreButton.setClickable(false);
             } else {
-                manager.showChooseNameDialog(this, submitHighscoreButton);
+                manager.showChooseNameDialog(this);
             }
         }
     }
@@ -156,5 +158,9 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
     }
 
 
-
+    @Override
+    public void hideButton() {
+        submitHighscoreButton.setClickable(false);
+        submitHighscoreButton.setVisibility(View.GONE);
+    }
 }

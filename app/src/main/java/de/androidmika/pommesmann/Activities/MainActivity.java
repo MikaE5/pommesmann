@@ -38,9 +38,10 @@ import de.androidmika.pommesmann.Firebase.FireManager;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener,
+        FireManager.DataInterface, FireManager.UIInterface {
 
-    private FireManager manager = new FireManager();
+    private FireManager manager;
 
     // ShopdatabaseHelper
     private ShopDatabaseHelper dbHelper;
@@ -61,6 +62,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        manager = new FireManager(this);
         dbHelper = ShopDatabaseHelper.getInstance(this);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -142,7 +144,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 submitHighscoreButton.setClickable(false);
                 submitHighscoreButton.setVisibility(View.GONE);
             } else {
-                manager.showChooseNameDialog(this, submitHighscoreButton);
+                manager.showChooseNameDialog(this);
             }
         }
         if (v.getId() == R.id.soundCheckBox) {
@@ -171,16 +173,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             highscoreLayout.setVisibility(View.VISIBLE);
             App.startSlowFadeinAnim(highscoreLayout, 3000);
 
-
-            // check if highscore was submitted
-
-            // TODO
             // check if highscore is up to date
-            if (!manager.userExists() || true) {
-                submitHighscoreButton.setClickable(true);
-                submitHighscoreButton.setOnClickListener(this);
-                submitHighscoreButton.setVisibility(View.VISIBLE);
-            }
+            manager.isHighscoreUpdated();
         }
     }
 
@@ -208,4 +202,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void receivedHighscore(double score) {
+        if (!manager.userExists() || score < App.getHighscore()) {
+            submitHighscoreButton.setClickable(true);
+            submitHighscoreButton.setOnClickListener(this);
+            submitHighscoreButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideButton() {
+        submitHighscoreButton.setClickable(false);
+        submitHighscoreButton.setVisibility(View.GONE);
+    }
 }
