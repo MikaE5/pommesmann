@@ -27,7 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 import de.androidmika.pommesmann.App;
-import de.androidmika.pommesmann.FireContract;
+import de.androidmika.pommesmann.Firebase.FireContract;
+import de.androidmika.pommesmann.Firebase.FireManager;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.Item;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
@@ -35,14 +36,9 @@ import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 public class GameoverActivity extends Activity implements View.OnClickListener {
 
 
-    // Firebase Authentication
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    // Firestore Database
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FireManager manager = new FireManager();
 
-
-    // Shopdatabase
-    ShopDatabaseHelper dbHelper = ShopDatabaseHelper.getInstance(this);
+    Button submitHighscoreButton;
 
     private int points;
     private MediaPlayer mp;
@@ -100,17 +96,17 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
             App.showToast();
         }
         if (v.getId() == R.id.submitHighscoreButton) {
-            if (auth.getCurrentUser() != null) {
+            if (manager.userExists()) {
                 // update Data
-                Map<String, Object> data = new HashMap<>();
-                data.put(FireContract.score, points);
-                data.put(FireContract.level, dbHelper.getSecretOfPommesmannLevel());
+                manager.updateData(points);
 
-                db.collection(FireContract.userCollection).document(auth.getUid())
-                        .update(data);
+                submitHighscoreButton.setVisibility(View.GONE);
+                submitHighscoreButton.setClickable(false);
             } else {
-                signInAnonymously();
-                showChooseNameDialog();
+                if (manager.showChooseNameDialog(this)) {
+                    submitHighscoreButton.setVisibility(View.GONE);
+                    submitHighscoreButton.setClickable(false);
+                }
             }
         }
     }
@@ -126,7 +122,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         LinearLayout highscoreLayout = findViewById(R.id.highscoreLayout);
         highscoreLayout.setVisibility(View.VISIBLE);
 
-        Button submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
+        submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
         submitHighscoreButton.setOnClickListener(this);
 
 
@@ -162,58 +158,6 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private void signInAnonymously() {
-        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d("SignInAnonymously", "Sign in successfull!");
-                    Toast.makeText(GameoverActivity.this, "Sign in successful", Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    Log.w("SignInAnonymously", "Sign in failed");
-                    Toast.makeText(GameoverActivity.this, "Sign in failed", Toast.LENGTH_LONG)
-                            .show();
-                }
-            }
-        });
-    }
 
-    private void showChooseNameDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.choosename_dialog, null);
-        builder.setView(dialogView);
-
-        final Dialog dialog = builder.create();
-        dialog.setTitle(R.string.chooseNameDialogTitle);
-
-
-        final EditText editName = dialogView.findViewById(R.id.editText);
-        Button confirmButton = dialogView.findViewById(R.id.confirmButton);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = editName.getText().toString().trim();
-                Map<String, Object> data = new HashMap<>();
-                data.put(FireContract.userID, auth.getUid());
-                data.put(FireContract.name, name);
-                data.put(FireContract.score, points);
-
-                // get SecretOfPommesmannLevel from Shopdatabase
-                data.put(FireContract.level, dbHelper.getSecretOfPommesmannLevel());
-
-                db.collection(FireContract.userCollection).document(auth.getUid())
-                        .set(data);
-
-
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
 
 }

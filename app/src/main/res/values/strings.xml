@@ -26,4 +26,5 @@
     <string name="confirmButton">confirm</string>
     <string name="highscoreSubmitTextView">Upload to Online HighscoreList</string>
     <string name="submitHighscoreButton">submit</string>
+    <string name="laterButton">maybe later</string>
 </resources>

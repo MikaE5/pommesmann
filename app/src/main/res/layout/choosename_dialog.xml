@@ -22,12 +22,30 @@
         android:hint="@string/chooseNameHint"
         android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/confirmButton"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/oval_selector"
-        android:text="@string/confirmButton"
-        android:textColor="#FFF" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/laterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/oval_selector"
+            android:text="@string/laterButton"
+            android:textColor="#FFF" />
+
+        <Button
+            android:id="@+id/confirmButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/oval_selector"
+            android:text="@string/confirmButton"
+            android:textColor="#FFF" />
+    </LinearLayout>
+
 </LinearLayout>
