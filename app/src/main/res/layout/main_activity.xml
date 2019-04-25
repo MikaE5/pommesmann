@@ -87,13 +87,14 @@
 
         <Button
             android:id="@+id/submitHighscoreButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFF"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/oval_selector"
-            android:text="@string/submitHighscoreButton"
             android:clickable="false"
-            android:visibility="gone"/>
+            android:text="@string/submitHighscoreButton"
+            android:textColor="#FFF"
+            android:visibility="gone" />
     </LinearLayout>
 
     <RelativeLayout

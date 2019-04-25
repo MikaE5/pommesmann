@@ -142,10 +142,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 submitHighscoreButton.setClickable(false);
                 submitHighscoreButton.setVisibility(View.GONE);
             } else {
-                if (manager.showChooseNameDialog(this)) {
-                    submitHighscoreButton.setClickable(false);
-                    submitHighscoreButton.setVisibility(View.GONE);
-                }
+                manager.showChooseNameDialog(this, submitHighscoreButton);
             }
         }
         if (v.getId() == R.id.soundCheckBox) {

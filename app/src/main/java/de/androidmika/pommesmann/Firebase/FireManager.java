@@ -42,7 +42,7 @@ public class FireManager {
         return auth.getCurrentUser() != null;
     }
 
-    private void signInAnonymously(final Context context) {
+    private void signInAnonymously(final Context context, final String name) {
         auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -50,6 +50,7 @@ public class FireManager {
                     Log.d("SignInAnonymously", "Sign in successfull!");
                     Toast.makeText(context, "Sign in successful", Toast.LENGTH_LONG)
                             .show();
+                    setFirstData(name);
                 } else {
                     Log.w("SignInAnonymously", "Sign in failed");
                     Toast.makeText(context, "Sign in failed", Toast.LENGTH_LONG)
@@ -62,9 +63,7 @@ public class FireManager {
 
     // returns true if a name was chosen and a user created
     // returns false if the dialog was just dismissed
-    public boolean showChooseNameDialog(final Context context) {
-        final boolean[] answer = new boolean[1];
-
+    public void showChooseNameDialog(final Context context, final Button startButton) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setCancelable(false);
 
@@ -77,16 +76,16 @@ public class FireManager {
 
 
         final EditText editName = dialogView.findViewById(R.id.editText);
-        Button confirmButton = dialogView.findViewById(R.id.confirmButton);
+        final Button confirmButton = dialogView.findViewById(R.id.confirmButton);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answer[0] = true;
-                signInAnonymously(context);
                 String name = editName.getText().toString().trim();
-                setFirstData(name);
+                signInAnonymously(context, name);
 
                 dialog.dismiss();
+                startButton.setVisibility(View.GONE);
+                startButton.setClickable(false);
             }
         });
 
@@ -94,13 +93,11 @@ public class FireManager {
         laterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                answer[0] = false;
                 dialog.dismiss();
             }
         });
 
         dialog.show();
-        return answer[0];
     }
 
     private void setFirstData(String name) {
@@ -113,6 +110,7 @@ public class FireManager {
 
             db.collection(FireContract.userCollection).document(auth.getUid())
                     .set(data);
+            Log.d("firstData", "successfull");
         }
     }
 
@@ -122,7 +120,10 @@ public class FireManager {
         data.put(FireContract.score, points);
         data.put(FireContract.level, level);
 
-        db.collection(FireContract.userCollection).document(auth.getUid())
-                .update(data);
+        if (auth.getUid() != null) {
+            db.collection(FireContract.userCollection).document(auth.getUid())
+                    .update(data);
+            Log.d("updateData", "successfull");
+        }
     }
 }

@@ -103,10 +103,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener {
                 submitHighscoreButton.setVisibility(View.GONE);
                 submitHighscoreButton.setClickable(false);
             } else {
-                if (manager.showChooseNameDialog(this)) {
-                    submitHighscoreButton.setVisibility(View.GONE);
-                    submitHighscoreButton.setClickable(false);
-                }
+                manager.showChooseNameDialog(this, submitHighscoreButton);
             }
         }
     }
