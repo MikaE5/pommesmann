@@ -62,7 +62,7 @@
             android:id="@+id/deleteDataTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/deleteDataTextView" />
 
         <Button
             android:id="@+id/deleteDataButton"
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TextView" />
+            android:text="@string/resetTextView" />
 
         <Button
             android:id="@+id/resetButton"

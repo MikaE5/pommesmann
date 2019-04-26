@@ -52,7 +52,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
     private Button shopButton;
     private Button submitHighscoreButton;
     private CheckBox soundCheckBox;
-    private CheckBox leftHandedCheckBox;
 
     private Animation rotateAnim;
     private final int LOW_SCORE = 10;
@@ -80,14 +79,12 @@ public class MainActivity extends Activity implements View.OnClickListener,
         shopButton = findViewById(R.id.shopButton);
         shopButton.setOnClickListener(this);
         submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
-        Button aboutButton = findViewById(R.id.aboutButton);
-        aboutButton.setOnClickListener(this);
         soundCheckBox = findViewById(R.id.soundCheckBox);
         soundCheckBox.setChecked(App.getSound()); // set volume in app accordingly
         soundCheckBox.setOnClickListener(this);
-        leftHandedCheckBox = findViewById(R.id.leftHandedCheckBox);
-        leftHandedCheckBox.setChecked(App.getLeftHanded()); // set leftHanded in app accordingly
-        leftHandedCheckBox.setOnClickListener(this);
+        Button settingsButton = findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(this);
+
 
         if (App.getHighscore() < LOW_SCORE) {
             rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -104,7 +101,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
         App.startSlowFadeinAnim(tutorialButton, 1000);
         App.startSlowFadeinAnim(shopButton, 1000);
         App.startSlowFadeinAnim(soundCheckBox, 2000);
-        App.startSlowFadeinAnim(leftHandedCheckBox, 2000);
         showHighscore();
         showCoinsTextView();
         animateTutorialButton();
@@ -150,14 +146,10 @@ public class MainActivity extends Activity implements View.OnClickListener,
         if (v.getId() == R.id.soundCheckBox) {
             App.setSound(soundCheckBox.isChecked());
         }
-        if (v.getId() == R.id.aboutButton) {
-            Intent intent = new Intent(this, AboutActivity.class);
+        if (v.getId() == R.id.settingsButton) {
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
         }
-        if (v.getId() == R.id.leftHandedCheckBox) {
-            App.setLeftHanded(leftHandedCheckBox.isChecked());
-        }
-
     }
 
 

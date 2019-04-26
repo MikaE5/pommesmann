@@ -13,17 +13,17 @@ import de.androidmika.pommesmann.R;
 
 public class AboutActivity extends Activity {
 
-    private TextView aboutTextView;
-    private TextView creditsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
-        aboutTextView = findViewById(R.id.aboutTextView);
+
+
+        TextView aboutTextView = findViewById(R.id.aboutTextView);
         InputStream aboutInput = getResources().openRawResource(R.raw.about);
         aboutTextView.setText(streamToString(aboutInput));
-        creditsTextView = findViewById(R.id.creditsTextView);
+        TextView creditsTextView = findViewById(R.id.creditsTextView);
         InputStream creditsInput = getResources().openRawResource(R.raw.credits);
         creditsTextView.setText(streamToString(creditsInput));
     }
