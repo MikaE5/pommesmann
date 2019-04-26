@@ -15,10 +15,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.R;
@@ -34,6 +40,7 @@ public class FireManager {
 
     public interface DataInterface {
         void receivedHighscore(double score);
+        void updateHighscoreList(ArrayList<String> names, ArrayList<Long> scores);
     }
     private DataInterface dataInterface;
 
@@ -155,5 +162,27 @@ public class FireManager {
                 }
             });
         }
+    }
+
+    public void getHighscores() {
+        db.collection(FireContract.userCollection)
+                .whereGreaterThan(FireContract.score, 0)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // get name and score
+                            ArrayList<String> names = new ArrayList<>();
+                            ArrayList<Long> scores = new ArrayList<>();
+
+                            for (DocumentSnapshot document : task.getResult()) {
+                                names.add((String) document.get(FireContract.name));
+                                scores.add((Long) document.get(FireContract.score));
+                            }
+                            dataInterface.updateHighscoreList(names, scores);
+                        }
+                    }
+                });
     }
 }

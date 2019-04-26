@@ -29,6 +29,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +52,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
     private Button tutorialButton;
     private Button shopButton;
     private Button submitHighscoreButton;
+    private TextView highscoreListTextView;
     private CheckBox soundCheckBox;
 
     private Animation rotateAnim;
@@ -79,6 +81,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
         shopButton = findViewById(R.id.shopButton);
         shopButton.setOnClickListener(this);
         submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
+        highscoreListTextView = findViewById(R.id.highscoreListTextView);
+        manager.getHighscores();
         soundCheckBox = findViewById(R.id.soundCheckBox);
         soundCheckBox.setChecked(App.getSound()); // set volume in app accordingly
         soundCheckBox.setOnClickListener(this);
@@ -171,8 +175,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
 
-
-
     private void showCoinsTextView() {
         int temp = App.getCoins();
         if (temp < 0) temp = 0;
@@ -201,6 +203,16 @@ public class MainActivity extends Activity implements View.OnClickListener,
             submitHighscoreButton.setOnClickListener(this);
             submitHighscoreButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void updateHighscoreList(ArrayList<String> names, ArrayList<Long> scores) {
+        int max = Math.max(names.size(), scores.size());
+        String text = "";
+        for (int i = 0; i < max; i++) {
+            text += names.get(i) + " " + scores.get(i) + "\n";
+        }
+        highscoreListTextView.setText(text);
     }
 
     @Override
