@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_pommesmann_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-
+        <activity android:name=".Activities.SettingsActivity"></activity>
         <activity
             android:name=".Activities.MainActivity"
             android:noHistory="false"
@@ -36,10 +36,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.AboutActivity"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity
             android:name=".Activities.TutorialActivity"
-            android:noHistory="true"/>
+            android:noHistory="true" />
     </application>
 
 </manifest>
