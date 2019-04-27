@@ -39,8 +39,9 @@ public class FireManager {
     private int level;
 
     public interface DataInterface {
-        void receivedHighscore(double score);
+        void receivedHighscore(long score);
         void updateHighscoreList(ArrayList<String> names, ArrayList<Long> scores);
+        void userScoreName(String name, String score);
     }
     private DataInterface dataInterface;
 
@@ -146,6 +147,16 @@ public class FireManager {
 
     }
 
+    public void updateName(String newName) {
+        Map<String, Object> data = new HashMap<>();
+        data.put(FireContract.name, newName);
+
+        if (auth.getUid() != null) {
+            db.collection(FireContract.userCollection).document(auth.getUid())
+                    .update(data);
+        }
+    }
+
 
     public void isHighscoreUpdated() {
         if (auth.getUid() != null) {
@@ -156,7 +167,7 @@ public class FireManager {
                     if (task.isSuccessful()) {
                         final DocumentSnapshot document = task.getResult();
                         if (document != null && document.exists()) {
-                            dataInterface.receivedHighscore(document.getDouble(FireContract.score));
+                            dataInterface.receivedHighscore((long) document.get(FireContract.score));
                         }
                     }
                 }
@@ -184,5 +195,24 @@ public class FireManager {
                         }
                     }
                 });
+    }
+
+    public void getUserScoreName() {
+        if (auth.getUid() != null) {
+            db.collection(FireContract.userCollection).document(auth.getUid())
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                            if (e != null) return;
+
+                            if (snapshot != null && snapshot.exists()) {
+                                dataInterface.userScoreName(
+                                        snapshot.get(FireContract.name).toString(),
+                                        snapshot.get(FireContract.score).toString()
+                                );
+                            }
+                        }
+                    });
+        }
     }
 }

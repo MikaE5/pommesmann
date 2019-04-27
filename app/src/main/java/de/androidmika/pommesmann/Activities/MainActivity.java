@@ -43,10 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         FireManager.DataInterface, FireManager.UIInterface {
 
     private FireManager manager;
-
-    // ShopdatabaseHelper
-    private ShopDatabaseHelper dbHelper;
-
+    
 
     private Button startButton;
     private Button tutorialButton;
@@ -64,7 +61,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
 
         manager = new FireManager(this);
-        dbHelper = ShopDatabaseHelper.getInstance(this);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -82,7 +78,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         shopButton.setOnClickListener(this);
         submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
         highscoreListTextView = findViewById(R.id.highscoreListTextView);
-        manager.getHighscores();
+        manager.getUserScoreName();
         soundCheckBox = findViewById(R.id.soundCheckBox);
         soundCheckBox.setChecked(App.getSound()); // set volume in app accordingly
         soundCheckBox.setOnClickListener(this);
@@ -197,7 +193,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
-    public void receivedHighscore(double score) {
+    public void receivedHighscore(long score) {
         if (!manager.userExists() || score < App.getHighscore()) {
             submitHighscoreButton.setClickable(true);
             submitHighscoreButton.setOnClickListener(this);
@@ -213,6 +209,11 @@ public class MainActivity extends Activity implements View.OnClickListener,
             text += names.get(i) + " " + scores.get(i) + "\n";
         }
         highscoreListTextView.setText(text);
+    }
+
+    @Override
+    public void userScoreName(String name, String score) {
+        highscoreListTextView.setText(name + " " + score);
     }
 
     @Override
