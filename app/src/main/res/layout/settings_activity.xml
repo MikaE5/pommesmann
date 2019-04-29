@@ -3,60 +3,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     android:orientation="vertical"
     tools:context=".Activities.SettingsActivity">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:text="@string/settingsTitleTextView"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="monospace" />
 
-        <CheckBox
-            android:id="@+id/leftHandedCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:button="@drawable/checkbox_selector"
-            android:layoutDirection="rtl"
-            android:text="@string/leftHandedCheckBox"
-            android:textSize="12sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/aboutButton"
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/oval_selector"
-            android:text="@string/aboutButton"
-            android:textColor="#FFFFFF" />
+            android:text="@string/changeNameTextView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/nameEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:maxLength="15"
+                android:hint="Name"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/oval_selector"
+                android:clickable="false"
+                android:text="@string/submitHighscoreButton"
+                android:textColor="#FFF" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/nameEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:hint="Name" />
-
-        <Button
-            android:id="@+id/submitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/oval_selector"
-            android:clickable="false"
-            android:text="@string/submitHighscoreButton"
-            android:textColor="#FFF" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/deleteDataTextView"
@@ -66,30 +72,80 @@
 
         <Button
             android:id="@+id/deleteDataButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/oval_selector"
+            android:text="@string/deleteDataButton"
+            android:textColor="#FFF" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/resetTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/resetTextView" />
 
         <Button
             android:id="@+id/resetButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/oval_selector"
+            android:text="@string/resetButton"
+            android:textColor="#FFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/leftHandedTextView" />
+
+        <CheckBox
+            android:id="@+id/leftHandedCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:button="@drawable/checkbox_selector"
+            android:layoutDirection="rtl"
+            android:text="@string/leftHandedCheckBox"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/aboutTextView" />
+
+        <Button
+            android:id="@+id/aboutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/oval_selector"
+            android:text="@string/aboutButton"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
 </LinearLayout>

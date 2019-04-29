@@ -27,7 +27,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
     private ShopDatabaseHelper dbHelper;
 
     private Button submitHighscoreButton;
-    private TextView scoreTextView;
+    private TextView secretTextView;
 
     private int points;
     private MediaPlayer mp;
@@ -45,8 +45,11 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
         int levelscore = App.getLevelscore();
         points = getIntent().getIntExtra("points", 0);
 
-        scoreTextView = findViewById(R.id.scoreTextView);
+        TextView scoreTextView = findViewById(R.id.scoreTextView);
         scoreTextView.setText(Integer.toString(points));
+        scoreTextView.setText(Integer.toString(points));
+
+        secretTextView = findViewById(R.id.secretTextView);
         setCoins();
 
         // overall highscore
@@ -167,11 +170,11 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
     private void setCoins() {
         dbHelper = ShopDatabaseHelper.getInstance(this);
         int levelOfPommesmann = dbHelper.getSecretOfPommesmannLevel();
+
         double map = (double) levelOfPommesmann / (double) (10 + levelOfPommesmann);
         if (Math.random() < map) {
             App.setCoins(points * 2);
-            String text = "Thanks to the Secret Of Pommesmann, the Coins for your score are doubled!";
-            scoreTextView.setText(Integer.toString(points) + "\n" + text);
+            secretTextView.setVisibility(View.VISIBLE);
         } else {
             App.setCoins(points);
         }

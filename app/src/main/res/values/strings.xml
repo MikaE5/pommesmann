@@ -16,6 +16,7 @@
     <string name="dialogPositive">ok</string>
     <string name="dialogNegative">cancel</string>
     <string name="coinsToast">Not enough Coins!</string>
+    <string name="secretTextView">Thanks to the Secret of POMMESMANN, \n you got the double amount of Coins!</string>
 
 
     <!-- chooseNameDialog  -->
@@ -27,6 +28,12 @@
     <string name="uploadTextView">Share your highscore online!</string>
     <string name="submitHighscoreButton">submit</string>
     <string name="laterButton">maybe later</string>
-    <string name="deleteDataTextView">delete all your data from online highscore list</string>
-    <string name="resetTextView">reset POMMESMANN and start from the beginning</string>
+    <string name="deleteDataTextView">Delete all your data from online highscore list</string>
+    <string name="resetTextView">Reset POMMESMANN and start from the beginning</string>
+    <string name="changeNameTextView">Change your name in the online highscore list</string>
+    <string name="deleteDataButton">delete</string>
+    <string name="resetButton">reset</string>
+    <string name="settingsTitleTextView">Settings</string>
+    <string name="leftHandedTextView">Optimize POMMESMANN for left-handers</string>
+    <string name="aboutTextView">See what POMMESMANN is about</string>
 </resources>

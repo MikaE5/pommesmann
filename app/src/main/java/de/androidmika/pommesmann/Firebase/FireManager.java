@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +46,12 @@ public class FireManager {
     }
     private DataInterface dataInterface;
 
+    public interface DeleteDataInterface {
+        void deleteSuccess();
+        void deleteFailure();
+    }
+    private DeleteDataInterface deleteDataInterface;
+
     public interface UIInterface{
         void hideButton();
     }
@@ -56,6 +64,9 @@ public class FireManager {
 
         if (context instanceof DataInterface) {
             dataInterface = (DataInterface) context;
+        }
+        if (context instanceof DeleteDataInterface) {
+            deleteDataInterface = (DeleteDataInterface) context;
         }
         if (context instanceof UIInterface) {
             uiInterface = (UIInterface) context;
@@ -103,6 +114,7 @@ public class FireManager {
             @Override
             public void onClick(View v) {
                 String name = editName.getText().toString().trim();
+                name = analyzeString(name);
                 signInAnonymously(context, name);
 
                 dialog.dismiss();
@@ -120,6 +132,15 @@ public class FireManager {
 
         dialog.show();
     }
+
+    private String analyzeString(String text) {
+        text = text.replaceAll("delete", "");
+        text = text.replaceAll("collection", "");
+        text = text.replaceAll("document", "");
+        text = text.replaceAll(";", ".");
+        return text;
+    }
+
 
     private void setFirstData(String name) {
         Map<String, Object> data = new HashMap<>();
@@ -147,6 +168,7 @@ public class FireManager {
     }
 
     public void updateName(String newName) {
+        newName = analyzeString(newName);
         Map<String, Object> data = new HashMap<>();
         data.put(FireContract.name, newName);
 
@@ -197,5 +219,28 @@ public class FireManager {
                         }
                     });
         }
+    }
+
+    public void deleteUserData() {
+        if (auth.getUid() != null) {
+            db.collection(FireContract.userCollection).document(auth.getUid())
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            deleteDataInterface.deleteSuccess();
+                            auth.signOut();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            deleteDataInterface.deleteFailure();
+                        }
+                    });
+        } else {
+            deleteDataInterface.deleteFailure();
+        }
+
     }
 }

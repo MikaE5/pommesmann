@@ -1,8 +1,6 @@
 package de.androidmika.pommesmann.GameParts.User;
 
 
-import android.graphics.Canvas;
-
 import java.util.ArrayList;
 
 
@@ -12,7 +10,7 @@ import de.androidmika.pommesmann.GameParts.Powerups.HealthPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.LaserPowerup;
 import de.androidmika.pommesmann.GameParts.Powerups.Powerup;
 import de.androidmika.pommesmann.ShopDatabase.ShopHelper;
-import de.androidmika.pommesmann.Vec;
+
 
 public class User {
 
@@ -83,27 +81,8 @@ public class User {
 
 
     public void increasePoints() {
-        /* idea for secret of pommesmann
-        // get randomly 2 points for a box; chance is based on level of Secret of Pommesmann ( = difficulty)
-        if (attributes.difficulty > 0) {
-            double map = (double) attributes.difficulty / (double) (20 + attributes.difficulty);
-            if (Math.random() < map) {
-                attributes.points += 2;
-                return true;
-            }
-            else {
-                attributes.points += 1;
-                return false;
-            }
-        } else {
-            attributes.points += 1;
-            return false;
-        }
-        */
         attributes.points += 1;
     }
-
-
 
 
     private int getMaxLaser() {
@@ -143,15 +122,6 @@ public class User {
 
     public float getHealth() {
         return player.getHealth();
-    }
-
-
-    public float getPlayerR() {
-        return player.getR();
-    }
-
-    public Vec getPlayerPos() {
-        return player.getPos();
     }
 
     public void movePlayer(float xPercent, float yPercent) {
