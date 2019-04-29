@@ -81,9 +81,30 @@ public class User {
         return attributes.points;
     }
 
-    public void increasePoints(int number) {
-        attributes.points += number;
+
+    public void increasePoints() {
+        /* idea for secret of pommesmann
+        // get randomly 2 points for a box; chance is based on level of Secret of Pommesmann ( = difficulty)
+        if (attributes.difficulty > 0) {
+            double map = (double) attributes.difficulty / (double) (20 + attributes.difficulty);
+            if (Math.random() < map) {
+                attributes.points += 2;
+                return true;
+            }
+            else {
+                attributes.points += 1;
+                return false;
+            }
+        } else {
+            attributes.points += 1;
+            return false;
+        }
+        */
+        attributes.points += 1;
     }
+
+
+
 
     private int getMaxLaser() {
         return attributes.currentMaxLaser;

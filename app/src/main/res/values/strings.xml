@@ -20,11 +20,11 @@
 
     <!-- chooseNameDialog  -->
     <string name="chooseNameDialogTitle">Welcome to POMMESMANN!</string>
-    <string name="chooseNameDialogText">Please choose a name! \n
-        If you want to publish your highscore, your name will be published alongside the score.</string>
+    <string name="chooseNameDialogText">If you want to publish your highscore online, please choose a name! \n
+        Your highscore will be published alongside your chosen name.</string>
     <string name="chooseNameHint">Name</string>
     <string name="confirmButton">confirm</string>
-    <string name="highscoreSubmitTextView">Upload to Online HighscoreList</string>
+    <string name="uploadTextView">Share your highscore online!</string>
     <string name="submitHighscoreButton">submit</string>
     <string name="laterButton">maybe later</string>
     <string name="deleteDataTextView">delete all your data from online highscore list</string>

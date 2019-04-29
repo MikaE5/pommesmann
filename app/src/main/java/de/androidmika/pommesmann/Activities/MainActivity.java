@@ -2,15 +2,10 @@ package de.androidmika.pommesmann.Activities;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,26 +13,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import de.androidmika.pommesmann.App;
-import de.androidmika.pommesmann.Firebase.FireContract;
 import de.androidmika.pommesmann.Firebase.FireManager;
 import de.androidmika.pommesmann.R;
-import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
 public class MainActivity extends Activity implements View.OnClickListener,
         FireManager.DataInterface, FireManager.UIInterface {
@@ -79,8 +62,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
         shopButton = findViewById(R.id.shopButton);
         shopButton.setOnClickListener(this);
         submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
-        highscoreListTextView = findViewById(R.id.highscoreListTextView);
-        manager.getUserScoreName();
         soundCheckBox = findViewById(R.id.soundCheckBox);
         soundCheckBox.setChecked(App.getSound()); // set volume in app accordingly
         soundCheckBox.setOnClickListener(this);
@@ -138,7 +119,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         }
         if (v.getId() == R.id.submitHighscoreButton) {
             if (manager.userExists()) {
-                manager.updateData(App.getHighscore());
+                manager.updateScore(App.getHighscore());
                 submitHighscoreButton.setClickable(false);
                 submitHighscoreButton.setVisibility(View.GONE);
             } else {
@@ -167,8 +148,13 @@ public class MainActivity extends Activity implements View.OnClickListener,
             highscoreLayout.setVisibility(View.VISIBLE);
             App.startSlowFadeinAnim(highscoreLayout, 3000);
 
-            // check if highscore is up to date
-            manager.isHighscoreUpdated();
+            // check if user is not signed in yet
+            if (!manager.userExists()) {
+                submitHighscoreButton.setClickable(true);
+                submitHighscoreButton.setOnClickListener(this);
+                submitHighscoreButton.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
@@ -194,14 +180,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    @Override
-    public void receivedHighscore(long score) {
-        if (!manager.userExists() || score < App.getHighscore()) {
-            submitHighscoreButton.setClickable(true);
-            submitHighscoreButton.setOnClickListener(this);
-            submitHighscoreButton.setVisibility(View.VISIBLE);
-        }
-    }
 
     @Override
     public void updateHighscoreList(ArrayList<String> names, ArrayList<Long> scores) {

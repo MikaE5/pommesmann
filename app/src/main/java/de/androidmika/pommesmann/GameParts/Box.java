@@ -14,6 +14,8 @@ public class Box {
     private Vec vel;
     private float len;
     private boolean animating = false;
+    private boolean specialAnimating = false;
+
 
     public Box(float width, float height, float len, float maxVel) {
         initPos(width, height, len);
@@ -28,6 +30,10 @@ public class Box {
 
     public void setToAnimating() {
         animating = true;
+    }
+
+    public void setToSpecialAnimating() {
+        specialAnimating = true;
     }
 
     private void initPos(float width, float height, float length) {
@@ -110,7 +116,13 @@ public class Box {
         paint.setColor(App.getContext().getResources().getColor(R.color.boxColor));
         canvas.drawRect(pos.x, pos.y, pos.x + len, pos.y + len, paint);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.argb(100, 255, 0, 0));
+
+        // if Secret of Pommesmann triggered, Stroke is gold, else Stroke is red
+        if (specialAnimating) {
+            paint.setColor(Color.argb(100, 255, 215, 0));
+        } else {
+            paint.setColor(Color.argb(100, 255, 0, 0));
+        }
         paint.setStrokeWidth(len * 0.1f);
         canvas.drawRect(pos.x, pos.y, pos.x + len, pos.y + len, paint);
     }

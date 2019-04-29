@@ -40,18 +40,23 @@ public class CollisionManager {
 
         ArrayList<Box> animationBoxes = new ArrayList<>();
         Box animBox;
-        int points = 0;
         for (Box box : boxes) {
             // one laser hits box
             for (Laser laser : user.lasers) {
+                // animBox: the box that is hit by the laser and is then set to animating
                 animBox = laserHitsBox(user.player, laser, box, user.getHitBonus());
                 if (animBox != null) {
                     // laser hit a box
+                    /* idea for secret of pommesmann
+                    if (user.increasePoints()) {
+                        animBox.setToSpecialAnimating();
+                    }
+                    */
+                    user.increasePoints();
                     animationBoxes.add(animBox);
-                    user.increasePoints(1);
                 }
             }
-            user.increasePoints(points);
+
             // player hits box
             animBox = playerHitsBox(user.player, box, user.getHitDamage());
             if (animBox != null) {

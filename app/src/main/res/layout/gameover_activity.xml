@@ -52,11 +52,12 @@
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/uploadTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/highscoreSubmitTextView" />
+            android:text="@string/uploadTextView"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/submitHighscoreButton"
@@ -65,7 +66,8 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/oval_selector"
             android:textColor="#FFF"
-            android:text="@string/submitHighscoreButton" />
+            android:text="@string/submitHighscoreButton"
+            android:visibility="gone"/>
 
 
     </LinearLayout>

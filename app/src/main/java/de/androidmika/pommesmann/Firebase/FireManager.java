@@ -39,7 +39,6 @@ public class FireManager {
     private int level;
 
     public interface DataInterface {
-        void receivedHighscore(long score);
         void updateHighscoreList(ArrayList<String> names, ArrayList<Long> scores);
         void userScoreName(String name, String score);
     }
@@ -135,7 +134,7 @@ public class FireManager {
         }
     }
 
-    public void updateData(int points) {
+    public void updateScore(int points) {
         // update Data
         Map<String, Object> data = new HashMap<>();
         data.put(FireContract.score, points);
@@ -158,22 +157,6 @@ public class FireManager {
     }
 
 
-    public void isHighscoreUpdated() {
-        if (auth.getUid() != null) {
-            db.collection(FireContract.userCollection).document(auth.getUid()).
-                    get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        final DocumentSnapshot document = task.getResult();
-                        if (document != null && document.exists()) {
-                            dataInterface.receivedHighscore((long) document.get(FireContract.score));
-                        }
-                    }
-                }
-            });
-        }
-    }
 
     public void getHighscores() {
         db.collection(FireContract.userCollection)

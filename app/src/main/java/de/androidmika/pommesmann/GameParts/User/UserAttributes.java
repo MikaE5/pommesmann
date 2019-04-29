@@ -7,7 +7,7 @@ class UserAttributes {
     private UserHelper userHelper;
 
     // general game settings
-    int difficulty;
+    int difficulty;  // difficulty is level of Secret of Pommesmann
     int points = 0;
 
     // settings for collision

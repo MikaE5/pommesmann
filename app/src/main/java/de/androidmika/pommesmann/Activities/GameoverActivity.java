@@ -1,33 +1,20 @@
 package de.androidmika.pommesmann.Activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import org.w3c.dom.Text;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.androidmika.pommesmann.App;
-import de.androidmika.pommesmann.Firebase.FireContract;
 import de.androidmika.pommesmann.Firebase.FireManager;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.Item;
@@ -37,8 +24,10 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
 
 
     private FireManager manager;
+    private ShopDatabaseHelper dbHelper;
 
-    Button submitHighscoreButton;
+    private Button submitHighscoreButton;
+    private TextView scoreTextView;
 
     private int points;
     private MediaPlayer mp;
@@ -51,10 +40,14 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
 
         setContentView(R.layout.gameover_activity);
 
+
         int highscore = App.getHighscore();
         int levelscore = App.getLevelscore();
         points = getIntent().getIntExtra("points", 0);
-        App.setCoins(points);
+
+        scoreTextView = findViewById(R.id.scoreTextView);
+        scoreTextView.setText(Integer.toString(points));
+        setCoins();
 
         // overall highscore
         if (points > highscore) {
@@ -70,8 +63,6 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
             }
         }
 
-        TextView scoreTextView = findViewById(R.id.scoreTextView);
-        scoreTextView.setText(Integer.toString(points));
 
         Button mainMenuButton = findViewById(R.id.mainMenuButton);
         mainMenuButton.setOnClickListener(this);
@@ -110,7 +101,7 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
         if (v.getId() == R.id.submitHighscoreButton) {
             if (manager.userExists()) {
                 // update Data
-                manager.updateData(points);
+                manager.updateScore(points);
 
                 submitHighscoreButton.setVisibility(View.GONE);
                 submitHighscoreButton.setClickable(false);
@@ -131,9 +122,15 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
         LinearLayout highscoreLayout = findViewById(R.id.highscoreLayout);
         highscoreLayout.setVisibility(View.VISIBLE);
 
-        submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
-        submitHighscoreButton.setOnClickListener(this);
-
+        if (!manager.userExists()) {
+            TextView uploadTextView = findViewById(R.id.uploadTextView);
+            uploadTextView.setVisibility(View.VISIBLE);
+            submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
+            submitHighscoreButton.setVisibility(View.VISIBLE);
+            submitHighscoreButton.setOnClickListener(this);
+        } else {
+            manager.updateScore(points);
+        }
 
         App.setHighscore(points);
     }
@@ -164,6 +161,19 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
             coinsTextView.setText(Integer.toString(temp) + " Coins");
             coinsTextView.setVisibility(View.VISIBLE);
             App.startSlowFadeinAnim(coinsTextView, 3000);
+        }
+    }
+
+    private void setCoins() {
+        dbHelper = ShopDatabaseHelper.getInstance(this);
+        int levelOfPommesmann = dbHelper.getSecretOfPommesmannLevel();
+        double map = (double) levelOfPommesmann / (double) (10 + levelOfPommesmann);
+        if (Math.random() < map) {
+            App.setCoins(points * 2);
+            String text = "Thanks to the Secret Of Pommesmann, the Coins for your score are doubled!";
+            scoreTextView.setText(Integer.toString(points) + "\n" + text);
+        } else {
+            App.setCoins(points);
         }
     }
 

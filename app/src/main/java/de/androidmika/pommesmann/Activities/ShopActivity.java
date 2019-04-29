@@ -320,7 +320,7 @@ public class ShopActivity extends Activity {
         CharSequence message = "Secret #" + item.getLevel() + ": The next secret is the most interesting secret! \n" +
                 getResources().getString(R.string.app_name) +
                 " has been reset! Difficulty is now on level " + item.getLevel() + "!\n" +
-                "Now you have a chance to get more points for one box!";
+                "Now you have a chance to get more Coins for your points!";
         builder.setMessage(message);
 
         builder.setPositiveButton(getResources().getString(R.string.dialogPositive), new DialogInterface.OnClickListener() {
