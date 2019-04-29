@@ -176,7 +176,7 @@ public class ShopActivity extends Activity {
         itemDescriptionTextView.setText(item.getDescription());
         itemCheckBox.setChecked(item.getActive());
 
-        if (App.getHighscore() < item.getRestriction()) {
+        if (App.getLevelscore() < item.getRestriction()) {
             restrictedPowerup(view, item);
         } else if (item.getLevel() >= ShopHelper.MAX_LEVEL &&
                     !item.getName().equals(ShopHelper.SECRET_OF_POMMESMANN)) {
@@ -230,7 +230,7 @@ public class ShopActivity extends Activity {
         view.setBackgroundColor(getResources().getColor(R.color.restrictedItem));
         view.setAlpha(0.8f);
 
-        itemLevelTextView.setText("highscore of " + restriction + " to unlock");
+        itemLevelTextView.setText("score of " + restriction + " to unlock");
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) itemLevelTextView.getLayoutParams();
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         itemLevelTextView.setLayoutParams(params);
@@ -308,7 +308,7 @@ public class ShopActivity extends Activity {
             dbHelper = ShopDatabaseHelper.getInstance(this);
             dbHelper.addOrUpdateItem(item);
             updateShop();
-            App.setHighscore(0);
+            App.setLevelscore(-1);
             secretDialog(item);
             updateShop();
         }
@@ -319,7 +319,8 @@ public class ShopActivity extends Activity {
 
         CharSequence message = "Secret #" + item.getLevel() + ": The next secret is the most interesting secret! \n" +
                 getResources().getString(R.string.app_name) +
-                " has been reset! Difficulty is now on level " + item.getLevel() + "!";
+                " has been reset! Difficulty is now on level " + item.getLevel() + "!\n" +
+                "Now you have a chance to get more points for one box!";
         builder.setMessage(message);
 
         builder.setPositiveButton(getResources().getString(R.string.dialogPositive), new DialogInterface.OnClickListener() {

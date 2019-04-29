@@ -60,6 +60,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initLevelscore();
+
         manager = new FireManager(this);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -220,5 +222,15 @@ public class MainActivity extends Activity implements View.OnClickListener,
     public void hideButton() {
         submitHighscoreButton.setClickable(false);
         submitHighscoreButton.setVisibility(View.GONE);
+    }
+
+    private void initLevelscore() {
+        // added levelscore after first releases
+        // have to set a first value
+        // if no value for levelscore is set, the current overall highscore is set for levelscore
+
+        if (App.getLevelscore() == 0) {
+            App.setLevelscore(App.getHighscore());
+        }
     }
 }

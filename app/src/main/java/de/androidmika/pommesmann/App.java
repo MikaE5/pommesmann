@@ -16,8 +16,13 @@ public class App extends Application {
 
     // final strings for SharedPreferences
     public final static String SP_GAME = "game";
+
+    // overall highscore
     public final static String SP_HIGHSCORE = "highscore";
-    public final static String SP_HIGHSCORE_NAME = "highscore_name";
+    //public final static String SP_HIGHSCORE_NAME = "highscore_name";
+
+    // highscore in current level of Secret of Pommesmann
+    public final static String SP_LEVELSCORE = "levelscore";
     public final static String SP_COINS = "overallpoints";
 
     @Override
@@ -77,17 +82,18 @@ public class App extends Application {
         editor.apply();
     }
 
-    public static String getHighscoreName() {
+    public static int getLevelscore() {
         SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);
-        return pref.getString(App.SP_HIGHSCORE_NAME, "");
+        return pref.getInt(App.SP_LEVELSCORE, 0);
     }
 
-    public static void setHighscoreName(String name) {
+    public static void setLevelscore(int newLevelscore) {
         SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString(App.SP_HIGHSCORE_NAME, name);
+        editor.putInt(App.SP_LEVELSCORE, newLevelscore);
         editor.apply();
     }
+
 
     public static int getCoins() {
         SharedPreferences pref = getContext().getSharedPreferences(App.SP_GAME, 0);

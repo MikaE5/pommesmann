@@ -52,12 +52,22 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
         setContentView(R.layout.gameover_activity);
 
         int highscore = App.getHighscore();
+        int levelscore = App.getLevelscore();
         points = getIntent().getIntExtra("points", 0);
         App.setCoins(points);
 
+        // overall highscore
         if (points > highscore) {
-            unlockedPowerups(points, highscore);
             newHighscore();
+        }
+        // highest score in secret of pommesmann level
+        if (points > levelscore) {
+            unlockedPowerups(points, levelscore);
+
+            // can not set levelscore to 0, because then mainactivity will update it to overall highscore
+            if (points != 0) {
+                App.setLevelscore(points);
+            }
         }
 
         TextView scoreTextView = findViewById(R.id.scoreTextView);
