@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class FireManager {
     private int level;
 
     public interface DataInterface {
-        void updateHighscoreList(ArrayList<String> names, ArrayList<Long> scores);
+        void highscoreTopTen(ArrayList<String> scores, ArrayList<String> names);
         void userScoreName(String name, String score);
     }
     private DataInterface dataInterface;
@@ -180,27 +181,50 @@ public class FireManager {
 
 
 
-    public void getHighscores() {
-        db.collection(FireContract.userCollection)
-                .whereGreaterThan(FireContract.score, 0)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    public void initHighscoreList() {
+        // get the top ten first, then listen to changes of lowest score
+        ArrayList<String> scores = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        getTopTen(scores, names);
+        
+        db.collection(FireContract.highscoreListCollection)
+                .document(FireContract.lowestScore)
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // get name and score
-                            ArrayList<String> names = new ArrayList<>();
-                            ArrayList<Long> scores = new ArrayList<>();
+                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) return;
 
-                            for (DocumentSnapshot document : task.getResult()) {
-                                names.add((String) document.get(FireContract.name));
-                                scores.add((Long) document.get(FireContract.score));
-                            }
-                            dataInterface.updateHighscoreList(names, scores);
+                        if (snapshot != null && snapshot.exists()) {
+                            ArrayList<String> scores = new ArrayList<>();
+                            ArrayList<String> names = new ArrayList<>();
+                            getTopTen(scores, names);
                         }
                     }
                 });
     }
+
+    private void getTopTen(final ArrayList<String> scores, final ArrayList<String> names) {
+        db.collection(FireContract.userCollection)
+                .orderBy(FireContract.score, Query.Direction.DESCENDING)
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+
+                            for (DocumentSnapshot document : task.getResult()) {
+                                scores.add(document.get(FireContract.score).toString());
+                                names.add(document.get(FireContract.name).toString());
+                            }
+
+                            dataInterface.highscoreTopTen(scores, names);
+                        }
+                    }
+                });
+    }
+
+
 
     public void getUserScoreName() {
         if (auth.getUid() != null) {

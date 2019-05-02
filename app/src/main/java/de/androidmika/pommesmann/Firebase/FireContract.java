@@ -9,4 +9,7 @@ public class FireContract {
     public static final String name = "name";
     public static final String score = "score";
     public static final String level = "level";
+
+    public static final String highscoreListCollection = "highscoreList";
+    public static final String lowestScore = "lowestScore";
 }

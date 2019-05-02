@@ -46,6 +46,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
         initLevelscore();
 
         manager = new FireManager(this);
+        highscoreListTextView = findViewById(R.id.highscoreListTextView);
+        manager.initHighscoreList();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -182,7 +184,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
 
     @Override
-    public void updateHighscoreList(ArrayList<String> names, ArrayList<Long> scores) {
+    public void highscoreTopTen(ArrayList<String> scores, ArrayList<String> names) {
         int max = Math.max(names.size(), scores.size());
         String text = "";
         for (int i = 0; i < max; i++) {
@@ -190,6 +192,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         }
         highscoreListTextView.setText(text);
     }
+
 
     @Override
     public void userScoreName(String name, String score) {
