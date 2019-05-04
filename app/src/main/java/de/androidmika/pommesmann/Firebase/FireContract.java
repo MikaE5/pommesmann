@@ -12,4 +12,6 @@ public class FireContract {
 
     public static final String highscoreListCollection = "highscoreList";
     public static final String lowestScore = "lowestScore";
+    public static final String docCounter = "docCounter";
+    public static final String updateStamp = "updateStamp";
 }

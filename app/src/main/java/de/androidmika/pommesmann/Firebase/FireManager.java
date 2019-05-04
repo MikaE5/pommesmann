@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -41,9 +42,12 @@ public class FireManager {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private int level;
 
+    private double docCounter = 0;
+    private double lowestScore = 0;
+    private boolean gotResult = false;
+
     public interface DataInterface {
         void highscoreTopTen(ArrayList<String> scores, ArrayList<String> names);
-        void userScoreName(String name, String score);
     }
     private DataInterface dataInterface;
 
@@ -153,6 +157,8 @@ public class FireManager {
 
             db.collection(FireContract.userCollection).document(auth.getUid())
                     .set(data);
+
+            updateTopTen(App.getHighscore());
         }
     }
 
@@ -186,9 +192,9 @@ public class FireManager {
         ArrayList<String> scores = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         getTopTen(scores, names);
-        
+
         db.collection(FireContract.highscoreListCollection)
-                .document(FireContract.lowestScore)
+                .document(FireContract.updateStamp)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
@@ -203,6 +209,73 @@ public class FireManager {
                 });
     }
 
+    private void updateTopTen(int score) {
+        getDocCounter();
+        while (!gotResult) {} // wait for onComplete method
+        gotResult = false;
+
+        if (docCounter < 10) {
+            // update docCounter
+            increment(FireContract.docCounter);
+            // update updateStamp
+            increment(FireContract.updateStamp);
+        } else {
+            getLowestScore();
+            while (!gotResult) {} // wait for onComplete method
+            gotResult = false;
+
+            if (score > lowestScore) {
+                increment(FireContract.updateStamp);
+            }
+        }
+
+    }
+
+    private void getDocCounter() {
+        db.collection(FireContract.highscoreListCollection)
+                .document(FireContract.docCounter)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            docCounter = document.getDouble(FireContract.docCounter);
+                            gotResult = true;
+                        }
+                    }
+                });
+    }
+
+    private void getLowestScore() {
+        db.collection(FireContract.highscoreListCollection)
+                .document(FireContract.lowestScore)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            lowestScore = document.getDouble(FireContract.lowestScore);
+                            gotResult = true;
+                        }
+                    }
+                });
+    }
+
+    private void updateLowestScore(double newScore) {
+        db.collection(FireContract.highscoreListCollection)
+                .document(FireContract.lowestScore)
+                .update(FireContract.lowestScore, newScore);
+    }
+
+    private void increment(String field) {
+        db.collection(FireContract.highscoreListCollection)
+                .document(field)
+                .update(field, FieldValue.increment(1));
+    }
+
+
     private void getTopTen(final ArrayList<String> scores, final ArrayList<String> names) {
         db.collection(FireContract.userCollection)
                 .orderBy(FireContract.score, Query.Direction.DESCENDING)
@@ -214,9 +287,16 @@ public class FireManager {
                         if (task.isSuccessful() && task.getResult() != null) {
 
                             for (DocumentSnapshot document : task.getResult()) {
-                                scores.add(document.get(FireContract.score).toString());
-                                names.add(document.get(FireContract.name).toString());
+                                Object score = document.get(FireContract.score);
+                                Object name = document.get(FireContract.name);
+                                if (score != null && name != null) {
+                                    scores.add(score.toString());
+                                    names.add(name.toString());
+                                }
                             }
+
+                            // update lowestScore
+                            updateLowestScore(Double.valueOf(scores.get(scores.size() - 1)));
 
                             dataInterface.highscoreTopTen(scores, names);
                         }
@@ -224,26 +304,6 @@ public class FireManager {
                 });
     }
 
-
-
-    public void getUserScoreName() {
-        if (auth.getUid() != null) {
-            db.collection(FireContract.userCollection).document(auth.getUid())
-                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
-                            if (e != null) return;
-
-                            if (snapshot != null && snapshot.exists()) {
-                                dataInterface.userScoreName(
-                                        snapshot.get(FireContract.name).toString(),
-                                        snapshot.get(FireContract.score).toString()
-                                );
-                            }
-                        }
-                    });
-        }
-    }
 
     public void deleteUserData() {
         if (auth.getUid() != null) {

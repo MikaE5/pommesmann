@@ -44,10 +44,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
 
         initLevelscore();
-
         manager = new FireManager(this);
-        highscoreListTextView = findViewById(R.id.highscoreListTextView);
-        manager.initHighscoreList();
+
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -55,6 +53,9 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
 
         setContentView(R.layout.main_activity);
+
+        highscoreListTextView = findViewById(R.id.highscoreListTextView);
+        manager.initHighscoreList();
 
 
         startButton = findViewById(R.id.startButton);
@@ -188,16 +189,12 @@ public class MainActivity extends Activity implements View.OnClickListener,
         int max = Math.max(names.size(), scores.size());
         String text = "";
         for (int i = 0; i < max; i++) {
-            text += names.get(i) + " " + scores.get(i) + "\n";
+                text += names.get(i) + " " + scores.get(i) + "\n";
+
         }
         highscoreListTextView.setText(text);
     }
 
-
-    @Override
-    public void userScoreName(String name, String score) {
-        highscoreListTextView.setText(name + " " + score);
-    }
 
     @Override
     public void hideButton() {
