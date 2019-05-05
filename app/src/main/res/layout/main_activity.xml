@@ -69,23 +69,31 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:orientation="vertical"
-        android:paddingTop="10dp"
+        android:paddingTop="20dp"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/highscoreTextView"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/currentHighscoreTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/highscoreTextView"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+            <TextView
+                android:id="@+id/currentHighscoreTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/submitHighscoreButton"
@@ -98,11 +106,17 @@
             android:textColor="#FFF"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/highscoreListTextView"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/highscoresButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/oval_selector"
+            android:text="@string/highscoresButton"
+            android:textColor="#FFF"
+            android:clickable="false"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 

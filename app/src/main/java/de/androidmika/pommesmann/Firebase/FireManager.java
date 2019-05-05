@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,18 +18,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Nullable;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.R;
@@ -42,23 +38,18 @@ public class FireManager {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private int level;
 
-    private double docCounter = 0;
-    private double lowestScore = 0;
-    private boolean gotResult = false;
 
     public interface DataInterface {
-        void highscoreTopTen(ArrayList<String> scores, ArrayList<String> names);
+        void deleteSuccess();
+        void deleteFailure();
+        void updateSuccess();
+        void updateFailure();
     }
     private DataInterface dataInterface;
 
-    public interface DeleteDataInterface {
-        void deleteSuccess();
-        void deleteFailure();
-    }
-    private DeleteDataInterface deleteDataInterface;
-
     public interface UIInterface{
         void hideButton();
+        void setHint(String name);
     }
     private UIInterface uiInterface;
 
@@ -69,9 +60,6 @@ public class FireManager {
 
         if (context instanceof DataInterface) {
             dataInterface = (DataInterface) context;
-        }
-        if (context instanceof DeleteDataInterface) {
-            deleteDataInterface = (DeleteDataInterface) context;
         }
         if (context instanceof UIInterface) {
             uiInterface = (UIInterface) context;
@@ -143,6 +131,8 @@ public class FireManager {
         text = text.replaceAll("collection", "");
         text = text.replaceAll("document", "");
         text = text.replaceAll(";", ".");
+        text = text.replaceAll("Mika", "nope");
+        text = text.replaceAll("mika", "nope");
         return text;
     }
 
@@ -157,8 +147,6 @@ public class FireManager {
 
             db.collection(FireContract.userCollection).document(auth.getUid())
                     .set(data);
-
-            updateTopTen(App.getHighscore());
         }
     }
 
@@ -174,109 +162,100 @@ public class FireManager {
 
     }
 
-    public void updateName(String newName) {
-        newName = analyzeString(newName);
-        Map<String, Object> data = new HashMap<>();
-        data.put(FireContract.name, newName);
-
+    public void getUserName() {
         if (auth.getUid() != null) {
+            db.collection(FireContract.userCollection)
+                    .document(auth.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                Object name = document.get(FireContract.name);
+                                if (name != null) {
+                                    uiInterface.setHint(name.toString());
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    public void updateName(String newName) {
+        if (auth.getUid() != null) {
+            newName = analyzeString(newName);
+            Map<String, Object> data = new HashMap<>();
+            data.put(FireContract.name, newName);
+
             db.collection(FireContract.userCollection).document(auth.getUid())
-                    .update(data);
-        }
-    }
-
-
-
-    public void initHighscoreList() {
-        // get the top ten first, then listen to changes of lowest score
-        ArrayList<String> scores = new ArrayList<>();
-        ArrayList<String> names = new ArrayList<>();
-        getTopTen(scores, names);
-
-        db.collection(FireContract.highscoreListCollection)
-                .document(FireContract.updateStamp)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) return;
-
-                        if (snapshot != null && snapshot.exists()) {
-                            ArrayList<String> scores = new ArrayList<>();
-                            ArrayList<String> names = new ArrayList<>();
-                            getTopTen(scores, names);
+                    .update(data)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                dataInterface.updateSuccess();
+                            }
                         }
-                    }
-                });
-    }
-
-    private void updateTopTen(int score) {
-        getDocCounter();
-        while (!gotResult) {} // wait for onComplete method
-        gotResult = false;
-
-        if (docCounter < 10) {
-            // update docCounter
-            increment(FireContract.docCounter);
-            // update updateStamp
-            increment(FireContract.updateStamp);
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            dataInterface.updateFailure();
+                        }
+                    });
         } else {
-            getLowestScore();
-            while (!gotResult) {} // wait for onComplete method
-            gotResult = false;
-
-            if (score > lowestScore) {
-                increment(FireContract.updateStamp);
-            }
+            dataInterface.updateFailure();
         }
-
-    }
-
-    private void getDocCounter() {
-        db.collection(FireContract.highscoreListCollection)
-                .document(FireContract.docCounter)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            docCounter = document.getDouble(FireContract.docCounter);
-                            gotResult = true;
-                        }
-                    }
-                });
-    }
-
-    private void getLowestScore() {
-        db.collection(FireContract.highscoreListCollection)
-                .document(FireContract.lowestScore)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            lowestScore = document.getDouble(FireContract.lowestScore);
-                            gotResult = true;
-                        }
-                    }
-                });
-    }
-
-    private void updateLowestScore(double newScore) {
-        db.collection(FireContract.highscoreListCollection)
-                .document(FireContract.lowestScore)
-                .update(FireContract.lowestScore, newScore);
-    }
-
-    private void increment(String field) {
-        db.collection(FireContract.highscoreListCollection)
-                .document(field)
-                .update(field, FieldValue.increment(1));
     }
 
 
-    private void getTopTen(final ArrayList<String> scores, final ArrayList<String> names) {
+    public void showHighscoreDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.highscore_dialog, null);
+        builder.setView(dialogView);
+
+        final Dialog dialog = builder.create();
+        dialog.setTitle(R.string.highscoreDialogTitle);
+
+
+        TextView rankingTextView = dialogView.findViewById(R.id.rankingTextView);
+        TextView scoresTextView = dialogView.findViewById(R.id.scoresTextView);
+        TextView namesTextView = dialogView.findViewById(R.id.namesTextView);
+        getTopTen(rankingTextView, scoresTextView, namesTextView);
+
+        dialog.show();
+    }
+
+
+
+    private void fillHighscoreDialog(ArrayList<String> scores, ArrayList<String> names,
+                                     TextView rankingTextView,
+                                     TextView scoresTextView,
+                                     TextView namesTextView
+                                     ) {
+        int max = Math.max(names.size(), scores.size());
+        String ranking = "";
+        String score ="";
+        String name = "";
+        for (int i = 0; i < max; i++) {
+            ranking = ranking.concat(i+1 + ".\n");
+            score = score.concat(scores.get(i) + "\n");
+            name = name.concat(names.get(i) + "\n");
+        }
+        rankingTextView.setText(ranking);
+        scoresTextView.setText(score);
+        namesTextView.setText(name);
+    }
+
+
+
+
+    private void getTopTen(final TextView rankingTextView,
+                           final TextView scoresTextView,
+                           final TextView namesTextView) {
         db.collection(FireContract.userCollection)
                 .orderBy(FireContract.score, Query.Direction.DESCENDING)
                 .limit(10)
@@ -285,7 +264,8 @@ public class FireManager {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
-
+                            ArrayList<String> scores = new ArrayList<>();
+                            ArrayList<String> names = new ArrayList<>();
                             for (DocumentSnapshot document : task.getResult()) {
                                 Object score = document.get(FireContract.score);
                                 Object name = document.get(FireContract.name);
@@ -295,10 +275,10 @@ public class FireManager {
                                 }
                             }
 
-                            // update lowestScore
-                            updateLowestScore(Double.valueOf(scores.get(scores.size() - 1)));
-
-                            dataInterface.highscoreTopTen(scores, names);
+                            fillHighscoreDialog(scores, names,
+                                    rankingTextView,
+                                    scoresTextView,
+                                    namesTextView);
                         }
                     }
                 });
@@ -312,18 +292,18 @@ public class FireManager {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            deleteDataInterface.deleteSuccess();
+                            dataInterface.deleteSuccess();
                             auth.signOut();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            deleteDataInterface.deleteFailure();
+                            dataInterface.deleteFailure();
                         }
                     });
         } else {
-            deleteDataInterface.deleteFailure();
+            dataInterface.deleteFailure();
         }
 
     }

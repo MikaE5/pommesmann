@@ -5,7 +5,7 @@
     <string name="newHighscoreTextView">New Highscore!</string>
     <string name="nameEditText">Your Name</string>
     <string name="submitNameButton">submit</string>
-    <string name="highscoreTextView">highscore</string>
+    <string name="highscoreTextView">highscore:&#160;</string>
     <string name="soundCheckBox">sound</string>
     <string name="aboutButton">about</string>
     <string name="leftHandedCheckBox">left handed&#160;</string>
@@ -36,4 +36,8 @@
     <string name="settingsTitleTextView">Settings</string>
     <string name="leftHandedTextView">Optimize POMMESMANN for left-handers</string>
     <string name="aboutTextView">See what POMMESMANN is about</string>
+
+    <!-- highscoreDialog -->
+    <string name="highscoreDialogTitle">Top Highscores</string>
+    <string name="highscoresButton">Top Highscores</string>
 </resources>

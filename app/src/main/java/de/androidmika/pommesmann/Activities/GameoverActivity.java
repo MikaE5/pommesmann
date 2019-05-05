@@ -186,4 +186,8 @@ public class GameoverActivity extends Activity implements View.OnClickListener, 
         submitHighscoreButton.setClickable(false);
         submitHighscoreButton.setVisibility(View.GONE);
     }
+
+    @Override
+    public void setHint(String name) {
+    }
 }

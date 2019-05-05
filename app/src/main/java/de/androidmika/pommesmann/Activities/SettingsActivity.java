@@ -13,7 +13,7 @@ import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.Firebase.FireManager;
 import de.androidmika.pommesmann.R;
 
-public class SettingsActivity extends Activity implements View.OnClickListener, FireManager.DeleteDataInterface {
+public class SettingsActivity extends Activity implements View.OnClickListener, FireManager.DataInterface, FireManager.UIInterface {
 
     private FireManager manager;
 
@@ -30,6 +30,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         setContentView(R.layout.settings_activity);
 
         nameEditText = findViewById(R.id.nameEditText);
+        manager.getUserName();
+
         Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(this);
         if (!manager.userExists())
@@ -69,6 +71,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
         if (newName.length() < 20) {
             manager.updateName(newName);
+            nameEditText.setHint(newName);
         }
     }
 
@@ -78,13 +81,34 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void deleteSuccess() {
-        CharSequence text = "Data successfull deleted!";
+        CharSequence text = "Data successfully deleted!";
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void deleteFailure() {
-        CharSequence text = "Sorry! An error occured. Data was not deleted!";
+        CharSequence text = "Sorry! An error occurred. Data was not deleted!";
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void updateSuccess() {
+        CharSequence text = "Name successfully updated!";
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void updateFailure() {
+        CharSequence text = "Sorry! An error occurred!";
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void hideButton() {
+    }
+
+    @Override
+    public void setHint(String name) {
+        nameEditText.setHint(name);
     }
 }

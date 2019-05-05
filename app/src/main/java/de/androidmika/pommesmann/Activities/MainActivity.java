@@ -23,7 +23,7 @@ import de.androidmika.pommesmann.Firebase.FireManager;
 import de.androidmika.pommesmann.R;
 
 public class MainActivity extends Activity implements View.OnClickListener,
-        FireManager.DataInterface, FireManager.UIInterface {
+        FireManager.UIInterface {
 
     private FireManager manager;
     
@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
     private Button tutorialButton;
     private Button shopButton;
     private Button submitHighscoreButton;
-    private TextView highscoreListTextView;
+    private Button highscoresButton;
     private CheckBox soundCheckBox;
 
     private Animation rotateAnim;
@@ -54,8 +54,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
         setContentView(R.layout.main_activity);
 
-        highscoreListTextView = findViewById(R.id.highscoreListTextView);
-        manager.initHighscoreList();
 
 
         startButton = findViewById(R.id.startButton);
@@ -65,12 +63,12 @@ public class MainActivity extends Activity implements View.OnClickListener,
         shopButton = findViewById(R.id.shopButton);
         shopButton.setOnClickListener(this);
         submitHighscoreButton = findViewById(R.id.submitHighscoreButton);
+        highscoresButton = findViewById(R.id.highscoresButton);
+
         soundCheckBox = findViewById(R.id.soundCheckBox);
         soundCheckBox.setChecked(App.getSound()); // set volume in app accordingly
         soundCheckBox.setOnClickListener(this);
-        Button settingsButton = findViewById(R.id.settingsButton);
-        settingsButton.setOnClickListener(this);
-
+        findViewById(R.id.settingsButton).setOnClickListener(this);
 
         if (App.getHighscore() < LOW_SCORE) {
             rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate);
@@ -129,6 +127,9 @@ public class MainActivity extends Activity implements View.OnClickListener,
                 manager.showChooseNameDialog(this);
             }
         }
+        if (v.getId() == R.id.highscoresButton) {
+            manager.showHighscoreDialog(this);
+        }
         if (v.getId() == R.id.soundCheckBox) {
             App.setSound(soundCheckBox.isChecked());
         }
@@ -156,9 +157,26 @@ public class MainActivity extends Activity implements View.OnClickListener,
                 submitHighscoreButton.setClickable(true);
                 submitHighscoreButton.setOnClickListener(this);
                 submitHighscoreButton.setVisibility(View.VISIBLE);
+
+                // needed if you come back to MainActivity after deleting your data in
+                // SettingsActivity
+                hideHighscoresButton();
+            } else {
+                showHighscoresButton();
             }
 
         }
+    }
+
+    private void showHighscoresButton() {
+        highscoresButton.setClickable(true);
+        highscoresButton.setOnClickListener(this);
+        highscoresButton.setVisibility(View.VISIBLE);
+    }
+
+    private void hideHighscoresButton() {
+        highscoresButton.setClickable(false);
+        highscoresButton.setVisibility(View.GONE);
     }
 
 
@@ -185,21 +203,14 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
 
     @Override
-    public void highscoreTopTen(ArrayList<String> scores, ArrayList<String> names) {
-        int max = Math.max(names.size(), scores.size());
-        String text = "";
-        for (int i = 0; i < max; i++) {
-                text += names.get(i) + " " + scores.get(i) + "\n";
-
-        }
-        highscoreListTextView.setText(text);
-    }
-
-
-    @Override
     public void hideButton() {
         submitHighscoreButton.setClickable(false);
         submitHighscoreButton.setVisibility(View.GONE);
+        showHighscoresButton();
+    }
+
+    @Override
+    public void setHint(String name) {
     }
 
     private void initLevelscore() {
