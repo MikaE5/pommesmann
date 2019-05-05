@@ -305,6 +305,5 @@ public class FireManager {
         } else {
             dataInterface.deleteFailure();
         }
-
     }
 }
