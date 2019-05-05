@@ -199,6 +199,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
+
     @Override
     public void hideButton() {
     }

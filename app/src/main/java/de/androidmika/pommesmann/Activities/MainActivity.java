@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -213,6 +214,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
     public void setHint(String name) {
     }
 
+    
     private void initLevelscore() {
         // added levelscore after first releases
         // have to set a first value

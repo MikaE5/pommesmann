@@ -53,8 +53,8 @@ public class ShopHelper {
                             R.drawable.fastlaserimage),
                     // restriction 60, price 3141
                     new Item(SECRET_OF_POMMESMANN, SECRET_OF_POMMESMANN_DESCRIPTION,
-                            0, 0,
-                            1,
+                            0, 60,
+                            3141,
                             R.drawable.pommesmann)
             )
     );
