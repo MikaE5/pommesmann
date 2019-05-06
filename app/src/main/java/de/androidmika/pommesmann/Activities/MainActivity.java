@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
     public void setHint(String name) {
     }
 
-    
+
     private void initLevelscore() {
         // added levelscore after first releases
         // have to set a first value
