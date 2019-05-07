@@ -108,10 +108,11 @@ public class FireManager {
             public void onClick(View v) {
                 String name = editName.getText().toString().trim();
                 name = analyzeString(name);
-                signInAnonymously(context, name);
+                    signInAnonymously(context, name);
 
-                dialog.dismiss();
-                uiInterface.hideButton();
+                    dialog.dismiss();
+                    uiInterface.hideButton();
+
             }
         });
 
@@ -138,16 +139,16 @@ public class FireManager {
 
 
     private void setFirstData(String name) {
-        Map<String, Object> data = new HashMap<>();
-        if (auth.getUid() != null) {
-            data.put(FireContract.userID, auth.getUid());
-            data.put(FireContract.name, name);
-            data.put(FireContract.score, App.getHighscore());
-            data.put(FireContract.level, level);
+            Map<String, Object> data = new HashMap<>();
+            if (auth.getUid() != null) {
+                data.put(FireContract.userID, auth.getUid());
+                data.put(FireContract.name, name);
+                data.put(FireContract.score, App.getHighscore());
+                data.put(FireContract.level, level);
 
-            db.collection(FireContract.userCollection).document(auth.getUid())
-                    .set(data);
-        }
+                db.collection(FireContract.userCollection).document(auth.getUid())
+                        .set(data);
+            }
     }
 
     public void updateScore(int points) {
@@ -182,28 +183,32 @@ public class FireManager {
         }
     }
 
+
+
+
     public void updateName(String newName) {
         if (auth.getUid() != null) {
             newName = analyzeString(newName);
-            Map<String, Object> data = new HashMap<>();
-            data.put(FireContract.name, newName);
 
-            db.collection(FireContract.userCollection).document(auth.getUid())
-                    .update(data)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                dataInterface.updateSuccess();
+                Map<String, Object> data = new HashMap<>();
+                data.put(FireContract.name, newName);
+                db.collection(FireContract.userCollection).document(auth.getUid())
+                        .update(data)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    dataInterface.updateSuccess();
+                                }
                             }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            dataInterface.updateFailure();
-                        }
-                    });
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                dataInterface.updateFailure();
+                            }
+                        });
+
         } else {
             dataInterface.updateFailure();
         }
@@ -305,6 +310,5 @@ public class FireManager {
         } else {
             dataInterface.deleteFailure();
         }
-
     }
 }
