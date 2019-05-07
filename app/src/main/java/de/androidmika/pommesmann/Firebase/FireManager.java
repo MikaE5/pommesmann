@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -70,22 +71,6 @@ public class FireManager {
         return auth.getCurrentUser() != null;
     }
 
-    private void signInAnonymously(final Context context, final String name) {
-        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(context, "Sign in successful", Toast.LENGTH_LONG)
-                            .show();
-                    setFirstData(name);
-                } else {
-                    Toast.makeText(context, "Sign in failed", Toast.LENGTH_LONG)
-                            .show();
-                }
-            }
-        });
-    }
-
 
     // returns true if a name was chosen and a user created
     // returns false if the dialog was just dismissed
@@ -108,11 +93,10 @@ public class FireManager {
             public void onClick(View v) {
                 String name = editName.getText().toString().trim();
                 name = analyzeString(name);
-                    signInAnonymously(context, name);
+                signInAnonymously(context, name);
 
-                    dialog.dismiss();
-                    uiInterface.hideButton();
-
+                dialog.dismiss();
+                uiInterface.hideButton();
             }
         });
 
@@ -126,6 +110,74 @@ public class FireManager {
 
         dialog.show();
     }
+
+    private void signInAnonymously(final Context context, final String name) {
+        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                   analyzeName(context, name);
+                }
+            }
+        });
+    }
+
+    private void analyzeName(final Context context, final String name) {
+        db.collection(FireContract.userCollection)
+                .whereEqualTo(FireContract.name, name)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().size() > 0) {
+                                chooseNewNameDialog(context);
+                            } else {
+                                Toast.makeText(context, "Sign in successful", Toast.LENGTH_LONG)
+                                        .show();
+                                Log.d("analyze", task.getResult().size() + "");
+                                setFirstData(name);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void chooseNewNameDialog(final Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setCancelable(false);
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.choosename_dialog, null);
+        builder.setView(dialogView);
+        TextView dialogText = dialogView.findViewById(R.id.dialogText);
+        dialogText.setText("This name already exists! Please choose a different name");
+
+
+        final Dialog dialog = builder.create();
+        dialog.setTitle(R.string.chooseNameDialogTitle);
+
+
+        final EditText editName = dialogView.findViewById(R.id.editText);
+        final Button confirmButton = dialogView.findViewById(R.id.confirmButton);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editName.getText().toString().trim();
+                name = analyzeString(name);
+                analyzeName(context, name);
+
+                dialog.dismiss();
+                uiInterface.hideButton();
+            }
+        });
+
+        Button laterButton = dialogView.findViewById(R.id.laterButton);
+        laterButton.setVisibility(View.GONE);
+
+        dialog.show();
+    }
+
 
     private String analyzeString(String text) {
         text = text.replaceAll("delete", "");
@@ -189,23 +241,22 @@ public class FireManager {
     public void updateName(String newName) {
         if (auth.getUid() != null) {
             newName = analyzeString(newName);
-
-                Map<String, Object> data = new HashMap<>();
-                data.put(FireContract.name, newName);
-                db.collection(FireContract.userCollection).document(auth.getUid())
-                        .update(data)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    dataInterface.updateSuccess();
-                                }
+            
+            Map<String, Object> data = new HashMap<>();
+            data.put(FireContract.name, newName);
+            db.collection(FireContract.userCollection).document(auth.getUid())
+                    .update(data)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                dataInterface.updateSuccess();
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
-                                dataInterface.updateFailure();
+                            public void onFailure(@NonNull Exception e) { dataInterface.updateFailure();
                             }
                         });
 
