@@ -28,3 +28,4 @@ It stores all information, such as level or price, about items, that can be boug
 ## Firebase
 An Online Highscore List is managed by a Firebase Project. A user has the option to sign in,
 choose a name, and then the highscore of the user will be published.
+All the Database transactions are handled in the FireManager-Class.
