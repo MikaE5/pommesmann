@@ -81,8 +81,8 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         String newName = nameEditText.getText().toString().trim();
 
         if (newName.length() < 20) {
-            manager.updateName(newName);
-            nameEditText.setHint(newName);
+            manager.updateName(this, newName);
+            nameEditText.getText().clear();
         }
     }
 

@@ -19,13 +19,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.R;
@@ -116,13 +120,13 @@ public class FireManager {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                   analyzeName(context, name);
+                   analyzeName(context, name, true);
                 }
             }
         });
     }
 
-    private void analyzeName(final Context context, final String name) {
+    private void analyzeName(final Context context, final String name, final boolean firstSignIn) {
         db.collection(FireContract.userCollection)
                 .whereEqualTo(FireContract.name, name)
                 .get()
@@ -133,10 +137,14 @@ public class FireManager {
                             if (task.getResult().size() > 0) {
                                 chooseNewNameDialog(context);
                             } else {
-                                Toast.makeText(context, "Sign in successful", Toast.LENGTH_LONG)
-                                        .show();
-                                Log.d("analyze", task.getResult().size() + "");
-                                setFirstData(name);
+
+                                if (firstSignIn) {
+                                    setFirstData(name);
+                                    Toast.makeText(context, "Sign in successful", Toast.LENGTH_LONG)
+                                            .show();
+                                } else {
+                                    setName(name);
+                                }
                             }
                         }
                     }
@@ -165,7 +173,7 @@ public class FireManager {
             public void onClick(View v) {
                 String name = editName.getText().toString().trim();
                 name = analyzeString(name);
-                analyzeName(context, name);
+                analyzeName(context, name, false);
 
                 dialog.dismiss();
                 uiInterface.hideButton();
@@ -176,6 +184,62 @@ public class FireManager {
         laterButton.setVisibility(View.GONE);
 
         dialog.show();
+    }
+
+    public void updateName(final Context context, final String name) {
+        if (auth.getUid() != null) {
+            // First check if the new name is the old name
+            db.collection(FireContract.userCollection)
+                    .document(auth.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot snapshot = task.getResult();
+
+                                if (snapshot != null && snapshot.exists()) {
+                                    Object oldName = snapshot.get(FireContract.name);
+
+                                    // update name only if it is a different name
+                                    if (oldName != null && !oldName.toString().equals(name)) {
+                                        analyzeName(context, name, false);
+                                    } else {
+                                        dataInterface.updateFailure();
+                                    }
+                                }
+                            }
+                        }
+                    });
+        }
+
+    }
+
+    private void setName(String newName) {
+        if (auth.getUid() != null) {
+            newName = analyzeString(newName);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put(FireContract.name, newName);
+            db.collection(FireContract.userCollection).document(auth.getUid())
+                    .update(data)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                dataInterface.updateSuccess();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) { dataInterface.updateFailure();
+                        }
+                    });
+
+        } else {
+            dataInterface.updateFailure();
+        }
     }
 
 
@@ -215,55 +279,34 @@ public class FireManager {
 
     }
 
+
+    // listen for real time updates for username
     public void getUserName() {
         if (auth.getUid() != null) {
             db.collection(FireContract.userCollection)
                     .document(auth.getUid())
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                Object name = document.get(FireContract.name);
+                        public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                            @Nullable FirebaseFirestoreException e) {
+
+                            if (e != null) return;
+
+                            if (snapshot != null && snapshot.exists()) {
+
+                                Object name = snapshot.get(FireContract.name);
                                 if (name != null) {
                                     uiInterface.setHint(name.toString());
                                 }
+
                             }
+
                         }
                     });
         }
     }
 
 
-
-
-    public void updateName(String newName) {
-        if (auth.getUid() != null) {
-            newName = analyzeString(newName);
-            
-            Map<String, Object> data = new HashMap<>();
-            data.put(FireContract.name, newName);
-            db.collection(FireContract.userCollection).document(auth.getUid())
-                    .update(data)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                dataInterface.updateSuccess();
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) { dataInterface.updateFailure();
-                            }
-                        });
-
-        } else {
-            dataInterface.updateFailure();
-        }
-    }
 
 
     public void showHighscoreDialog(final Context context) {

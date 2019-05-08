@@ -19,7 +19,7 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/SettingsActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Firebase/FireManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Firebase/FireManager.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,12 +39,12 @@
     <session id="1363092125">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="20" />
+          <entry key="project.closed" value="21" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.26" value="1" />
           <entry key="project.open.time.29" value="1" />
           <entry key="project.open.time.31" value="3" />
-          <entry key="project.open.time.32" value="3" />
+          <entry key="project.open.time.32" value="4" />
           <entry key="project.open.time.36" value="1" />
           <entry key="project.open.time.37" value="1" />
           <entry key="project.open.time.38" value="3" />
@@ -55,7 +55,7 @@
           <entry key="project.open.time.49" value="1" />
           <entry key="project.open.time.52" value="1" />
           <entry key="project.open.time.54" value="1" />
-          <entry key="project.opened" value="21" />
+          <entry key="project.opened" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -80,7 +80,7 @@
         <counts>
           <entry key="dummy" value="8" />
           <entry key="gradle" value="9" />
-          <entry key="java" value="27820" />
+          <entry key="java" value="28762" />
           <entry key="md" value="830" />
           <entry key="txt" value="458" />
           <entry key="xml" value="984" />
@@ -89,7 +89,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="9" />
-          <entry key="JAVA" value="27820" />
+          <entry key="JAVA" value="28762" />
           <entry key="Markdown" value="830" />
           <entry key="PLAIN_TEXT" value="466" />
           <entry key="XML" value="984" />
@@ -102,16 +102,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Firebase/FireManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="243" column="12" selection-start-line="243" selection-start-column="12" selection-end-line="243" selection-end-column="12" />
+            <state relative-caret-position="420">
+              <caret line="207" column="70" selection-start-line="207" selection-start-column="70" selection-end-line="207" selection-end-column="70" />
               <folding>
-                <element signature="e#3785#4304#0" expanded="true" />
-                <element signature="e#4303#4304#0" expanded="true" />
-                <element signature="e#4559#5210#0" expanded="true" />
-                <element signature="e#5209#5210#0" expanded="true" />
-                <element signature="e#5837#5867#0" expanded="true" />
-                <element signature="e#8895#9206#0" expanded="true" />
-                <element signature="e#9205#9206#0" expanded="true" />
+                <element signature="e#4351#5190#0" expanded="true" />
+                <element signature="e#5189#5190#0" expanded="true" />
+                <element signature="e#6954#7220#0" expanded="true" />
+                <element signature="e#7219#7220#0" expanded="true" />
+                <element signature="e#10196#10731#0" expanded="true" />
+                <element signature="e#10730#10731#0" expanded="true" />
+                <element signature="e#12445#13613#0" expanded="true" />
+                <element signature="e#13612#13613#0" expanded="true" />
+                <element signature="e#13847#14123#0" expanded="true" />
+                <element signature="e#14122#14123#0" expanded="true" />
+                <element signature="e#14167#14403#0" expanded="true" />
+                <element signature="e#14402#14403#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -119,12 +124,12 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/choosename_dialog.xml">
+          <provider selected="true" editor-type-id="android-designer2" />
           <provider editor-type-id="text-editor">
             <state relative-caret-position="420">
               <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
             </state>
           </provider>
-          <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -138,31 +143,31 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml">
+          <provider selected="true" editor-type-id="android-designer2" />
           <provider editor-type-id="text-editor">
             <state relative-caret-position="2320">
               <caret line="116" column="36" selection-start-line="116" selection-start-column="36" selection-end-line="116" selection-end-column="36" />
             </state>
           </provider>
-          <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/SettingsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2460">
-              <caret line="124" column="5" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="5" />
+            <state relative-caret-position="1380">
+              <caret line="84" column="43" selection-start-line="84" selection-start-column="43" selection-end-line="84" selection-end-column="43" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/highscore_dialog.xml">
+          <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="420">
               <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
             </state>
           </provider>
-          <provider editor-type-id="android-designer2" />
         </entry>
       </file>
     </leaf>
@@ -230,8 +235,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/settings_activity.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/ShopDatabase/ShopHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/GameoverActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Firebase/FireManager.java" />
       </list>
     </option>
@@ -247,6 +252,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -291,7 +297,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane" />
     </panes>
   </component>
@@ -589,28 +594,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/highscore_dialog.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
           <caret line="7" column="53" selection-start-line="7" selection-start-column="53" selection-end-line="7" selection-end-column="53" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="2320">
-          <caret line="116" column="36" selection-start-line="116" selection-start-column="36" selection-end-line="116" selection-end-column="36" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/ShopActivity.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -672,13 +661,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/SettingsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2460">
-          <caret line="124" column="5" selection-start-line="124" selection-start-column="5" selection-end-line="124" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/choosename_dialog.xml">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -694,18 +676,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main_activity.xml">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="2320">
+          <caret line="116" column="36" selection-start-line="116" selection-start-column="36" selection-end-line="116" selection-end-column="36" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/highscore_dialog.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Activities/SettingsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1380">
+          <caret line="84" column="43" selection-start-line="84" selection-start-column="43" selection-end-line="84" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/de/androidmika/pommesmann/Firebase/FireManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="243" column="12" selection-start-line="243" selection-start-column="12" selection-end-line="243" selection-end-column="12" />
+        <state relative-caret-position="420">
+          <caret line="207" column="70" selection-start-line="207" selection-start-column="70" selection-end-line="207" selection-end-column="70" />
           <folding>
-            <element signature="e#3785#4304#0" expanded="true" />
-            <element signature="e#4303#4304#0" expanded="true" />
-            <element signature="e#4559#5210#0" expanded="true" />
-            <element signature="e#5209#5210#0" expanded="true" />
-            <element signature="e#5837#5867#0" expanded="true" />
-            <element signature="e#8895#9206#0" expanded="true" />
-            <element signature="e#9205#9206#0" expanded="true" />
+            <element signature="e#4351#5190#0" expanded="true" />
+            <element signature="e#5189#5190#0" expanded="true" />
+            <element signature="e#6954#7220#0" expanded="true" />
+            <element signature="e#7219#7220#0" expanded="true" />
+            <element signature="e#10196#10731#0" expanded="true" />
+            <element signature="e#10730#10731#0" expanded="true" />
+            <element signature="e#12445#13613#0" expanded="true" />
+            <element signature="e#13612#13613#0" expanded="true" />
+            <element signature="e#13847#14123#0" expanded="true" />
+            <element signature="e#14122#14123#0" expanded="true" />
+            <element signature="e#14167#14403#0" expanded="true" />
+            <element signature="e#14402#14403#0" expanded="true" />
           </folding>
         </state>
       </provider>
