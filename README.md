@@ -24,3 +24,7 @@ The SurfaceView also has a custom Thread, where the actual Game-Loop (updating, 
 ## Shop
 The Shop is managed by a ShopDatabase, that is realized by using the SQLiteOpenHelper-Class.
 It stores all information, such as level or price, about items, that can be bought in the shop.
+
+## Firebase
+An Online Highscore List is managed by a Firebase Project. A user has the option to sign in,
+choose a name, and then the highscore of the user will be published.
