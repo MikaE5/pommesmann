@@ -41,6 +41,9 @@
             android:name=".Activities.TutorialActivity"
             android:noHistory="true" />
 
+
+        <!-- permanently disable anayltics collection -->
+        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
         <!-- disable advertising id collection -->
         <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
     </application>
