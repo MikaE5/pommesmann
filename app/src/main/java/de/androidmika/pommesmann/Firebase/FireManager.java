@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -134,7 +135,7 @@ public class FireManager {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            if (task.getResult().size() > 0) {
+                            if (task.getResult() != null && task.getResult().size() > 0) {
                                 chooseNewNameDialog(context);
                             } else {
 
@@ -219,23 +220,48 @@ public class FireManager {
         if (auth.getUid() != null) {
             newName = analyzeString(newName);
 
-            Map<String, Object> data = new HashMap<>();
+            final Map<String, Object> data = new HashMap<>();
             data.put(FireContract.name, newName);
-            db.collection(FireContract.userCollection).document(auth.getUid())
-                    .update(data)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+            final DocumentReference docRef = db.collection(FireContract.userCollection).document(auth.getUid());
+
+            docRef.get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
-                                dataInterface.updateSuccess();
+                                DocumentSnapshot snapshot = task.getResult();
+
+                                if (snapshot != null && snapshot.exists()) {
+                                    docRef.update(data)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        dataInterface.updateSuccess();
+                                                    }
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) { dataInterface.updateFailure();
+                                                }
+                                            });
+                                } else {
+                                    docRef.set(data)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                }
+                                            })
+                                }
                             }
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) { dataInterface.updateFailure();
-                        }
                     });
+
+
+
 
         } else {
             dataInterface.updateFailure();

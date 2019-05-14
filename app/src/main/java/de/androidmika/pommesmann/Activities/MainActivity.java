@@ -24,7 +24,7 @@ import de.androidmika.pommesmann.Firebase.FireManager;
 import de.androidmika.pommesmann.R;
 
 public class MainActivity extends Activity implements View.OnClickListener,
-        FireManager.UIInterface {
+        FireManager.UIInterface, FireManager.DataInterface {
 
     private FireManager manager;
     
@@ -222,5 +222,29 @@ public class MainActivity extends Activity implements View.OnClickListener,
         if (App.getLevelscore() == 0) {
             App.setLevelscore(App.getHighscore());
         }
+    }
+
+    @Override
+    public void deleteSuccess() {
+        CharSequence text = "Data successfully deleted!";
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void deleteFailure() {
+        CharSequence text = "Sorry! An error occurred. Data was not deleted!";
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void updateSuccess() {
+        CharSequence text = "Name successfully updated!";
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void updateFailure() {
+        CharSequence text = "Sorry! An error occurred!";
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 }
