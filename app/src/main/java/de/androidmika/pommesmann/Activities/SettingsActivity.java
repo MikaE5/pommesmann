@@ -7,14 +7,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import de.androidmika.pommesmann.App;
+import de.androidmika.pommesmann.Firebase.FireInput;
 import de.androidmika.pommesmann.Firebase.FireManager;
 import de.androidmika.pommesmann.Firebase.FireUserInterface;
 import de.androidmika.pommesmann.R;
@@ -28,6 +31,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener,
 
     private CheckBox leftHandedCheckBox;
     private EditText nameEditText;
+
 
 
     @Override
@@ -67,6 +71,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener,
 
         if (v.getId() == R.id.submitButton) {
             updateName();
+            hideKeyboard();
         }
         if (v.getId() == R.id.deleteDataButton) {
             deleteDialog();
@@ -85,11 +90,21 @@ public class SettingsActivity extends Activity implements View.OnClickListener,
 
     private void updateName() {
         String newName = nameEditText.getText().toString().trim();
+        newName = FireInput.analyzeString(newName);
 
-        if (newName.length() < 20) {
-            manager.updateName(this, newName);
-            nameEditText.getText().clear();
+        manager.updateName(newName);
+        nameEditText.getText().clear();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = this.getCurrentFocus();
+
+        if (view == null) {
+            view = new View(this);
         }
+
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void deleteDialog() {
@@ -193,20 +208,34 @@ public class SettingsActivity extends Activity implements View.OnClickListener,
         nameEditText.setHint(name);
     }
 
+
+
     @Override
-    public void chooseDifferentName() {
-        fireUserInterface.differentNameDialog();
+    public void chooseDifferentName(boolean firstSignIn) {
+        fireUserInterface.differentNameDialog(firstSignIn);
+    }
+
+    @Override
+    public void fillHighscoreDialog(ArrayList<String> scores, ArrayList<String> names) {
     }
 
 
-    
     // FireConnectionInterface from FireUserInterface
     @Override
     public void login(String name) {
     }
 
     @Override
+    public void dummyLogin() {
+
+    }
+
+    @Override
     public void differentName(String name) {
-        manager.validateName(name);
+        if (manager.userExists()) {
+            manager.validateName(name, false);
+        } else {
+            manager.validateName(name, true);
+        }
     }
 }

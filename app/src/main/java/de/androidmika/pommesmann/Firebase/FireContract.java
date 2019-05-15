@@ -2,12 +2,12 @@ package de.androidmika.pommesmann.Firebase;
 
 public class FireContract {
 
+    // dev and release collection
+    //static final String userCollection = "users-dev";
+    static final String userCollection = "users";
 
-    public static final String userCollection = "users-dev";
-
-    public static final String userID = "userID";
+    static final String userID = "userID";
     public static final String name = "name";
-    public static final String score = "score";
+    static final String score = "score";
     public static final String level = "level";
-
 }

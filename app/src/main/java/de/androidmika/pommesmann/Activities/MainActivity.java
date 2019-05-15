@@ -127,7 +127,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
             fireUserInterface.submitDialog();
         }
         if (v.getId() == R.id.highscoresButton) {
-            manager.showHighscoreDialog(this);
+            fireUserInterface.highscoreDialog();
+            manager.getTopTen();
         }
         if (v.getId() == R.id.soundCheckBox) {
             App.setSound(soundCheckBox.isChecked());
@@ -224,21 +225,33 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
-    public void chooseDifferentName() {
-        fireUserInterface.differentNameDialog();
+    public void chooseDifferentName(boolean firstSignIn) {
+        fireUserInterface.differentNameDialog(firstSignIn);
+    }
+
+    @Override
+    public void fillHighscoreDialog(ArrayList<String> scores, ArrayList<String> names) {
+        fireUserInterface.fillHighscoreDialog(scores, names);
     }
 
 
-
-
-   // ConnectionInterface from FireUserInterface
+    // ConnectionInterface from FireUserInterface
     @Override
     public void login(String name) {
         manager.signIn(name);
     }
 
     @Override
+    public void dummyLogin() {
+        manager.dummyLogin();
+    }
+
+    @Override
     public void differentName(String name) {
-        manager.validateName(name);
+        if (manager.userExists()) {
+            manager.validateName(name, false);
+        } else {
+            manager.validateName(name, true);
+        }
     }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.androidmika.pommesmann.App;
@@ -189,8 +190,12 @@ public class GameoverActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
-    public void chooseDifferentName() {
-        fireUserInterface.differentNameDialog();
+    public void chooseDifferentName(boolean firstSignIn) {
+        fireUserInterface.differentNameDialog(firstSignIn);
+    }
+
+    @Override
+    public void fillHighscoreDialog(ArrayList<String> scores, ArrayList<String> names) {
     }
 
 
@@ -201,7 +206,16 @@ public class GameoverActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
+    public void dummyLogin() {
+        manager.dummyLogin();
+    }
+
+    @Override
     public void differentName(String name) {
-        manager.validateName(name);
+        if (manager.userExists()) {
+            manager.validateName(name, false);
+        } else {
+            manager.validateName(name, true);
+        }
     }
 }
