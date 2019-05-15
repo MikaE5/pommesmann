@@ -21,12 +21,14 @@ import java.util.ArrayList;
 
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.Firebase.FireManager;
+import de.androidmika.pommesmann.Firebase.FireUserInterface;
 import de.androidmika.pommesmann.R;
 
 public class MainActivity extends Activity implements View.OnClickListener,
-        FireManager.UIInterface, FireManager.DataInterface {
+        FireManager.UIInterface, FireManager.DataInterface, FireUserInterface.FireConnection {
 
     private FireManager manager;
+    private FireUserInterface fireUserInterface;
     
 
     private Button startButton;
@@ -46,6 +48,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
         initLevelscore();
         manager = new FireManager(this);
+        fireUserInterface = new FireUserInterface(this);
+
 
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -120,13 +124,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
             startActivity(intent);
         }
         if (v.getId() == R.id.submitHighscoreButton) {
-            if (manager.userExists()) {
-                manager.updateScore(App.getHighscore());
-                submitHighscoreButton.setClickable(false);
-                submitHighscoreButton.setVisibility(View.GONE);
-            } else {
-                manager.showChooseNameDialog(this);
-            }
+            fireUserInterface.submitDialog();
         }
         if (v.getId() == R.id.highscoresButton) {
             manager.showHighscoreDialog(this);
@@ -213,6 +211,11 @@ public class MainActivity extends Activity implements View.OnClickListener,
     public void setHint(String name) {
     }
 
+    @Override
+    public void chooseDifferentName() {
+        fireUserInterface.differentNameDialog();
+    }
+
 
     private void initLevelscore() {
         // added levelscore after first releases
@@ -246,5 +249,15 @@ public class MainActivity extends Activity implements View.OnClickListener,
     public void updateFailure() {
         CharSequence text = "Sorry! An error occurred!";
         Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void login(String name) {
+        manager.signIn(name);
+    }
+
+    @Override
+    public void differentName(String name) {
+        manager.validateName(name);
     }
 }

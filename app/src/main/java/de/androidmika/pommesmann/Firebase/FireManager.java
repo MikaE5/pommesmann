@@ -43,6 +43,7 @@ public class FireManager {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private int level;
+    private Context context;
 
 
     public interface DataInterface {
@@ -56,6 +57,7 @@ public class FireManager {
     public interface UIInterface{
         void hideButton();
         void setHint(String name);
+        void chooseDifferentName();
     }
     private UIInterface uiInterface;
 
@@ -70,122 +72,71 @@ public class FireManager {
         if (context instanceof UIInterface) {
             uiInterface = (UIInterface) context;
         }
+        this.context = context;
     }
 
     public boolean userExists() {
         return auth.getCurrentUser() != null;
     }
 
-
-    // returns true if a name was chosen and a user created
-    // returns false if the dialog was just dismissed
-    public void showChooseNameDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false);
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View dialogView = inflater.inflate(R.layout.choosename_dialog, null);
-        builder.setView(dialogView);
-
-        final Dialog dialog = builder.create();
-        dialog.setTitle(R.string.chooseNameDialogTitle);
-
-
-        final EditText editName = dialogView.findViewById(R.id.editText);
-        final Button confirmButton = dialogView.findViewById(R.id.confirmButton);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = editName.getText().toString().trim();
-                name = analyzeString(name);
-                signInAnonymously(context, name);
-
-                dialog.dismiss();
-                uiInterface.hideButton();
-            }
-        });
-
-        Button laterButton = dialogView.findViewById(R.id.laterButton);
-        laterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+    public void signIn(String name) {
+        name = FireInput.analyzeString(name); // input validation
+        signInAnonymously(name);
     }
 
-    private void signInAnonymously(final Context context, final String name) {
-        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                   analyzeName(context, name, true);
-                }
-            }
-        });
-    }
-
-    private void analyzeName(final Context context, final String name, final boolean firstSignIn) {
-        db.collection(FireContract.userCollection)
-                .whereEqualTo(FireContract.name, name)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    private void signInAnonymously(final String name) {
+        auth.signInAnonymously()
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            if (task.getResult() != null && task.getResult().size() > 0) {
-                                chooseNewNameDialog(context);
-                            } else {
-
-                                if (firstSignIn) {
-                                    setFirstData(name);
-                                    Toast.makeText(context, "Sign in successful", Toast.LENGTH_LONG)
-                                            .show();
-                                } else {
-                                    setName(name);
-                                }
-                            }
+                            validateName(name);
+                        } else {
+                            FireUserInterface.failure(context);
                         }
                     }
                 });
     }
 
-    private void chooseNewNameDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setCancelable(false);
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View dialogView = inflater.inflate(R.layout.choosename_dialog, null);
-        builder.setView(dialogView);
-        TextView dialogText = dialogView.findViewById(R.id.dialogText);
-        dialogText.setText("This name already exists! Please choose a different name");
-
-
-        final Dialog dialog = builder.create();
-        dialog.setTitle(R.string.chooseNameDialogTitle);
-
-
-        final EditText editName = dialogView.findViewById(R.id.editText);
-        final Button confirmButton = dialogView.findViewById(R.id.confirmButton);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = editName.getText().toString().trim();
-                name = analyzeString(name);
-                analyzeName(context, name, false);
-
-                dialog.dismiss();
-                uiInterface.hideButton();
-            }
-        });
-
-        Button laterButton = dialogView.findViewById(R.id.laterButton);
-        laterButton.setVisibility(View.GONE);
-
-        dialog.show();
+    public void validateName(final String name) {
+        // check if the name already exists
+        if (auth.getUid() != null) {
+            db.collection(FireContract.userCollection)
+                    .whereEqualTo(FireContract.name, name)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult() != null && task.getResult().size() <= 0) {
+                                    // the name does not exist
+                                    setFirstData(name);
+                                } else {
+                                    // name does already exist, choose new name
+                                    uiInterface.chooseDifferentName();
+                                }
+                            }
+                        }
+                    });
+        } else {
+            FireUserInterface.failure(context);
+        }
     }
+
+    private void setFirstData(String name) {
+        Map<String, Object> data = new HashMap<>();
+        if (auth.getUid() != null) {
+            data.put(FireContract.userID, auth.getUid());
+            data.put(FireContract.name, name);
+            data.put(FireContract.score, App.getHighscore());
+            data.put(FireContract.level, level);
+
+            db.collection(FireContract.userCollection).document(auth.getUid())
+                    .set(data);
+        }
+    }
+
+
 
     public void updateName(final Context context, final String name) {
         if (auth.getUid() != null) {
@@ -204,7 +155,7 @@ public class FireManager {
 
                                     // update name only if it is a different name
                                     if (oldName != null && !oldName.toString().equals(name)) {
-                                        analyzeName(context, name, false);
+                                        //analyzeName(context, name, false);
                                     } else {
                                         dataInterface.updateFailure();
                                     }
@@ -216,82 +167,7 @@ public class FireManager {
 
     }
 
-    private void setName(String newName) {
-        if (auth.getUid() != null) {
-            newName = analyzeString(newName);
 
-            final Map<String, Object> data = new HashMap<>();
-            data.put(FireContract.name, newName);
-
-            final DocumentReference docRef = db.collection(FireContract.userCollection).document(auth.getUid());
-
-            docRef.get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot snapshot = task.getResult();
-
-                                if (snapshot != null && snapshot.exists()) {
-                                    docRef.update(data)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        dataInterface.updateSuccess();
-                                                    }
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) { dataInterface.updateFailure();
-                                                }
-                                            });
-                                } else {
-                                    docRef.set(data)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-
-                                                }
-                                            })
-                                }
-                            }
-                        }
-                    });
-
-
-
-
-        } else {
-            dataInterface.updateFailure();
-        }
-    }
-
-
-    private String analyzeString(String text) {
-        text = text.replaceAll("delete", "");
-        text = text.replaceAll("collection", "");
-        text = text.replaceAll("document", "");
-        text = text.replaceAll(";", ".");
-        text = text.replaceAll("Mika", "nope");
-        text = text.replaceAll("mika", "nope");
-        return text;
-    }
-
-
-    private void setFirstData(String name) {
-            Map<String, Object> data = new HashMap<>();
-            if (auth.getUid() != null) {
-                data.put(FireContract.userID, auth.getUid());
-                data.put(FireContract.name, name);
-                data.put(FireContract.score, App.getHighscore());
-                data.put(FireContract.level, level);
-
-                db.collection(FireContract.userCollection).document(auth.getUid())
-                        .set(data);
-            }
-    }
 
     public void updateScore(int points) {
         // update Data
@@ -431,4 +307,5 @@ public class FireManager {
             dataInterface.deleteFailure();
         }
     }
+
 }
