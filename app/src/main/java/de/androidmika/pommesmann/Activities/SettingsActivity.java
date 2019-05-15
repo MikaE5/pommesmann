@@ -12,14 +12,19 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.sql.Connection;
+
 import de.androidmika.pommesmann.App;
 import de.androidmika.pommesmann.Firebase.FireManager;
+import de.androidmika.pommesmann.Firebase.FireUserInterface;
 import de.androidmika.pommesmann.R;
 import de.androidmika.pommesmann.ShopDatabase.ShopDatabaseHelper;
 
-public class SettingsActivity extends Activity implements View.OnClickListener, FireManager.DataInterface, FireManager.UIInterface {
+public class SettingsActivity extends Activity implements View.OnClickListener,
+        FireManager.UIInterface, FireUserInterface.FireConnection {
 
     private FireManager manager;
+    private FireUserInterface fireUserInterface;
 
     private CheckBox leftHandedCheckBox;
     private EditText nameEditText;
@@ -30,6 +35,7 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
 
         manager = new FireManager(this);
+        fireUserInterface = new FireUserInterface(this);
 
         setContentView(R.layout.settings_activity);
 
@@ -175,31 +181,9 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
         manager.deleteUserData();
     }
 
-    @Override
-    public void deleteSuccess() {
-        CharSequence text = "Data successfully deleted!";
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void deleteFailure() {
-        CharSequence text = "Sorry! An error occurred. Data was not deleted!";
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void updateSuccess() {
-        CharSequence text = "Name successfully updated!";
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void updateFailure() {
-        CharSequence text = "Sorry! An error occurred!";
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
 
 
+    // UIInterface from FireManager
     @Override
     public void hideButton() {
     }
@@ -207,5 +191,22 @@ public class SettingsActivity extends Activity implements View.OnClickListener, 
     @Override
     public void setHint(String name) {
         nameEditText.setHint(name);
+    }
+
+    @Override
+    public void chooseDifferentName() {
+        fireUserInterface.differentNameDialog();
+    }
+
+
+    
+    // FireConnectionInterface from FireUserInterface
+    @Override
+    public void login(String name) {
+    }
+
+    @Override
+    public void differentName(String name) {
+        manager.validateName(name);
     }
 }

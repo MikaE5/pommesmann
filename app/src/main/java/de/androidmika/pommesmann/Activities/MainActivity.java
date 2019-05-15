@@ -25,7 +25,7 @@ import de.androidmika.pommesmann.Firebase.FireUserInterface;
 import de.androidmika.pommesmann.R;
 
 public class MainActivity extends Activity implements View.OnClickListener,
-        FireManager.UIInterface, FireManager.DataInterface, FireUserInterface.FireConnection {
+        FireManager.UIInterface, FireUserInterface.FireConnection {
 
     private FireManager manager;
     private FireUserInterface fireUserInterface;
@@ -199,7 +199,19 @@ public class MainActivity extends Activity implements View.OnClickListener,
         }
     }
 
+    private void initLevelscore() {
+        // added levelscore after first releases
+        // have to set a first value
+        // if no value for levelscore is set, the current overall highscore is set for levelscore
 
+        if (App.getLevelscore() == 0) {
+            App.setLevelscore(App.getHighscore());
+        }
+    }
+
+
+
+    // UIInterface from FireManager
     @Override
     public void hideButton() {
         submitHighscoreButton.setClickable(false);
@@ -217,40 +229,9 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
 
-    private void initLevelscore() {
-        // added levelscore after first releases
-        // have to set a first value
-        // if no value for levelscore is set, the current overall highscore is set for levelscore
 
-        if (App.getLevelscore() == 0) {
-            App.setLevelscore(App.getHighscore());
-        }
-    }
 
-    @Override
-    public void deleteSuccess() {
-        CharSequence text = "Data successfully deleted!";
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void deleteFailure() {
-        CharSequence text = "Sorry! An error occurred. Data was not deleted!";
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void updateSuccess() {
-        CharSequence text = "Name successfully updated!";
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void updateFailure() {
-        CharSequence text = "Sorry! An error occurred!";
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
-    }
-
+   // ConnectionInterface from FireUserInterface
     @Override
     public void login(String name) {
         manager.signIn(name);

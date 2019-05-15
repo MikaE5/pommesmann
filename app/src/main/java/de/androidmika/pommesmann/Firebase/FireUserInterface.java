@@ -103,4 +103,8 @@ public class FireUserInterface {
         // make toast
     }
 
+    static void deleteSuccess(Context context) {
+        //
+    }
+
 }

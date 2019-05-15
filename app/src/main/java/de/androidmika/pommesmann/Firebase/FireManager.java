@@ -46,14 +46,6 @@ public class FireManager {
     private Context context;
 
 
-    public interface DataInterface {
-        void deleteSuccess();
-        void deleteFailure();
-        void updateSuccess();
-        void updateFailure();
-    }
-    private DataInterface dataInterface;
-
     public interface UIInterface{
         void hideButton();
         void setHint(String name);
@@ -66,9 +58,6 @@ public class FireManager {
         ShopDatabaseHelper dbHelper = ShopDatabaseHelper.getInstance(getContext());
         level = dbHelper.getSecretOfPommesmannLevel();
 
-        if (context instanceof DataInterface) {
-            dataInterface = (DataInterface) context;
-        }
         if (context instanceof UIInterface) {
             uiInterface = (UIInterface) context;
         }
@@ -157,7 +146,7 @@ public class FireManager {
                                     if (oldName != null && !oldName.toString().equals(name)) {
                                         //analyzeName(context, name, false);
                                     } else {
-                                        dataInterface.updateFailure();
+                                        FireUserInterface.failure(context);
                                     }
                                 }
                             }
@@ -293,18 +282,18 @@ public class FireManager {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            dataInterface.deleteSuccess();
+                            FireUserInterface.deleteSuccess(context);
                             auth.signOut();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            dataInterface.deleteFailure();
+                            FireUserInterface.failure(context);
                         }
                     });
         } else {
-            dataInterface.deleteFailure();
+            FireUserInterface.failure(context);
         }
     }
 
