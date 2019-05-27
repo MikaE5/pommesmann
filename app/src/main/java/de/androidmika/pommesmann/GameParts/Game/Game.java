@@ -138,6 +138,7 @@ public class Game {
     public void show(Canvas canvas) {
         ShowManager.showPowerups(user.powerups, canvas);
         showText(canvas);
+        ShowManager.showHealthbar(user.player.getHealth(), canvas);
         ShowManager.showBoxes(boxes, canvas);
         ShowManager.showBoxes(animationBoxes, canvas);
         ShowManager.showLasers(user.lasers, canvas);
@@ -151,8 +152,8 @@ public class Game {
         paint.setColor(App.getContext().getResources().getColor(R.color.canvasTextColor));
         paint.setTextSize(tsize);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawText("Points: " + Integer.toString(user.getPoints()) +
-                        " Round: " + Integer.toString(round),
+        canvas.drawText("Points: " + user.getPoints() +
+                        " Round: " + round,
                 0.5f * tsize, 1.1f * tsize, paint);
     }
 
