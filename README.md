@@ -2,7 +2,6 @@
 
 This is my first Android Application.
 It is a simple 2D-Game with an in-game-shop to buy powerups and other upgrades.
-It is published in the Google Play Store: https://play.google.com/store/apps/details?id=de.androidmika.pommesmann
 
 ## Activities
 The Game has basically three Activities, Main-, Game- and GameoverActivity.
