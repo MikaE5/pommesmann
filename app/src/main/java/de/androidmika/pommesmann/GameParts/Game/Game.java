@@ -136,6 +136,7 @@ public class Game {
 
 
     public void show(Canvas canvas) {
+        ShowManager.showHealthbar(user.player, canvas);
         ShowManager.showPowerups(user.powerups, canvas);
         showText(canvas);
         ShowManager.showBoxes(boxes, canvas);
