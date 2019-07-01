@@ -2,8 +2,6 @@ package de.androidmika.pommesmann.Firebase;
 
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -69,7 +67,7 @@ public class FireManager {
         auth.signInAnonymously()
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onComplete(Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             validateName(name, true);
                         } else {
@@ -99,7 +97,7 @@ public class FireManager {
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            public void onComplete(Task<QuerySnapshot> task) {
                                 if (task.isSuccessful()) {
                                     if (task.getResult() != null && task.getResult().size() <= 0) {
                                         // the name does not exist
@@ -153,7 +151,7 @@ public class FireManager {
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        public void onComplete(Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot snapshot = task.getResult();
 
@@ -183,7 +181,7 @@ public class FireManager {
                     .update(FireContract.name, name)
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
+                        public void onFailure(Exception e) {
                             FireUserInterface.failure(context);
                         }
                     });
@@ -238,7 +236,7 @@ public class FireManager {
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    public void onComplete(Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && task.getResult() != null) {
                             ArrayList<String> scores = new ArrayList<>();
                             ArrayList<String> names = new ArrayList<>();
@@ -271,7 +269,7 @@ public class FireManager {
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Exception e) {
+                        public void onFailure(Exception e) {
                             FireUserInterface.failure(context);
                         }
                     });
