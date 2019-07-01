@@ -44,8 +44,15 @@
 
         <!-- permanently disable anayltics collection -->
         <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
+        <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
         <!-- disable advertising id collection -->
         <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
+        <!-- disable SSAID collection -->
+        <meta-data android:name="google_analytics_ssaid_collection_enabled" android:value="false" />
+        <!-- disable crash collection -->
+        <meta-data android:name="firebase_crash_collection_enabled" android:value="false" />
+        <!-- disable personalized ad features -->
+        <meta-data android:name="google_analytics_default_allow_ad_personalization_signals" android:value="false" />
     </application>
 
 </manifest>
